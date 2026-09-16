@@ -179,7 +179,7 @@
   };
 
   function spinner(text, big) {
-    return '<span class="row" style="gap:8px;font-size:13px">' +
+    return '<span class="row" style="gap:8px;font-size:14px">' +
       '<span class="' + cls('spinner', { 'spinner--lg': big }) + '"></span>' + esc(text) + '</span>';
   }
   SA.spinner = spinner;

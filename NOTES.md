@@ -1395,3 +1395,73 @@ Verified: computed styles on both the top switcher and the agent
 detail's Build/Findings/Runs tabs show `font-weight: 600` and a 2px
 border on every tab, active and inactive; Workspace and Administration
 still render with no `.navtabs` bar; no console errors.
+
+## RMX design-system audit — 2026-09-16
+
+A pass against `rmx-prototyping`'s references (`data/components.json`,
+`data/text-styles.json`, `references/controls.md`, `data-display.md`,
+`page-patterns.md`) and against live computed styles in the browser, not
+just the source. Figma itself was unreachable in this session (no
+authenticated `figma` MCP connector), so nothing was re-harvested — every
+fix below is backed by a measured value already in the skill's bundled
+data, not a guess.
+
+**Fixed:**
+
+- **Type ramp.** RMX Foundations has exactly these text sizes: 12, 12.6,
+  14, 16, 18, 20, 24, 32, 40, 56, 96. This app had invented 10px, 11px,
+  13px, 15px and 28px sizes throughout — 13px alone via the shared `.f13`
+  utility class, used ~70 times. Every occurrence now resolves to the
+  nearest real style (13→14, 11→12, 10→12, 15→14 or 16 depending on
+  context, 28→32 for the page H1).
+- **A live CSS-specificity bug, confirmed by computed style, not just
+  reading the source:** `.rmx h1 { font-size: 32px; ... }` in
+  rmx-tokens.css is (class, element) specificity, which beats a bare class
+  selector like `.pagehead__title--sm` or `.admintitle__h`. Every page
+  title in the app was silently rendering at 32px/500/navy regardless of
+  which sizing class it carried — `<h1 class="pagehead__title--sm">`
+  measured 32px live, not the 24px its own rule said. Same bug on every
+  dialog header (`<h2 class="f18">` measured 24px, not 18). Fixed by
+  qualifying the overrides with the element (`h1.pagehead__title--sm`,
+  `h2.f18`, etc.) so they tie on specificity and win on source order.
+- **Checkbox / Radio.** RMX Checkbox and Radio button are both a measured
+  20×20 with a 2px border and an 8px (`Spacing/xs`) gap to the label. Both
+  were built at 16×16 with a 9px gap. Resized `.check`/`.radio` to 20×20,
+  gap to 8px, `.check--lg` up to 24×24 to keep the same relative bump.
+- **Input Field.** Style=Express/Size=Default measures 36px tall, value
+  text 14px in `--text-secondary` (navy #13314c). `.field`/`.fauxfield`
+  were 34px, 13px, and coloured `--rmx-ink` (pure black). Fixed to 36/14/navy.
+- **Register header.** `data-display.md`: Style=Register (a register
+  sitting directly on the page — Findings, Runs' Replay history when it's
+  not inside a Tile, Inbox) is 28px, `--container-tertiary-dark` (#737373),
+  white 12.6px Medium with +1.1px tracking, and the labels are already
+  Title Case in the data ("Record", "Property", ...). `.tbl__head` was a
+  light gray (#f5f8fa/#666) that matched neither Style=Register nor
+  Style=Table, and forced `text-transform: uppercase` on top of Title Case
+  data. Rewrote it to the real Style=Register, and gave Agent Library's and
+  the agent detail Runs tab's run-history register (both sit inside a
+  card-style box, not full-page) the real Style=Table instead — white,
+  navy text, 32px, bordered top and bottom — via a `.tbl--card` modifier
+  class next to the existing `.libtable` one.
+- **Register rows do not have a hover state** — asked and answered by
+  Emma per `data-display.md`: "nothing lights up under the cursor... do
+  not add a hover tint... or an affordance of any kind." `.tbl__row--click`
+  had both a background tint and `cursor: pointer`. Removed both.
+- **Context Bar.** Measured 40px (8px vertical + 16px horizontal padding),
+  leading text is Web/Heading/S/Regular — 18px, weight 400, white. The
+  blue bar under the header (`.ctxbar`) was 30px with 15px/500 text. Fixed.
+- **App bar.** Measured 48px. `.hdr` was 46px. Fixed.
+
+**Open / unverified — flagged rather than guessed:**
+
+- 29 of the app's 98 core icons (`js/icons-sprite.js`) are already marked
+  `data-provisional` — honest stand-ins from Material Symbols, not yet
+  checked against RMX Iconography, per the skill's own icon rule. They
+  were already disclosed before this pass; harvesting the real glyphs
+  needs an authenticated Figma session, which this one didn't have.
+- Input Field `Size=Small` geometry was never harvested into
+  `components.json` (`_incomplete` on that entry) — `.field--sm`'s 30px
+  height is unverified either way; left as-is rather than guessed.
+- `.check--lg`'s 24×24 size is this pass's own proportional choice (RMX's
+  Checkbox component has no Size axis at all), used in exactly one place
+  (the findings-inbox "done" checkbox).

@@ -29,6 +29,7 @@
   --rmx-bg-subtle: #f5f8fa;        /* Field fill / panel */
   --rmx-bg-muted: #f2f2f2;
   --rmx-overlay-search: #425a70;   /* Header search bar fill */
+  --rmx-register-header: #737373; /* Container/tertiary-dark — register Header, Style=Register */
 
   /* ---------- SEMANTIC ---------- */
   --rmx-error: #eb343c;            /* Required / error red */

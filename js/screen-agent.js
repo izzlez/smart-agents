@@ -144,7 +144,7 @@
         (n.orion ? orion(24) : icon(SA.nodeKindIcon[n.kind] || 'bolt', 16, 'color:' + color)) +
         '<span class="node__kind" style="color:' + color + '">' + esc(n.kind) + '</span>' +
         '<span class="spacer"></span>' +
-        when(n.orion, function () { return '<span class="pill pill--orion-soft" style="padding:2px 8px;font-size:11px">Orion</span>'; }) +
+        when(n.orion, function () { return '<span class="pill pill--orion-soft" style="padding:2px 8px;font-size:12px">Orion</span>'; }) +
         when(n.locked, function () { return icon('lock', 14, 'color:var(--rmx-text-muted)'); }) +
       '</div>' +
       '<div class="node__title">' + esc(n.title) + '</div>' +
@@ -286,7 +286,7 @@
           icon('play_arrow', 18) + 'Test Detection</button>' +
         when(s.test === 'running', function () { return spinner('Scanning read-only…'); }) +
         when(s.test === 'done' && det, function () {
-          return '<div class="row fade" style="gap:8px;padding:8px 10px;border-radius:4px;background:var(--rmx-success-bg);color:#3f7e1f;font-size:13px">' +
+          return '<div class="row fade" style="gap:8px;padding:8px 10px;border-radius:4px;background:var(--rmx-success-bg);color:#3f7e1f;font-size:14px">' +
             icon('check_circle', 16) + esc(det.result) + ' &middot; read-only</div>';
         }) +
       '</div>' +
@@ -342,7 +342,7 @@
 
   function inspEscape() {
     return '<div class="inspector__body inspector__body--tight">' +
-      '<div class="row" style="gap:8px;padding:10px 12px;border-radius:4px;background:#fdebd9;color:#a85e0e;font-size:13px;align-items:flex-start">' +
+      '<div class="row" style="gap:8px;padding:10px 12px;border-radius:4px;background:#fdebd9;color:#a85e0e;font-size:14px;align-items:flex-start">' +
         icon('info', 18) +
         '<span>Every agent hands off to a person, and that step cannot be deleted. There is no silent no-op.</span></div>' +
       '<div><div class="flabel">Destination</div>' +
@@ -619,7 +619,7 @@
               '<div class="f13 ink2">' + esc(r.property) + '</div>' +
               '<div class="f13 ink2 row" style="gap:8px">' +
                 when(isDismissed, function () {
-                  return '<span class="badge badge--stop shrink0" style="padding:1px 7px;font-size:11px;gap:4px">' +
+                  return '<span class="badge badge--stop shrink0" style="padding:1px 7px;font-size:12px;gap:4px">' +
                     icon('block', 14) + 'Previously dismissed</span>';
                 }) +
                 '<span>' + esc(r.issue) + '</span>' +
@@ -647,7 +647,7 @@
                   '<div>' + SA.eyebrow('Suggested fix', 'margin-bottom:4px') +
                     '<div class="expand__text">' + esc(r.fixDetail) + '</div></div>' +
                   when(isDismissed, function () {
-                    return '<div class="note" style="background:#fff;font-size:13px">Dismissed: ' +
+                    return '<div class="note" style="background:#fff;font-size:14px">Dismissed: ' +
                       esc(s.dismissedRows[key]) + '</div>';
                   }) +
                 '</div>' +
@@ -750,7 +750,7 @@
             '</div>')) +
       '</div>';
 
-    var historyCard = '<div class="tbl">' +
+    var historyCard = '<div class="tbl tbl--card">' +
       '<div class="card__head">Run history</div>' +
       '<div class="tbl__head g-runs">' +
         '<div>Started</div><div>Trigger</div><div>Records Seen</div><div>Actions Taken</div><div>Result</div>' +

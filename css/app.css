@@ -63,8 +63,12 @@ html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
 .navy { color: var(--rmx-brand-dark) }
 .brand { color: var(--rmx-brand) }
 .w500 { font-weight: 500 }
-.f11 { font-size: 11px } .f12 { font-size: 12px } .f13 { font-size: 13px }
-.f14 { font-size: 14px } .f15 { font-size: 15px } .f16 { font-size: 16px }
+/* Every size below is a real RMX Foundations text style (data/text-styles.json):
+   12=Label/S, 14=Paragraph/S or Label/M, 16=Paragraph/L, 18=Heading/S, 20=Heading/M.
+   There is no 10, 11, 13 or 15 in the type scale — f11/f13/f15 used to render at
+   those off-ramp sizes; they now resolve to the nearest real style instead. */
+.f11 { font-size: 12px } .f12 { font-size: 12px } .f13 { font-size: 14px }
+.f14 { font-size: 14px } .f15 { font-size: 14px } .f16 { font-size: 16px }
 .f18 { font-size: 18px } .f20 { font-size: 20px }
 .divider-v { width: 1px; background: var(--rmx-line) }
 .hr { height: 1px; background: var(--rmx-line-soft) }
@@ -89,14 +93,18 @@ html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
   background: var(--rmx-bg-subtle);
   overflow: hidden;
 }
-/* bright blue context bar — sits between the header and the page body */
+/* Context Bar — RMX Components, Navigation & Headers, node 10861:12222.
+   Measured 40px (8px Spacing/xs vertical + 16px Content/contentPadding
+   horizontal), fill --component-context-header (brand blue), leading slot
+   text is Web/Heading/S/Regular — 18px, weight 400, --text-inverse. Was
+   built at 30px/15px/500; both are off the real component. */
 .ctxbar {
-  height: 30px; flex-shrink: 0;
+  height: 40px; flex-shrink: 0; box-sizing: border-box;
   background: var(--rmx-brand);
   display: flex; align-items: center; gap: var(--rmx-s-2);
-  padding: 0 16px; color: #fff; font-size: 15px; cursor: pointer;
+  padding: var(--rmx-s-2) var(--rmx-s-4); color: #fff; font-size: 18px; cursor: pointer;
 }
-.ctxbar__back { font-size: 15px; font-weight: 500 }
+.ctxbar__back { font-size: 18px; font-weight: 400 }
 .app__body { flex: 1; display: flex; min-height: 0 }
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden }
 /* Only a register's own row content should ever scroll sideways (see .tbl
@@ -106,8 +114,9 @@ html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
 .screen--flush { display: flex; flex-direction: column; min-height: 0 }
 
 /* ---------- header ---------- */
+/* RMX Components "Header" (app bar) — measured 48px, node 18:2314. Was 46px. */
 .hdr {
-  height: 46px; flex-shrink: 0;
+  height: 48px; flex-shrink: 0;
   background: var(--rmx-brand-dark);
   display: flex; align-items: center; gap: var(--rmx-s-4);
   padding: 0 var(--rmx-s-4);
@@ -205,9 +214,9 @@ html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
 .btn--neutral:hover { background: var(--rmx-bg-subtle) }
 .btn--ghost { background: transparent; color: var(--rmx-brand); border: none; padding: 0; height: auto }
 .btn--ghost:hover { text-decoration: underline }
-.btn--sm { height: 32px; padding: 0 var(--rmx-s-3); font-size: 13px }
-.btn--xs { height: 30px; padding: 0 var(--rmx-s-3); font-size: 13px }
-.btn--compact { height: 28px; padding: 0 10px; font-size: 13px }
+.btn--sm { height: 32px; padding: 0 var(--rmx-s-3); font-size: 14px }
+.btn--xs { height: 30px; padding: 0 var(--rmx-s-3); font-size: 14px }
+.btn--compact { height: 28px; padding: 0 10px; font-size: 14px }
 .btn--icon { width: 28px; height: 28px; padding: 0 }
 .btn--icon-sm { width: 26px; height: 26px; padding: 0 }
 .btn--icon-xs { width: 24px; height: 24px; padding: 0 }
@@ -232,17 +241,19 @@ html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
 }
 .linkbtn:hover { color: var(--rmx-brand-hover); text-decoration: underline }
 
-/* fields */
+/* fields — RMX Input Field, Style=Express, Size=Default (Inputs & Dropdowns,
+   node 754:4052): 36px box, 8px padding all round, value text is
+   Text/text-secondary #13314c at 14px, not black. Was 34px/13px/--rmx-ink. */
 .field {
-  height: 34px; box-sizing: border-box;
+  height: 36px; box-sizing: border-box;
   border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
   background: var(--rmx-bg-subtle);
-  font-family: inherit; font-size: 13px; color: var(--rmx-ink);
+  font-family: inherit; font-size: 14px; color: var(--rmx-brand-dark);
   padding: 0 var(--rmx-s-2); outline: none;
 }
 .field:focus { border-color: var(--rmx-brand); box-shadow: var(--rmx-focus-ring) }
 .field--full { width: 100% }
-.field--lg { height: 38px; font-size: 15px }
+.field--lg { height: 38px; font-size: 16px }
 .field--num {
   border-color: var(--rmx-brand); text-align: center;
   font-size: 16px; font-weight: 500; color: var(--rmx-brand-pressed);
@@ -254,13 +265,13 @@ html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
 textarea.field { height: auto; min-height: 104px; padding: 10px; line-height: 20px; resize: vertical }
 select.field { padding: 0 6px }
 
-/* a read-only field that stands in for an unwired picker */
+/* a read-only field that stands in for an unwired picker — mirrors .field */
 .fauxfield {
-  height: 34px;
+  height: 36px;
   border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
   background: var(--rmx-bg-subtle);
   display: flex; align-items: center; padding: 0 10px;
-  font-size: 13px; color: var(--rmx-ink);
+  font-size: 14px; color: var(--rmx-brand-dark);
 }
 .fauxfield--36 { height: 36px; font-size: 14px }
 .fauxfield--32 { height: 32px; background: var(--rmx-bg); color: var(--rmx-ink-2) }
@@ -277,7 +288,7 @@ select.field { padding: 0 6px }
 .seg--fill .seg__btn { flex: 1 }
 .seg__btn {
   height: 34px; padding: 0 var(--rmx-s-3);
-  border: none; cursor: pointer; font-family: inherit; font-size: 13px;
+  border: none; cursor: pointer; font-family: inherit; font-size: 14px;
   background: var(--rmx-bg); color: var(--rmx-brand);
   transition: background 150ms ease-out;
   white-space: nowrap;
@@ -296,7 +307,7 @@ select.field { padding: 0 6px }
 .chip {
   height: 30px; padding: 0 14px;
   border-radius: var(--rmx-radius-pill);
-  cursor: pointer; font-family: inherit; font-size: 13px;
+  cursor: pointer; font-family: inherit; font-size: 14px;
   background: var(--rmx-bg); border: 1px solid var(--rmx-line); color: var(--rmx-ink-2);
   transition: background 150ms ease-out, border-color 150ms ease-out;
 }
@@ -332,13 +343,13 @@ select.field { padding: 0 6px }
 .pill--orion-soft { background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed) }
 .pill--ok { background: var(--rmx-success-bg); color: #3f7e1f }
 .pill--tier { background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed); padding: 4px 8px 4px 10px; font-weight: 400 }
-.pill--decide { padding: 3px 10px; border-radius: var(--rmx-radius-pill); font-size: 13px; font-weight: 500 }
+.pill--decide { padding: 3px 10px; border-radius: var(--rmx-radius-pill); font-size: 14px; font-weight: 500 }
 
 .lockchip {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 4px 10px; border-radius: var(--rmx-radius-sm);
   background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
-  font-size: 13px; color: var(--rmx-ink-2);
+  font-size: 14px; color: var(--rmx-ink-2);
   width: fit-content;
 }
 .lockchip .icon { width: 16px; height: 16px; color: var(--rmx-text-muted) }
@@ -374,11 +385,14 @@ select.field { padding: 0 6px }
 .toggle--sm .toggle__knob { width: 14px; height: 14px }
 .toggle--sm.toggle--on .toggle__knob { left: 16px }
 
-/* checkbox / radio */
+/* checkbox / radio — RMX Checkbox (Actions & Controls, node 179:1369) and
+   Radio button are both measured 20x20 with a 2px border and an 8px gap to
+   a 14px label (Spacing/xs). This app built both at 16x16 with a 9px gap;
+   sized up to match the real components. */
 .check {
-  width: 16px; height: 16px; border-radius: var(--rmx-radius-xs);
+  width: 20px; height: 20px; border-radius: var(--rmx-radius-xs);
   display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 12px; color: #fff;
+  cursor: pointer; font-size: 14px; color: #fff;
   border: 2px solid var(--rmx-line-strong); background: transparent;
   flex-shrink: 0;
   transition: background 150ms ease-out, border-color 150ms ease-out;
@@ -388,17 +402,17 @@ select.field { padding: 0 6px }
    State=Register, which stays blue even though every other checkbox in
    this app is State=Default (orange). */
 .tbl .check--on { border-color: var(--rmx-brand); background: var(--rmx-brand) }
-.check--lg { width: 18px; height: 18px; font-size: 13px }
+.check--lg { width: 24px; height: 24px; font-size: 16px }
 .radio {
-  width: 16px; height: 16px; border-radius: var(--rmx-radius-pill);
+  width: 20px; height: 20px; border-radius: var(--rmx-radius-pill);
   border: 2px solid var(--rmx-line-strong);
   display: inline-flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.radio__dot { width: 8px; height: 8px; border-radius: var(--rmx-radius-pill); background: transparent }
+.radio__dot { width: 10px; height: 10px; border-radius: var(--rmx-radius-pill); background: transparent }
 .radio--on { border-color: var(--rmx-brand) }
 .radio--on .radio__dot { background: var(--rmx-brand) }
-.optrow { display: flex; align-items: center; gap: 9px; font-size: 13px; cursor: pointer; color: var(--rmx-ink-2) }
+.optrow { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; color: var(--rmx-ink-2) }
 .optrow--top { align-items: flex-start; gap: 10px }
 
 /* spinner */
@@ -446,7 +460,7 @@ select.field { padding: 0 6px }
 .restate {
   padding: 10px var(--rmx-s-3); border-radius: var(--rmx-radius-sm);
   background: var(--rmx-brand-tint-soft); border: 1px solid var(--rmx-line);
-  font-size: 13px; line-height: 19px; color: var(--rmx-ink-2);
+  font-size: 14px; line-height: 20px; color: var(--rmx-ink-2);
 }
 .note {
   padding: 10px var(--rmx-s-3); border-radius: var(--rmx-radius-sm);
@@ -455,7 +469,7 @@ select.field { padding: 0 6px }
 }
 .checkline { display: flex; align-items: flex-start; gap: var(--rmx-s-2); font-size: 14px; line-height: 20px; color: var(--rmx-ink-2) }
 .checkline .icon { width: 18px; height: 18px; color: var(--rmx-brand); margin-top: 1px }
-.checkline--sm { font-size: 13px; line-height: 18px; gap: 7px }
+.checkline--sm { font-size: 12px; line-height: 16px; gap: 8px }
 .checkline--sm .icon { width: 16px; height: 16px }
 
 /* banners */
@@ -477,8 +491,18 @@ select.field { padding: 0 6px }
 .pagehead--pad { padding: var(--rmx-s-5) var(--rmx-s-6) var(--rmx-s-4) }
 .pagehead--tight { padding: var(--rmx-s-4) var(--rmx-s-6) }
 .pagehead--tabs { padding: var(--rmx-s-4) var(--rmx-s-6) 0; flex-shrink: 0 }
-.pagehead__title { font-size: 28px; line-height: 36px }
-.pagehead__title--sm { font-size: 24px; line-height: 32px }
+/* rmx-tokens.css's `.rmx h1 { font-size: 32px; font-weight: 500 }` is
+   (class, type) = (0,1,1) specificity. A bare `.pagehead__title` class
+   selector is (0,1,0) and LOSES that fight — every page h1 was silently
+   rendering at 32/500/navy regardless of which class it carried. Confirmed
+   live: `<h1 class="pagehead__title--sm">` was measuring 32px, not the 24px
+   its own rule says. Qualifying with the element (`h1.pagehead__title`)
+   matches the base rule's specificity, so the app.css declaration — loaded
+   second — wins on source order, same fix applied to h1.admintitle__h and
+   h2.f18 below. 28px isn't a real RMX size either; the default title is now
+   the real Web/Heading/XL/Medium (32/500/40). */
+h1.pagehead__title { font-size: 32px; font-weight: 500; line-height: 40px }
+h1.pagehead__title--sm { font-size: 24px; font-weight: 500; line-height: 32px }
 .crumbs { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-bottom: 6px }
 .crumbs .icon { width: 14px; height: 14px; color: var(--rmx-text-muted) }
 .crumbs__now { color: var(--rmx-brand-dark) }
@@ -502,7 +526,7 @@ select.field { padding: 0 6px }
   min-width: 20px; height: 18px; padding: 0 6px;
   border-radius: var(--rmx-radius-pill);
   background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
-  font-size: 11px; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; display: inline-flex; align-items: center; justify-content: center;
   color: var(--rmx-text);
 }
 /* A count that needs attention (unread, open) rather than just stating a
@@ -511,7 +535,7 @@ select.field { padding: 0 6px }
   min-width: 22px; height: 18px; padding: 0 6px;
   border-radius: var(--rmx-radius-pill);
   background: var(--rmx-brand); color: #fff;
-  font-size: 11px; font-weight: 500;
+  font-size: 12px; font-weight: 500;
   display: inline-flex; align-items: center; justify-content: center;
 }
 .msgtabs { display: flex; padding: 0 18px; border-bottom: 1px solid var(--rmx-line) }
@@ -528,22 +552,28 @@ select.field { padding: 0 6px }
 /* overflow-x here, not on .screen, is what keeps a too-narrow window's
    horizontal scroll scoped to the register's own rows. */
 .tbl { background: var(--rmx-bg); border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm); overflow-x: auto }
+/* Register Header, Style=Register (data-display.md): 28px, container-tertiary-dark
+   #737373, white 12.6px Medium, +1.1px tracking, the labels themselves already in
+   Title Case ("Record", "Property", ...) — text-transform:uppercase was forcing
+   ALL CAPS on top of that, which the real component never does. Was a light-gray
+   #f5f8fa/#666 fill that matched neither Style=Register nor Style=Table. */
 .tbl__head {
-  display: grid; align-items: center;
-  padding: 10px var(--rmx-s-4);
-  background: var(--rmx-bg-subtle);
-  border-bottom: 1px solid var(--rmx-line);
-  font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
-  color: var(--rmx-text);
+  display: grid; align-items: center; box-sizing: border-box;
+  min-height: 28px;
+  padding: 4px var(--rmx-s-4);
+  background: var(--rmx-register-header);
+  font-size: 12.6px; font-weight: 500; letter-spacing: 1.1px;
+  color: #fff;
 }
 .tbl__row {
   display: grid; align-items: center;
   padding: var(--rmx-s-3) var(--rmx-s-4);
   border-bottom: 1px solid var(--rmx-line-soft);
-  transition: background 150ms ease-out;
 }
-.tbl__row--click { cursor: pointer }
-.tbl__row--click:hover { background: var(--rmx-bg-subtle) }
+/* Register rows do not have a hover state — confirmed with Emma, 2026-09-10
+   (data-display.md): "rows are clickable but nothing lights up under the
+   cursor... do not add a hover tint... or an affordance of any kind." This
+   had both a background tint and a pointer cursor; removed. */
 .tbl__row:last-child { border-bottom: none }
 .tbl__group { border-bottom: 1px solid var(--rmx-line-soft) }
 .tbl__group:last-child { border-bottom: none }
@@ -572,12 +602,19 @@ select.field { padding: 0 6px }
    ============================================================ */
 .filterbar { display: flex; align-items: center; gap: var(--rmx-s-2); margin-top: var(--rmx-s-4); padding-bottom: var(--rmx-s-4) }
 .libtable { margin: var(--rmx-s-4) var(--rmx-s-6) var(--rmx-s-6) }
-/* RMX registers ship two header styles: Style=Register (gray, full-page)
-   and Style=Table (white, in-Tile). The Agent Library list reads as
-   content sitting directly on the white page rather than a boxed table,
-   so its header uses Style=Table's white instead of .tbl__head's default
-   gray Style=Register. */
-.libtable .tbl__head { background: var(--rmx-bg) }
+/* RMX registers ship two header styles (data-display.md): Style=Register
+   (28px, dark gray, white, full-page — the .tbl__head default above) and
+   Style=Table (32px, white, --text-secondary navy, 1px border-primary top
+   and bottom — the header for a register sitting inside a Tile). The Agent
+   Library list reads as content sitting directly on the white page rather
+   than a boxed register, so it takes Style=Table instead of the default. */
+.libtable .tbl__head,
+.tbl--card .tbl__head {
+  min-height: 32px; padding: 8px var(--rmx-s-4);
+  background: var(--rmx-bg); color: var(--rmx-brand-dark);
+  font-size: 12px; letter-spacing: normal;
+  border-top: 1px solid var(--rmx-line); border-bottom: 1px solid var(--rmx-line);
+}
 .libbanner { margin: var(--rmx-s-4) var(--rmx-s-6) 0 }
 .agentcell { display: flex; align-items: center; gap: 10px; min-width: 0 }
 .agentcell__name { color: var(--rmx-brand); font-size: 14px }
@@ -600,7 +637,7 @@ select.field { padding: 0 6px }
 }
 .tplcard:hover { border-color: var(--rmx-brand); box-shadow: var(--rmx-shadow-card) }
 .tplcard__name { font-size: 16px; font-weight: 500; color: var(--rmx-brand-dark) }
-.tplcard__desc { font-size: 13px; line-height: 19px; color: var(--rmx-text); margin-top: 4px }
+.tplcard__desc { font-size: 14px; line-height: 20px; color: var(--rmx-text); margin-top: 4px }
 .tplcard__specs { border-top: 1px solid var(--rmx-line-soft); padding-top: var(--rmx-s-3); display: flex; flex-direction: column; gap: 6px }
 .tplspec { display: flex; gap: var(--rmx-s-2); font-size: 12px }
 .tplspec__k { color: var(--rmx-text-muted); width: 64px; flex-shrink: 0 }
@@ -616,7 +653,7 @@ select.field { padding: 0 6px }
 }
 .sentence { display: grid; grid-template-columns: 64px 1fr; row-gap: var(--rmx-s-5); column-gap: var(--rmx-s-3); align-items: start }
 .sentence__lead { font-size: 20px; font-weight: 500; color: var(--rmx-brand-dark); padding-top: var(--rmx-s-2) }
-.sentence__lead--sm { font-size: 15px; font-weight: 500; color: var(--rmx-text); padding-top: 14px }
+.sentence__lead--sm { font-size: 14px; font-weight: 500; color: var(--rmx-text); padding-top: 14px }
 .picker {
   width: 100%; min-height: 48px; padding: 10px 14px;
   border-radius: var(--rmx-radius-sm); border: 1px solid var(--rmx-line);
@@ -638,7 +675,7 @@ select.field { padding: 0 6px }
 .dd__opt { padding: var(--rmx-s-2) 14px; font-size: 14px; color: var(--rmx-ink-2); cursor: pointer; display: flex; align-items: center; gap: var(--rmx-s-2) }
 .dd__opt:hover { background: var(--rmx-brand-tint-bg) }
 .dd__group {
-  padding: 10px 14px 4px; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 10px 14px 4px; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase;
   color: var(--rmx-text-muted); font-weight: 500; cursor: default;
 }
 .dd__group:hover { background: transparent }
@@ -673,7 +710,7 @@ select.field { padding: 0 6px }
   outline: none; padding: 0 4px;
 }
 .slot:focus { box-shadow: var(--rmx-focus-ring) }
-.segments--inspector .slot { height: 28px; font-size: 13px; background: var(--rmx-bg) }
+.segments--inspector .slot { height: 28px; font-size: 14px; background: var(--rmx-bg) }
 
 .condrow { display: grid; grid-template-columns: 1fr 120px 1fr 30px; gap: var(--rmx-s-2); align-items: center }
 .optgrid { margin-top: var(--rmx-s-4); display: grid; grid-template-columns: 1fr 1fr; gap: var(--rmx-s-5) }
@@ -703,13 +740,13 @@ select.field { padding: 0 6px }
   padding: var(--rmx-s-3) 0;
   display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
-.palette__label { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rmx-text-muted); margin-bottom: 2px }
+.palette__label { font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rmx-text-muted); margin-bottom: 2px }
 .palette__btn {
   width: 60px; padding: var(--rmx-s-2) 0;
   border-radius: var(--rmx-radius-sm); border: 1px dashed var(--rmx-line);
   background: var(--rmx-bg); cursor: grab;
   display: flex; flex-direction: column; align-items: center; gap: 4px;
-  font-family: inherit; font-size: 10px;
+  font-family: inherit; font-size: 12px;
   transition: border-color 150ms ease-out, background 150ms ease-out;
 }
 .palette__btn:hover { border-color: var(--rmx-brand); background: var(--rmx-brand-tint-bg) }
@@ -743,10 +780,10 @@ select.field { padding: 0 6px }
 .node:hover { border-color: var(--rmx-brand) }
 .node--on { border: 2px solid var(--rmx-brand); box-shadow: var(--rmx-shadow-card) }
 .node__top { display: flex; align-items: center; gap: 6px }
-.node__kind { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500 }
-.node__title { font-size: 13px; line-height: 18px; color: var(--rmx-brand-dark); font-weight: 500 }
+.node__kind { font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500 }
+.node__title { font-size: 14px; line-height: 18px; color: var(--rmx-brand-dark); font-weight: 500 }
 .node__sub { font-size: 12px; line-height: 16px; color: var(--rmx-text) }
-.node__meta { font-size: 11px; color: var(--rmx-text-muted); font-family: var(--rmx-font-mono) }
+.node__meta { font-size: 12px; color: var(--rmx-text-muted); font-family: var(--rmx-font-mono) }
 
 .inspector {
   width: 376px; flex-shrink: 0; background: var(--rmx-bg);
@@ -757,7 +794,7 @@ select.field { padding: 0 6px }
   display: flex; align-items: center; gap: var(--rmx-s-2);
   position: sticky; top: 0; background: var(--rmx-bg); z-index: 5;
 }
-.inspector__kind { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
+.inspector__kind { font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
 .inspector__title { font-size: 14px; font-weight: 500; color: var(--rmx-brand-dark) }
 .inspector__body { padding: var(--rmx-s-4); display: flex; flex-direction: column; gap: 18px }
 .inspector__body--tight { gap: 14px }
@@ -790,7 +827,7 @@ select.field { padding: 0 6px }
 }
 .runrow {
   display: flex; align-items: center; gap: 10px;
-  padding: 10px var(--rmx-s-4); border-bottom: 1px solid var(--rmx-line-soft); font-size: 13px;
+  padding: 10px var(--rmx-s-4); border-bottom: 1px solid var(--rmx-line-soft); font-size: 14px;
 }
 .runrow:last-child { border-bottom: none }
 .scopechip {
@@ -818,16 +855,16 @@ select.field { padding: 0 6px }
 /* AR sequence */
 .arstep { display: flex; gap: 14px }
 .arstep__rail { width: 96px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding-top: 18px }
-.arstep__day { font-family: var(--rmx-font-mono); font-size: 13px; font-weight: 500; color: var(--rmx-brand-pressed) }
+.arstep__day { font-family: var(--rmx-font-mono); font-size: 14px; font-weight: 500; color: var(--rmx-brand-pressed) }
 .arstep__dot { width: 10px; height: 10px; border-radius: var(--rmx-radius-pill); margin-top: var(--rmx-s-2) }
 .arstep__line { flex: 1; width: 2px; background: var(--rmx-line); min-height: 24px }
 .arstep__main { flex: 1; min-width: 0; padding-bottom: var(--rmx-s-4) }
 .arstep__card { border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm); background: var(--rmx-bg) }
 .arstep__card--off { background: var(--rmx-bg-subtle) }
 .arstep__head { padding: 14px var(--rmx-s-4); display: flex; align-items: center; gap: var(--rmx-s-3); cursor: pointer; flex-wrap: wrap }
-.arstep__no { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
-.arstep__title { font-size: 15px; font-weight: 500 }
-.arstep__restate { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2); margin-top: 4px }
+.arstep__no { font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
+.arstep__title { font-size: 16px; font-weight: 500 }
+.arstep__restate { font-size: 14px; line-height: 20px; color: var(--rmx-ink-2); margin-top: 4px }
 .arstep__facts { display: flex; gap: 6px; flex-shrink: 0 }
 .fact {
   padding: 3px 9px; border-radius: var(--rmx-radius-sm);
@@ -862,8 +899,8 @@ select.field { padding: 0 6px }
   display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px;
 }
 .expand__card--replay { grid-template-columns: 1.2fr 1fr; gap: var(--rmx-s-5) }
-.expand__text { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2) }
-.reclink { font-size: 13px; display: flex; align-items: center; gap: 6px }
+.expand__text { font-size: 14px; line-height: 20px; color: var(--rmx-ink-2) }
+.reclink { font-size: 14px; display: flex; align-items: center; gap: 6px }
 .datachip {
   padding: 2px var(--rmx-s-2); border-radius: var(--rmx-radius-sm);
   background: var(--rmx-bg); border: 1px solid var(--rmx-line);
@@ -896,7 +933,7 @@ select.field { padding: 0 6px }
 .todo:last-child { border-bottom: none }
 .todo__head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
 .todo__rec { font-size: 14px; font-weight: 500; color: var(--rmx-brand-dark) }
-.todo__why { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2); margin-top: 4px }
+.todo__why { font-size: 14px; line-height: 20px; color: var(--rmx-ink-2); margin-top: 4px }
 .todo__meta { display: flex; align-items: center; gap: var(--rmx-s-3); margin-top: 6px; flex-wrap: wrap }
 .todo__right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: var(--rmx-s-2) }
 .todo--done .todo__rec, .todo--done .todo__issue { text-decoration: line-through; color: var(--rmx-text-muted) }
@@ -915,6 +952,11 @@ select.field { padding: 0 6px }
   border-radius: var(--rmx-radius-md); box-shadow: var(--rmx-shadow-popup); overflow: hidden;
 }
 .dlg--action { width: 660px }
+/* Every dialog title is `<h2 class="f18">` — plain `.f18` (0,1,0) loses to
+   `.rmx h2`'s (0,1,1), so every dialog header was silently rendering at 24px
+   instead of 18. Qualified with h2 to match specificity (see the note above
+   .pagehead__title) so app.css's 18px wins on source order. */
+h2.f18 { font-size: 18px }
 .formgrid { display: flex; flex-wrap: wrap; gap: 12px 14px; margin-top: 6px }
 .formfield { width: 200px }
 .formfield--full { width: 100% }
@@ -973,15 +1015,15 @@ select.field { padding: 0 6px }
 
 /* text-message preview */
 .smsphone { background: var(--rmx-brand-dark); border-radius: 18px; padding: 14px var(--rmx-s-3) }
-.smsphone__time { font-size: 11px; color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 10px }
+.smsphone__time { font-size: 12px; color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 10px }
 .smsphone__bubble {
   background: var(--rmx-bg); border-radius: 14px 14px 14px 4px; padding: 10px var(--rmx-s-3);
-  font-size: 13px; line-height: 19px; color: var(--rmx-ink); white-space: pre-wrap;
+  font-size: 14px; line-height: 20px; color: var(--rmx-ink); white-space: pre-wrap;
 }
-.smsphone__foot { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: var(--rmx-s-2); padding-left: 4px }
+.smsphone__foot { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: var(--rmx-s-2); padding-left: 4px }
 .mailpreview { border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm); overflow: hidden }
 .mailpreview__head { padding: 10px var(--rmx-s-3); background: var(--rmx-bg-subtle); border-bottom: 1px solid var(--rmx-line) }
-.mailpreview__body { padding: var(--rmx-s-3); font-size: 13px; line-height: 20px; color: var(--rmx-ink-2); white-space: pre-wrap; min-height: 190px }
+.mailpreview__body { padding: var(--rmx-s-3); font-size: 14px; line-height: 20px; color: var(--rmx-ink-2); white-space: pre-wrap; min-height: 190px }
 
 /* ============================================================
    RENT MANAGER SHELL — Workspace, Administration, main menu
@@ -1119,7 +1161,8 @@ select.field { padding: 0 6px }
   border-bottom: 1px solid var(--rmx-line); flex-shrink: 0;
 }
 .admintitle .adminicon { flex-shrink: 0 }
-.admintitle__h { font-size: 24px; line-height: 32px; font-weight: 400; color: var(--rmx-brand-dark); margin: 0 }
+/* qualified with h1 — see the specificity note above .pagehead__title */
+h1.admintitle__h { font-size: 24px; line-height: 32px; font-weight: 400; color: var(--rmx-brand-dark); margin: 0 }
 .admintitle__find {
   height: 36px; width: 188px; flex-shrink: 0; display: flex; align-items: center; gap: var(--rmx-s-1);
   padding: 0 var(--rmx-s-2); border: 1px solid var(--rmx-brand);
@@ -1310,7 +1353,7 @@ select.field { padding: 0 6px }
   font-size: 12px; line-height: 16px;
 }
 .rmsec__head {
-  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500;
+  font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500;
   color: var(--rmx-brand); padding-bottom: 6px; margin-bottom: 12px;
   border-bottom: 1px solid var(--rmx-line);
 }
@@ -1320,7 +1363,7 @@ select.field { padding: 0 6px }
 .rmfield--check { flex-direction: row; align-items: center; gap: 8px; cursor: pointer }
 .rmfield__label { font-size: 12px; color: var(--rmx-text); margin-bottom: 4px }
 .rmfield__req { color: var(--rmx-error) }
-.rmfield__help { font-size: 11px; line-height: 15px; color: var(--rmx-text-muted); margin-top: 4px }
+.rmfield__help { font-size: 12px; line-height: 15px; color: var(--rmx-text-muted); margin-top: 4px }
 .rmfield--ro .field { background: #eef3f7; color: var(--rmx-text) }
 .rmfield__area { height: auto; padding: 6px 8px; line-height: 16px; resize: vertical }
 
@@ -1334,8 +1377,8 @@ select.field { padding: 0 6px }
   padding: 12px 14px; border-radius: var(--rmx-radius-sm);
   background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
 }
-.whybody__k { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
-.whybody__v { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2) }
+.whybody__k { font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
+.whybody__v { font-size: 14px; line-height: 20px; color: var(--rmx-ink-2) }
 .field--32 { height: 32px }
 
 /* bell with its unread count, and the menu button lit while the menu is open */
@@ -1344,7 +1387,7 @@ select.field { padding: 0 6px }
   position: absolute; top: -3px; right: -6px; min-width: 15px; height: 15px;
   padding: 0 4px; box-sizing: border-box; border-radius: 8px;
   background: var(--rmx-error); color: #fff;
-  font-size: 10px; line-height: 15px; font-weight: 500; text-align: center;
+  font-size: 12px; line-height: 15px; font-weight: 500; text-align: center;
 }
 .hdr__ctxbtn--on { background: var(--rmx-brand); color: #fff }
 
@@ -1361,6 +1404,6 @@ select.field { padding: 0 6px }
 .palette__resetbtn {
   width: 100%; display: flex; flex-direction: column; align-items: center; gap: 2px;
   background: none; border: 0; padding: 6px 0; cursor: pointer; border-radius: var(--rmx-radius-sm);
-  font-family: inherit; font-size: 11px; color: var(--rmx-text-muted);
+  font-family: inherit; font-size: 12px; color: var(--rmx-text-muted);
 }
 .palette__resetbtn:hover { background: var(--rmx-bg-subtle); color: var(--rmx-brand) }
