@@ -697,6 +697,19 @@
   A.setFormField = function (fkey, _b, ev) { state.formVals[fkey] = ev.target.value; };
   /* Generic bindings so any control in any agent editor is really editable. */
   A.setPick = function (key, _b, ev) { state.picks[key] = ev.target.value; };
+  /* Backs every SA.selectField() dropdown (see ui.js) — the RMX-styled
+     replacement for a native <select>. `spec` is toggleSel/pickSel share:
+     "<originalChangeAction><arg1><arg2>", so a pick re-dispatches
+     to whichever real handler (setField, setCond, setArField, ...) that
+     select was already wired to, with a synthetic ev whose .target.value is
+     the picked option — every one of those handlers only ever reads that. */
+  A.toggleSel = function (spec) { state.dd = (state.dd === spec) ? null : spec; };
+  A.pickSel = function (spec, value) {
+    var parts = String(spec).split(SA.SEL_SEP);
+    var fn = SA.actions[parts[0]];
+    if (fn) fn(parts[1] || undefined, parts[2] || undefined, { target: { value: value } });
+    state.dd = null;
+  };
   A.setMenuModule = function (m) { state.menuModule = m; };
   A.togglePick = function (key, def) {
     var cur = state.checks[key];

@@ -208,24 +208,44 @@ html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
 .btn--primary { background: var(--rmx-brand); color: #fff; border: none }
 .btn--primary:hover { background: var(--rmx-brand-hover) }
 .btn--primary:active { background: var(--rmx-brand-pressed) }
+/* RMX Button's Type axis is Primary | Secondary | Action text | Split Button |
+   Marketing | Tab Button — there is no gray-bordered "neutral" type. Every
+   Cancel/Clear/Reopen button that was .btn--neutral is a plain secondary
+   action, so it now maps to the real Secondary type (measured:
+   Background/Button/secondary-button + Border/border-secondary, both of
+   which already resolve to --rmx-bg / --rmx-brand below). */
 .btn--secondary { background: var(--rmx-bg); color: var(--rmx-brand); border: 1px solid var(--rmx-brand) }
 .btn--secondary:hover { background: var(--rmx-brand-tint-bg) }
-.btn--neutral { background: var(--rmx-bg); color: var(--rmx-ink-2); border: 1px solid var(--rmx-line) }
-.btn--neutral:hover { background: var(--rmx-bg-subtle) }
 .btn--ghost { background: transparent; color: var(--rmx-brand); border: none; padding: 0; height: auto }
 .btn--ghost:hover { text-decoration: underline }
+/* RMX Button's Size axis is Default (36px, all types) | Compact (Secondary
+   only) | XL (Action text only) — this app had three invented in-between
+   sizes (.btn--sm 32 / .btn--xs 30 / .btn--compact 28) doing the same job.
+   Collapsed to one: .btn--sm is now the app's only non-Default size and
+   stands in for Compact. The skill's harvested data confirms Compact exists
+   but never fetched its exact pixel height (components.json Button
+   "_incomplete"), so 32px is carried forward rather than invented fresh —
+   flag for re-harvest once Figma access is available, don't re-guess. */
 .btn--sm { height: 32px; padding: 0 var(--rmx-s-3); font-size: 14px }
-.btn--xs { height: 30px; padding: 0 var(--rmx-s-3); font-size: 14px }
-.btn--compact { height: 28px; padding: 0 10px; font-size: 14px }
-.btn--icon { width: 28px; height: 28px; padding: 0 }
-.btn--icon-sm { width: 26px; height: 26px; padding: 0 }
-.btn--icon-xs { width: 24px; height: 24px; padding: 0 }
+/* Icon-only row actions (remove/snooze/dismiss/create-task). RMX Button has
+   no documented icon-only geometry — every real instance keeps both icon
+   booleans plus a label. .btn--iconbox's 30x30 is this app's own
+   convention, not a measured value. It used to be paired with three
+   different "icon size" modifiers (.btn--icon/-sm/-xs at 28/26/24px) that
+   were always silently overridden by this rule's own width/height — dead
+   classes removed from the markup rather than fixed, since nothing was
+   ever reading them. */
 .btn--iconbox {
   width: 30px; height: 30px; padding: 0;
   border: 1px solid var(--rmx-line); background: var(--rmx-bg); color: var(--rmx-text);
 }
 .btn--iconbox:hover { background: var(--rmx-bg-subtle) }
 .btn--full { width: 100% }
+/* Dashed "Add a Step" affordance in the AR sequence editor — RMX Button has
+   no dashed Type, so this is a deliberate one-off drop-zone treatment
+   rather than a real Button variant. Left as-is (single call site,
+   screen-rules.js "Add a Step"); flag with Emma if a real add-affordance
+   component exists in RMX for this. */
 .btn--dashed {
   border: 1px dashed var(--rmx-line); background: var(--rmx-bg); color: var(--rmx-brand);
   height: 44px;
@@ -681,15 +701,55 @@ h1.pagehead__title--sm { font-size: 24px; font-weight: 500; line-height: 32px }
 .dd__group:hover { background: transparent }
 .dd__opt--dis { color: var(--rmx-text-muted); font-style: italic; cursor: not-allowed }
 .dd__opt--dis:hover { background: transparent }
+/* Dropdown Menu's selected item, per controls.md: "selected adds --text-link".
+   Hover's existing --rmx-brand-tint-bg (#ebf1f5) already IS the real
+   --border-disabled value data-display.md gives for this hover (#EBF1F5) —
+   same hex, different token name, already correct before this class existed. */
+.dd__opt--sel { color: var(--rmx-brand) }
+
+/* Dropdown trigger — controls.md: "the trigger IS an Input Field with a
+   chevron", never a native <select>. Reuses .field's exact box (36px,
+   border-primary, radius-sm, 14px navy) as a <button>, so it is
+   pixel-identical to every other field on the page instead of carrying its
+   own browser-native chrome. The panel is the same .dd component above,
+   anchored to the trigger's own width (not the component's isolated 264px
+   default frame) so it lines up with whatever field it belongs to. */
+.rsel { position: relative }
+.rsel__trigger {
+  width: 100%; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--rmx-s-2);
+  cursor: pointer; text-align: left;
+}
+.rsel__val { overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+/* Input Field's placeholder rule: "14px italic --text-disabled — the only
+   use of italic gray in the system." */
+.rsel__val--ph { font-style: italic; color: var(--rmx-text-muted) }
+.rsel__chev { flex-shrink: 0; color: var(--rmx-text-muted); transition: transform 150ms ease-out }
+.rsel__trigger--open .rsel__chev { transform: rotate(180deg) }
+.rsel--disabled .rsel__trigger { color: var(--rmx-text-muted); cursor: not-allowed; background: var(--rmx-bg-muted) }
+.rsel__panel { margin-top: 4px }
+/* Modifiers for the flex-row contexts a plain <select class="field grow ..."> used to sit in — .rsel is a block div by default and needs these to behave the same way inside a flex row. */
+.rsel--grow { flex: 1; min-width: 0 }
+.rsel--sm .rsel__trigger { height: 30px; font-size: 14px }
+.rsel--32 .rsel__trigger { height: 32px }
+.rsel--num .rsel__trigger { border-color: var(--rmx-brand); justify-content: center; gap: 4px }
+.rsel--num .rsel__val { flex: none; text-align: center; font-size: 16px; font-weight: 500; color: var(--rmx-brand-pressed) }
+.rsel--lg .rsel__trigger { height: 38px; font-size: 16px }
 
 .detbox {
   border: 1px solid var(--rmx-brand); border-radius: var(--rmx-radius-sm);
-  background: var(--rmx-bg); box-shadow: var(--rmx-focus-ring); overflow: hidden;
+  background: var(--rmx-bg); box-shadow: var(--rmx-focus-ring);
 }
+/* No overflow:hidden on .detbox itself — it was only here to clip this
+   header's top corners to the box's radius, but it also clipped the real
+   Dropdown Menu panel (an absolutely-positioned descendant) the moment a
+   native <select> in here became a real dropdown. Rounding the head's own
+   two top corners gets the same look without clipping anything below it. */
 .detbox__head {
   display: flex; align-items: center; gap: var(--rmx-s-2);
   padding: var(--rmx-s-2) var(--rmx-s-3);
   background: var(--rmx-brand-tint-bg); border-bottom: 1px solid var(--rmx-line);
+  border-radius: var(--rmx-radius-sm) var(--rmx-radius-sm) 0 0;
 }
 .detbox__body { padding: 14px }
 .segments {
@@ -1004,14 +1064,27 @@ h2.f18 { font-size: 18px }
 }
 .pickrow:hover { background: var(--rmx-bg-subtle) }
 
+/* Toast — RMX Components (surfaces.md), harvested 2026-09-16 from node
+   18:2201: 421 wide, Spacing/md padding, Spacing/xs gap, Radius/sm, a
+   distinct drop shadow, Web/Paragraph/L/SemiBold text (16/24), 32px icon.
+   Three states, each a full surface treatment, not just a tinted icon on an
+   otherwise identical white box (which is what this was before): Action
+   (default, 68 tall, brand blue, white text), Success (64 tall, green,
+   white text), Failure (64 tall, pale pink — NOT saturated red — navy
+   text). There is no "warning"/amber state in the real component; this
+   app's 'warn' toasts (disabled-state notices, blocked actions) map to
+   Failure as the closest real state. */
 .toast {
   position: fixed; right: var(--rmx-s-6); bottom: var(--rmx-s-6); z-index: 300;
-  display: flex; align-items: center; gap: var(--rmx-s-3);
-  padding: var(--rmx-s-3) var(--rmx-s-4); border-radius: var(--rmx-radius-sm);
-  background: var(--rmx-bg); border: 1px solid var(--rmx-line);
-  box-shadow: var(--rmx-shadow-popup);
-  animation: rmxRise 220ms ease-out; max-width: 420px;
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+  padding: var(--rmx-s-4); border-radius: var(--rmx-radius-sm);
+  box-shadow: var(--rmx-shadow-toast);
+  animation: rmxRise 220ms ease-out; width: 421px; box-sizing: border-box;
+  font-size: 16px; font-weight: 600; line-height: 24px;
 }
+.toast--action { min-height: 68px; background: var(--rmx-brand); color: #fff }
+.toast--success { min-height: 64px; background: var(--rmx-success); color: #fff }
+.toast--failure { min-height: 64px; background: var(--rmx-toast-failure-bg); color: var(--rmx-brand-dark) }
 
 /* text-message preview */
 .smsphone { background: var(--rmx-brand-dark); border-radius: 18px; padding: 14px var(--rmx-s-3) }

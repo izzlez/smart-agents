@@ -76,7 +76,7 @@
   };
 
   /* ---------- dispatch ---------- */
-  var DD_ACTIONS = { openWhenDd: 1, openThenDd: 1, pickWhen: 1, pickThen: 1 };
+  var DD_ACTIONS = { openWhenDd: 1, openThenDd: 1, pickWhen: 1, pickThen: 1, toggleSel: 1, pickSel: 1 };
 
   function run(name, arg, arg2, ev) {
     var fn = SA.actions[name];

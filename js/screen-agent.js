@@ -10,7 +10,7 @@
       when = SA.when, each = SA.each, cls = SA.cls,
       icon = SA.icon, orion = SA.orion, toggle = SA.toggle,
       check = SA.check, checkStatic = SA.checkStatic, radio = SA.radio,
-      typeBadge = SA.typeBadge, options = SA.options,
+      typeBadge = SA.typeBadge,
       checkline = SA.checkline, spinner = SA.spinner, okPill = SA.okPill;
 
   /* ---------------- authored per-agent settings copy ---------------- */
@@ -89,7 +89,7 @@
         typeBadge(a.type) +
         '<span class="f13 muted">' + esc(a.trigger) + '</span>' +
         '<span class="spacer"></span>' +
-        '<button class="btn btn--neutral btn--sm"' + act('toggleSettings') + '>' +
+        '<button class="btn btn--secondary btn--sm"' + act('toggleSettings') + '>' +
           icon('settings', 18) + (s.settingsOpen ? 'Hide Settings' : 'Settings') + '</button>' +
         '<button class="btn btn--primary btn--sm"' + act('saveRule') + '>Save</button>' +
       '</div>' +
@@ -246,8 +246,8 @@
       '<div>' +
         '<div class="flabel">Where to look</div>' +
         '<div class="col" style="gap:8px">' +
-          SA.pick('det-scope', SA.scopeOptions, SA.scopeOptions[0], 'field--full') +
-          SA.pick('det-window', [window_].concat(SA.windowOptions), window_, 'field--full') +
+          SA.pick('det-scope', SA.scopeOptions, SA.scopeOptions[0]) +
+          SA.pick('det-window', [window_].concat(SA.windowOptions), window_) +
           SA.chk('det-active', true, 'Active leases only') +
         '</div>' +
       '</div>' +
@@ -299,8 +299,8 @@
       '<div class="f12 dim">Deterministic branching. Evaluated exactly as written &mdash; no interpretation.</div>' +
       each(rows, function (r, i) {
         return '<div style="display:grid;grid-template-columns:1fr 76px 1fr;gap:6px">' +
-          SA.pick('cond-f-' + n.id + '-' + i, [r.field].concat(SA.conditionFields), r.field, 'field--full') +
-          SA.pick('cond-o-' + n.id + '-' + i, [r.op].concat(SA.conditionOps), r.op, 'field--full') +
+          SA.pick('cond-f-' + n.id + '-' + i, [r.field].concat(SA.conditionFields), r.field) +
+          SA.pick('cond-o-' + n.id + '-' + i, [r.op].concat(SA.conditionOps), r.op) +
           '<input class="field field--full"' + fk('cond-v-' + n.id + '-' + i) +
             chg('setPick', 'cond-v-' + n.id + '-' + i) + ' value="' + esc(SA.pickVal('cond-v-' + n.id + '-' + i, r.val)) + '">' +
         '</div>';
@@ -321,8 +321,7 @@
         SA.seg(['Event', 'Schedule'], s.trigKind, 'setTrigKind', { fill: true }) + '</div>' +
       when(s.trigKind === 'Event', function () {
         return '<div><div class="flabel">Event</div>' +
-          '<select class="field field--full"' + chg('setField', 'trigEvent') + '>' +
-            options(SA.trigEventOptions, s.trigEvent) + '</select>' +
+          SA.selectField(SA.trigEventOptions, s.trigEvent, 'setField', 'trigEvent') +
           '<div class="fhelp">Runs the moment the event happens, not on a schedule.</div></div>';
       }) +
       when(s.trigKind === 'Schedule', function () {
@@ -346,7 +345,7 @@
         icon('info', 18) +
         '<span>Every agent hands off to a person, and that step cannot be deleted. There is no silent no-op.</span></div>' +
       '<div><div class="flabel">Destination</div>' +
-        SA.pick('handoff-dest', SA.handoffOptions, SA.handoffOptions[0], 'field--full') + '</div>' +
+        SA.pick('handoff-dest', SA.handoffOptions, SA.handoffOptions[0]) + '</div>' +
       '<div><div class="flabel">Work arrives here when</div>' +
         '<div class="col f13 ink2" style="gap:7px">' +
           '<div>&bull; A guardrail blocks the chosen action</div>' +
@@ -372,21 +371,21 @@
 
     return '<div class="inspector__body">' +
       '<div><div class="flabel">Action type</div>' +
-        SA.pick('act-target-' + n.id, [n.title].concat(SA.actionTargets), n.title, 'field--full') + '</div>' +
+        SA.pick('act-target-' + n.id, [n.title].concat(SA.actionTargets), n.title) + '</div>' +
 
       when(isPerson && !isApproval, function () {
         return '<div><div class="flabel">Send to</div>' +
           '<div class="row" style="gap:8px">' +
             SA.seg(['Role', 'Person'], s.actionMode, 'setActionMode') +
-            '<select class="field grow min0"' + chg('setActionPrincipal') + '>' +
-              options(s.actionMode === 'Role' ? SA.principalOptions : SA.peopleOptions, s.actionPrincipal) + '</select>' +
+            SA.selectField(s.actionMode === 'Role' ? SA.principalOptions : SA.peopleOptions,
+              s.actionPrincipal, 'setActionPrincipal', undefined, undefined, { cls: 'rsel--grow' }) +
           '</div>' +
           '<div class="fhelp fhelp--muted">Pick a role and it resolves per property at run time. Pick a person and it always goes to them.</div>' +
         '</div>';
       }) +
       when(!isPerson, function () {
         return '<div><div class="flabel">Target record</div>' +
-          SA.pick('act-input-' + n.id, SA.actionInputs, SA.actionInputs[0], 'field--full') + '</div>';
+          SA.pick('act-input-' + n.id, SA.actionInputs, SA.actionInputs[0]) + '</div>';
       }) +
 
       when(isApproval, function () {
@@ -394,18 +393,17 @@
           '<div><div class="flabel">Who approves</div>' +
             '<div class="row" style="gap:8px">' +
               SA.seg(['Role', 'Person'], s.approverMode, 'setApproverMode') +
-              '<select class="field grow min0"' + chg('setField', 'approver') + '>' +
-                options(s.approverMode === 'Role' ? SA.principalOptions : SA.peopleOptions, s.approver) + '</select>' +
+              SA.selectField(s.approverMode === 'Role' ? SA.principalOptions : SA.peopleOptions,
+                s.approver, 'setField', 'approver', undefined, { cls: 'rsel--grow' }) +
             '</div></div>' +
           '<div style="display:grid;grid-template-columns:120px minmax(0,1fr);gap:10px">' +
             '<div><div class="flabel">No answer in</div>' +
-              '<select class="field field--full"' + chg('setField', 'apvTimeout') + '>' +
-                options(['24 hours', '3 days', '7 days'], s.apvTimeout) + '</select></div>' +
+              SA.selectField(['24 hours', '3 days', '7 days'], s.apvTimeout, 'setField', 'apvTimeout') + '</div>' +
             '<div><div class="flabel">Then it goes to</div>' +
               '<div class="row" style="gap:8px">' +
-                SA.seg(['Role', 'Person'], s.backupMode, 'setBackupMode', { btnCls: 'seg__btn--xs' }) +
-                '<select class="field grow min0"' + chg('setField', 'backup') + '>' +
-                  options(s.backupMode === 'Role' ? SA.principalOptions : SA.peopleOptions, s.backup) + '</select>' +
+                SA.seg(['Role', 'Person'], s.backupMode, 'setBackupMode', { btnCls: 'seg__btn--sm' }) +
+                SA.selectField(s.backupMode === 'Role' ? SA.principalOptions : SA.peopleOptions,
+                  s.backup, 'setField', 'backup', undefined, { cls: 'rsel--grow' }) +
               '</div></div>' +
           '</div>' +
           '<div class="restate">' + esc(restate) + '</div>' +
@@ -447,7 +445,7 @@
           '<div class="row" style="gap:8px;margin-bottom:10px">' +
             '<span class="arstep__no">Tier ' + (i + 1) + '</span>' +
             '<span class="spacer"></span>' +
-            '<button class="btn btn--iconbox btn--icon-xs"' + act('removeTier', i) + ' title="Remove tier">' +
+            '<button class="btn btn--iconbox"' + act('removeTier', i) + ' title="Remove tier">' +
               icon('close', 14) + '</button>' +
           '</div>' +
           '<div class="row f13 ink" style="gap:8px">' +
@@ -469,7 +467,7 @@
             }) +
           '</div>' +
           '<div class="row" style="gap:8px;margin-top:10px">' +
-            '<button class="btn btn--secondary btn--compact"' + act('addApprover', i) + '>Add Approver</button>' +
+            '<button class="btn btn--secondary btn--sm"' + act('addApprover', i) + '>Add Approver</button>' +
             when(multi, function () {
               return SA.seg(['Any', 'All'], t.rule, 'setTierRuleFor' + i, { line: true, btnCls: 'seg__btn--xxs' });
             }) +
@@ -478,9 +476,9 @@
         '</div>';
       }) + '</div>' +
       '<div class="row" style="gap:8px;margin-top:12px">' +
-        SA.seg(['Role', 'Person'], s.tierAddMode, 'setTierAddMode', { btnCls: 'seg__btn--xs' }) +
-        '<select class="field field--sm grow min0"' + chg('setField', 'tierAddValue') + '>' +
-          options(s.tierAddMode === 'Role' ? SA.principalOptions : SA.peopleOptions, s.tierAddValue) + '</select>' +
+        SA.seg(['Role', 'Person'], s.tierAddMode, 'setTierAddMode', { btnCls: 'seg__btn--sm' }) +
+        SA.selectField(s.tierAddMode === 'Role' ? SA.principalOptions : SA.peopleOptions, s.tierAddValue,
+          'setField', 'tierAddValue', undefined, { cls: 'rsel--sm rsel--grow' }) +
       '</div>' +
       '<div class="fhelp fhelp--muted">Pick who to add, then use Add Approver on the tier that needs them.</div>' +
       '<button class="linkbtn" style="margin-top:12px"' + act('addTier') + '>' +
@@ -506,7 +504,7 @@
         '<div class="banner banner--info" style="margin-bottom:16px">' +
           icon('info', 18) +
           '<span class="f13 grow" style="color:var(--rmx-brand-pressed)">This agent was authored as a quick agent &mdash; one trigger, one action. It runs on the same engine as builder agents.</span>' +
-          '<button class="btn btn--secondary btn--xs"' + act('openQuickEditor') + '>Edit Quick Agent</button>' +
+          '<button class="btn btn--secondary btn--sm"' + act('openQuickEditor') + '>Edit Quick Agent</button>' +
         '</div>' +
         '<div class="card" style="border-radius:5px;padding:28px">' +
           '<div class="sentence" style="row-gap:16px">' +
@@ -575,9 +573,9 @@
       '</div>' +
 
       '<div class="toolbar">' +
-        SA.pick('find-prop', SA.scopeOptions, SA.scopeOptions[0], 'field--32') +
-        SA.pick('find-type', SA.findingTypeOptions, SA.findingTypeOptions[0], 'field--32') +
-        SA.pick('find-age', SA.findingAgeOptions, SA.findingAgeOptions[0], 'field--32') +
+        SA.pick('find-prop', SA.scopeOptions, SA.scopeOptions[0], 'rsel--32') +
+        SA.pick('find-type', SA.findingTypeOptions, SA.findingTypeOptions[0], 'rsel--32') +
+        SA.pick('find-age', SA.findingAgeOptions, SA.findingAgeOptions[0], 'rsel--32') +
         '<span class="spacer"></span>' +
         '<span class="f13 dim">Sort</span>' +
         each(['Age', 'Impact'], function (o) {
@@ -589,8 +587,8 @@
       when(selCount, function () {
         return '<div class="bulkbar">' +
           '<span class="f14 w500" style="color:var(--rmx-brand-pressed)">' + SA.plural(selCount, 'finding') + ' selected</span>' +
-          '<button class="btn btn--primary btn--xs"' + act('bulkFix') + '>Fix Selected</button>' +
-          '<button class="btn btn--secondary btn--xs"' + act('bulkDismiss') + '>Dismiss Selected</button>' +
+          '<button class="btn btn--primary btn--sm"' + act('bulkFix') + '>Fix Selected</button>' +
+          '<button class="btn btn--secondary btn--sm"' + act('bulkDismiss') + '>Dismiss Selected</button>' +
           '<span class="spacer"></span>' +
           '<button class="linkbtn f13"' + act('clearSelection') + '>Clear</button>' +
         '</div>';
@@ -628,13 +626,13 @@
               '<div class="f13 ink2">' + esc(isFixed ? 'Fixed today' : r.fix) + '</div>' +
               '<div class="acts">' +
                 (isDismissed
-                  ? '<button class="btn btn--neutral btn--compact"' + act('expandFinding', r.rec) + '>Reopen</button>'
+                  ? '<button class="btn btn--secondary btn--sm"' + act('expandFinding', r.rec) + '>Reopen</button>'
                   : (isFixed
                     ? '<span class="badge badge--ok">Fixed</span>'
-                    : '<button class="btn btn--secondary btn--compact"' + act('fixFinding', r.rec) + '>' + esc(r.act || 'Fix') + '</button>' +
-                      '<button class="btn btn--iconbox btn--icon"' + act('taskFinding', r.rec) + ' title="Create task">' + icon('add_task', 16) + '</button>' +
-                      '<button class="btn btn--iconbox btn--icon"' + act('snoozeFinding', r.rec) + ' title="Snooze">' + icon('schedule', 16) + '</button>' +
-                      '<button class="btn btn--iconbox btn--icon"' + act('dismissFinding', r.rec) + ' title="Dismiss">' + icon('close', 16) + '</button>')) +
+                    : '<button class="btn btn--secondary btn--sm"' + act('fixFinding', r.rec) + '>' + esc(r.act || 'Fix') + '</button>' +
+                      '<button class="btn btn--iconbox"' + act('taskFinding', r.rec) + ' title="Create task">' + icon('add_task', 16) + '</button>' +
+                      '<button class="btn btn--iconbox"' + act('snoozeFinding', r.rec) + ' title="Snooze">' + icon('schedule', 16) + '</button>' +
+                      '<button class="btn btn--iconbox"' + act('dismissFinding', r.rec) + ' title="Dismiss">' + icon('close', 16) + '</button>')) +
               '</div>' +
             '</div>' +
             when(open_, function () {
@@ -703,7 +701,7 @@
                 '<span class="mono f13 ink2">' + esc(replayMeta) + '</span>' +
                 okPill('No side effects — nothing was sent, posted, or changed.') +
                 '<span class="spacer"></span>' +
-                '<button class="btn btn--neutral btn--xs"' + act('resetReplay') + '>Clear</button>' +
+                '<button class="btn btn--secondary btn--sm"' + act('resetReplay') + '>Clear</button>' +
               '</div>' +
               each(rows, function (r) {
                 var open_ = !!s.rExpanded[r.recordId];

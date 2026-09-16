@@ -44,12 +44,16 @@
   --rmx-magenta: #e54c7a;          /* Magenta accent / category */
   --rmx-magenta-strong: #e8178a;
   --rmx-purple: #9747ff;           /* Component-spec purple (figma annotation only) */
+  --rmx-toast-failure-bg: #fbd6d8; /* component-lozenge-error — Toast State=Failure's pale surface,
+                                       not a saturated red. Navy text sits on top, per surfaces.md. */
 
   /* ---------- SHADOWS ---------- */
   --rmx-shadow-card: 0 4px 12px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.10);
   --rmx-shadow-popup: 0 3px 6px rgba(0,0,0,0.10);
   --rmx-shadow-sm: 0 1px 2px rgba(76,76,76,0.08);
   --rmx-shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --rmx-shadow-toast: 0 3px 3px rgba(0,0,0,0.25); /* Toast component, harvested 2026-09-16 — its own
+                                                      value, distinct from --rmx-shadow-popup. */
   --rmx-focus-ring: 0 0 0 4px rgba(0,141,213,0.20);
 
   /* ---------- RADII ---------- */

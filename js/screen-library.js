@@ -6,7 +6,7 @@
   var esc = SA.esc, act = SA.act, chg = SA.chg,
       when = SA.when, each = SA.each, cls = SA.cls,
       icon = SA.icon, orion = SA.orion, toggle = SA.toggle,
-      typeBadge = SA.typeBadge, options = SA.options;
+      typeBadge = SA.typeBadge;
 
   var ROW_ICON = {
     'Data health': { icon: 'fact_check', color: 'var(--rmx-brand-pressed)' },

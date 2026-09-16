@@ -147,16 +147,65 @@
   }
   SA.seg = seg;
 
-  function options(list, current) {
-    return each(list, function (o) {
-      var v = typeof o === 'string' ? o : o.id;
-      var l = typeof o === 'string' ? o : (o.label || o.id);
-      return '<option value="' + esc(v) + '"' + (v === current ? ' selected' : '') + '>' + esc(l) + '</option>';
+  /* Accepts a plain string/{id,label} list, plus two extras selectField's
+     real call sites need: a group header (`{group:'Name'}`, rendered like
+     the Quick Agent's existing .dd__group) and a non-selectable
+     informational row (`{value, label, disabled:true}`). */
+  function normOpts(list) {
+    return (list || []).map(function (o) {
+      if (o && typeof o === 'object' && o.group !== undefined) return { isGroup: true, label: o.group };
+      if (typeof o === 'string') return { value: o, label: o };
+      return { value: o.id !== undefined ? o.id : o.value, label: o.label || o.id || o.value, disabled: !!o.disabled };
     });
   }
-  SA.options = options;
 
-  /* A state-bound <select>. `key` scopes the value; `list` may lead with the
+  /* Dropdowns — never a native <select> (controls.md). "The trigger IS an
+     Input Field with a chevron. The open panel is the Dropdown Menu
+     component... List items ~36px, hover --border-disabled, selected adds
+     --text-link." This renders that: a .field-styled <button> trigger plus
+     a .dd panel (the same component already built for the Quick Agent
+     picker), sized to the trigger's own width.
+
+     Every existing state.js change-handler reads `ev.target.value` off a
+     real DOM select — rewriting all of them was unnecessary. Instead the
+     handler to invoke (`chgName`, `chgArg`, `chgArg2` — the exact three
+     values a real `chg(chgName, chgArg, chgArg2)` would have carried) are
+     packed into one opaque "spec" string, which doubles as this
+     dropdown's open/closed identity (`state.dd === spec`). `A.pickSel` in
+     state.js unpacks it and calls the original handler with a synthetic
+     `{target:{value: v}}` — every handler these selects use only ever
+     reads `.value` off that, so nothing downstream changed. */
+  var SEL_SEP = '';
+  SA.SEL_SEP = SEL_SEP;
+  function selSpec(name, a1, a2) {
+    return name + SEL_SEP + (a1 === undefined ? '' : a1) + SEL_SEP + (a2 === undefined ? '' : a2);
+  }
+  SA.selectField = function (list, current, chgName, chgArg, chgArg2, opts) {
+    opts = opts || {};
+    var items = normOpts(list);
+    var cur = items.filter(function (o) { return !o.isGroup && o.value === current; })[0];
+    var spec = selSpec(chgName, chgArg, chgArg2);
+    var open = !opts.disabled && SA.state.dd === spec;
+    return '<div class="' + cls('rsel', opts.cls, { 'rsel--disabled': opts.disabled }) + '"' +
+        (opts.style ? ' style="' + esc(opts.style) + '"' : '') + '>' +
+      '<button type="button" class="' + cls('field', 'rsel__trigger', { 'rsel__trigger--open': open }) + '"' +
+        (opts.disabled ? ' disabled' : act('toggleSel', spec)) + '>' +
+        '<span class="' + cls('rsel__val', { 'rsel__val--ph': !cur }) + '">' +
+          esc(cur ? cur.label : (opts.placeholder || '')) + '</span>' +
+        icon('keyboard_arrow_down', null, null, 'rsel__chev') +
+      '</button>' +
+      when(open, function () {
+        return '<div class="dd rsel__panel">' + each(items, function (o) {
+          if (o.isGroup) return '<div class="dd__group">' + esc(o.label) + '</div>';
+          if (o.disabled) return '<div class="dd__opt dd__opt--dis">' + esc(o.label) + '</div>';
+          return '<div class="' + cls('dd__opt', { 'dd__opt--sel': o.value === current }) + '"' +
+            act('pickSel', spec, o.value) + '>' + esc(o.label) + '</div>';
+        }) + '</div>';
+      }) +
+    '</div>';
+  };
+
+  /* A state-bound select. `key` scopes the value; `list` may lead with the
      current value, which is de-duplicated against the rest. */
   SA.pickVal = function (key, def) {
     var v = SA.state.picks[key];
@@ -165,8 +214,7 @@
   SA.pick = function (key, list, def, extra) {
     var seen = {}, opts = [];
     list.forEach(function (o) { if (!seen[o]) { seen[o] = 1; opts.push(o); } });
-    return '<select class="field' + (extra ? ' ' + extra : '') + '"' +
-      chg('setPick', key) + '>' + options(opts, SA.pickVal(key, def)) + '</select>';
+    return SA.selectField(opts, SA.pickVal(key, def), 'setPick', key, undefined, { cls: extra });
   };
   SA.chkVal = function (key, def) {
     var v = SA.state.checks[key];

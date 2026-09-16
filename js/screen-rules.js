@@ -10,7 +10,7 @@
   var esc = SA.esc, act = SA.act, chg = SA.chg, fk = SA.fk,
       when = SA.when, each = SA.each, cls = SA.cls,
       icon = SA.icon, orion = SA.orion, toggle = SA.toggle,
-      check = SA.check, radio = SA.radio, options = SA.options,
+      check = SA.check, radio = SA.radio,
       checkline = SA.checkline, spinner = SA.spinner, okPill = SA.okPill;
 
   /* ---------------- shared bits ---------------- */
@@ -85,16 +85,16 @@
         '<div class="card__body">' +
           '<div class="phrase">' +
             '<span>Run</span>' +
-            '<select class="field field--num" style="width:150px"' + chg('setField', 'scFreq') + '>' +
-              options(['Monthly', 'Semi-monthly', 'Weekly', 'Daily'], s.scFreq) + '</select>' +
+            SA.selectField(['Monthly', 'Semi-monthly', 'Weekly', 'Daily'], s.scFreq, 'setField', 'scFreq',
+              undefined, { cls: 'rsel--num', style: 'width:150px' }) +
           '</div>' +
           '<div class="fhelp" style="margin-top:4px">Runs with Rent Manager&rsquo;s scheduled run. ' +
             'The cadence is yours; the day and time are not.</div>' +
 
           '<div class="phrase" style="margin-top:18px;padding-top:16px;border-top:1px solid var(--rmx-line-soft)">' +
             '<span>Date each charge</span>' +
-            '<select class="field field--num" style="width:74px"' + chg('setField', 'scPostDay') + '>' +
-              options(['1', '2', '3', 'Last'], s.scPostDay) + '</select>' +
+            SA.selectField(['1', '2', '3', 'Last'], s.scPostDay, 'setField', 'scPostDay',
+              undefined, { cls: 'rsel--num', style: 'width:74px' }) +
             '<span>of the month.</span>' +
           '</div>' +
           '<div class="f12" style="margin-top:4px;color:' +
@@ -154,8 +154,7 @@
             }) +
               '<div style="display:grid;grid-template-columns:230px minmax(0,1fr);gap:16px;margin-top:16px">' +
                 '<div><div class="f13 dim" style="margin-bottom:4px">If a CRE setup cap is exceeded</div>' +
-                  '<select class="field field--full"' + chg('setField', 'scCap') + '>' +
-                    options(['Adjust', 'Post anyway', 'Skip and flag'], s.scCap) + '</select></div>' +
+                  SA.selectField(['Adjust', 'Post anyway', 'Skip and flag'], s.scCap, 'setField', 'scCap') + '</div>' +
                 '<div><div class="f13 dim" style="margin-bottom:4px">Memo on every rent charge</div>' +
                   '<input class="field field--full"' + fk('scmemo') + chg('setField', 'scMemo') +
                     ' placeholder="Optional — appears on the resident ledger" value="' + esc(s.scMemo) + '"></div>' +
@@ -172,7 +171,7 @@
             return '<div class="reciprow">' + icon(r.icon, 18, 'color:var(--rmx-text)') +
               '<span class="f14 ink grow">' + esc(r.value) + '</span>' +
               '<span class="f12 muted">' + esc(r.kindLabel) + '</span>' +
-              '<button class="btn btn--iconbox btn--icon-sm"' + act('removeSchedRecip', i) + ' title="Remove">' +
+              '<button class="btn btn--iconbox"' + act('removeSchedRecip', i) + ' title="Remove">' +
                 icon('close', 16) + '</button></div>';
           }) + '</div>' +
           '<div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap">' +
@@ -180,8 +179,8 @@
             (s.schedAddMode === 'Email'
               ? '<input class="field grow" style="min-width:220px"' + fk('schedadd') + chg('setField', 'schedAddValue') +
                 ' placeholder="name@company.com" value="' + esc(s.schedAddValue) + '">'
-              : '<select class="field grow" style="min-width:220px"' + chg('setField', 'schedAddValue') + '>' +
-                options(s.schedAddMode === 'Role' ? SA.schedAddOptions : SA.peopleOptions, s.schedAddValue) + '</select>') +
+              : SA.selectField(s.schedAddMode === 'Role' ? SA.schedAddOptions : SA.peopleOptions, s.schedAddValue,
+                'setField', 'schedAddValue', undefined, { cls: 'rsel--grow', style: 'min-width:220px' })) +
             '<button class="btn btn--secondary"' + act('addSchedRecip') + '>Add Recipient</button>' +
           '</div>' +
           '<div class="fhelp fhelp--muted">Roles resolve per property when the run finishes. Users and typed addresses are fixed.</div>' +
@@ -206,7 +205,7 @@
             ? '<div style="margin-top:14px">' + spinner('Evaluating 412 leases…') + '</div>'
             : '<div style="margin-top:14px">' + okPill('Preview only — nothing posted') +
               '<div class="mono f12 ink2" style="margin-top:10px">' + esc(previewSummary) + '</div>' +
-              '<button class="btn btn--neutral btn--full btn--xs" style="margin-top:12px"' + act('clearPreview') + '>Clear Preview</button></div>') +
+              '<button class="btn btn--secondary btn--full btn--sm" style="margin-top:12px"' + act('clearPreview') + '>Clear Preview</button></div>') +
         '</div>' +
       '</div>' +
       oversightCard(a.name,
@@ -268,7 +267,7 @@
 
       '<div class="card">' +
         '<div class="card__head">Count each step from<span class="spacer"></span>' +
-          SA.seg(['Oldest charge', 'Statement date'], s.arBasis, 'setArBasis', { btnCls: 'seg__btn--xs' }) +
+          SA.seg(['Oldest charge', 'Statement date'], s.arBasis, 'setArBasis', { btnCls: 'seg__btn--sm' }) +
         '</div>' +
         '<div style="padding:12px 18px" class="f12 dim">' +
           esc(s.arBasis === 'Oldest charge'
@@ -323,14 +322,14 @@
                           '<span>days after the oldest charge is due</span></div></div>' +
                       '<div><div class="f13 dim" style="margin-bottom:4px">Only when the balance is</div>' +
                         '<div class="row" style="gap:8px">' +
-                          '<select class="field grow"' + chg('setArField', i, 'balOp') + '>' +
-                            options(['> Greater than', '≥ At least', '< Less than'], t.balOp) + '</select>' +
+                          SA.selectField(['> Greater than', '≥ At least', '< Less than'], t.balOp,
+                            'setArField', i, 'balOp', { cls: 'rsel--grow' }) +
                           '<input class="field field--right" style="width:110px"' + fk('ar-amt-' + i) +
                             chg('setArField', i, 'balAmt') + ' value="' + esc(t.balAmt) + '"></div></div>' +
                       '<div><div class="f13 dim" style="margin-bottom:4px">Charge types counted</div>' +
-                        '<select class="field field--full"' + chg('setArField', i, 'charges') + '>' +
-                          options(['RC — Recurring charges', 'All charge types', 'Rent only', 'Rent and utilities'], t.charges) +
-                        '</select></div>' +
+                        SA.selectField(['RC — Recurring charges', 'All charge types', 'Rent only', 'Rent and utilities'],
+                          t.charges, 'setArField', i, 'charges') +
+                      '</div>' +
                     '</div>' +
                     '<div class="col" style="gap:14px">' +
                       '<div><div class="f13 dim" style="margin-bottom:4px">Who receives it</div>' +
@@ -341,9 +340,9 @@
                       '<div><div class="f13 dim" style="margin-bottom:4px">Deliver by</div>' +
                         SA.seg(SA.arMsgOptions, t.msg, 'setArMsgFor' + i, { btnCls: 'seg__btn--sm' }) + '</div>' +
                       '<div><div class="f13 dim" style="margin-bottom:4px">Message</div>' +
-                        '<select class="field field--full"' + chg('setArField', i, 'tmpl') + '>' +
-                          options(['AR — friendly reminder', 'AR — late notice', 'AR — formal notice', 'AR — pre-eviction'], t.tmpl) +
-                        '</select></div>' +
+                        SA.selectField(['AR — friendly reminder', 'AR — late notice', 'AR — formal notice', 'AR — pre-eviction'],
+                          t.tmpl, 'setArField', i, 'tmpl') +
+                      '</div>' +
                     '</div>' +
                   '</div>' +
                   '<div class="restate" style="margin-top:14px">' + esc(t.note) + '</div></div>';
@@ -442,8 +441,8 @@
         '<div class="card__body">' +
           '<div class="phrase">' +
             '<span>Send</span>' +
-            '<select class="field field--num" style="width:74px"' + chg('setField', 'notifDelay') + '>' +
-              options(['0', '1', '3', '7'], s.notifDelay) + '</select>' +
+            SA.selectField(['0', '1', '3', '7'], s.notifDelay, 'setField', 'notifDelay',
+              undefined, { cls: 'rsel--num', style: 'width:74px' }) +
             '<span>days after</span>' +
             '<span class="phrase__fixed">' + esc(trigPhrase) + '</span>' +
             '<span>to the</span>' +
@@ -603,7 +602,7 @@
                   '<div class="ink2">' + esc(r.who) + '</div>' +
                   '<div class="f12 muted">' + esc(r.addr) + ' &middot; ' + esc(r.when) + '</div></div>';
               }) +
-              '<button class="btn btn--neutral btn--full btn--xs" style="margin-top:12px"' + act('clearNotifPreview') + '>Clear Preview</button></div>') +
+              '<button class="btn btn--secondary btn--full btn--sm" style="margin-top:12px"' + act('clearNotifPreview') + '>Clear Preview</button></div>') +
         '</div>' +
       '</div>' +
       oversightCard(a.name,

@@ -1465,3 +1465,188 @@ data, not a guess.
 - `.check--lg`'s 24×24 size is this pass's own proportional choice (RMX's
   Checkbox component has no Size axis at all), used in exactly one place
   (the findings-inbox "done" checkbox).
+
+---
+
+## RMX design-system audit — 2026-09-16 (cont.) — Button and Toast
+
+Picked up the one item the pass above explicitly left unchecked: Button.
+Also caught Toast, which nothing had looked at yet. Same constraint as
+before — no authenticated Figma this session — so every fix is backed by
+`data/components.json`'s harvested `Button` entry (full anatomy pull, node
+373:2710) and `references/surfaces.md`'s harvested Toast entry (node
+18:2201, dated 2026-09-16), not a guess.
+
+**Fixed:**
+
+- **Button `Type`.** RMX Button's Type axis is `Primary | Secondary |
+  Action text | Split Button | Marketing | Tab Button` — there is no
+  gray-bordered "neutral" type. This app's `.btn--neutral` (Cancel, Clear
+  Preview, Reopen, Clear — 9 call sites across `chrome.js`,
+  `screen-rules.js`, `screen-agent.js`) was an invented seventh type.
+  Renamed to `.btn--secondary`, which is what these already are semantically
+  (a bordered, non-primary action) and is fully measured: `Background/Button/
+  secondary-button` + `Border/border-secondary`, both of which already
+  resolved correctly to `--rmx-bg` / `--rmx-brand` in this app's tokens.
+- **Button `Size`.** The real axis is `Default` (36px, confirmed, all
+  types) | `Compact` (Secondary only) | `XL` (Action text only) — this app
+  had three invented in-between sizes doing the same job
+  (`.btn--sm` 32 / `.btn--xs` 30 / `.btn--compact` 28, 23 call sites
+  total). Collapsed to one — `.btn--sm` is now the app's only non-Default
+  size. **Compact's real pixel height was never harvested**
+  (`components.json`'s own `_incomplete` note: "fills/colors of the
+  non-Primary types and non-Default states were not fetched"), so 32px is
+  carried forward rather than replaced with a fresh guess — flagged below,
+  not silently resolved.
+- **Dead icon-size classes removed.** `.btn--icon` / `.btn--icon-sm` /
+  `.btn--icon-xs` (28/26/24px) were always paired in markup with
+  `.btn--iconbox`, which sets its own explicit 30×30 — same CSS
+  specificity, later in source order, so it always won. Every use of the
+  three size modifiers (7 call sites) was dead weight rendering 30×30
+  regardless of which one was written. Removed the modifier classes from
+  markup and deleted the three now-unreferenced rules, rather than
+  "fixing" a value nothing was reading.
+- **Toast.** Was a single flat white box for all three `toast(msg, kind)`
+  states, with only the icon tinted (`ok`→green, `warn`→orange, `info`→blue)
+  — `TOAST_COLOR` in `chrome.js`. The real Toast component
+  (`surfaces.md`) is three full surface treatments, not an icon tint:
+  `State=Action` (default, 68 tall, brand-blue fill, white text),
+  `State=Success` (64 tall, green fill, white text), `State=Failure` (64
+  tall, **pale pink** `#fbd6d8` — not saturated red — navy text). RMX has
+  no amber/warning state; this app's `warn` kind now maps to Failure as the
+  closest real one. Rebuilt `.toast` with `.toast--action/success/failure`
+  modifiers (421 wide, `Spacing/md` padding, `Spacing/xs` gap, `Radius/sm`,
+  its own measured shadow `0 3px 3px rgba(0,0,0,.25)` — new token
+  `--rmx-shadow-toast` — and `Web/Paragraph/L/SemiBold` text, 16/24) and
+  rewrote `SA.viewToast()` in `chrome.js` to emit the state class instead
+  of an inline icon color.
+- **A second, smaller bug caught while fixing Toast:** the `ok` toast kind
+  was rendering `check_circle`, which **does not exist** in this app's icon
+  sprite at all (`js/icons-sprite.js` has no `check_circle` symbol) — every
+  "success" toast (Agent saved, Promoted to builder, findings sent to fix
+  queue, …) has been rendering a broken/empty `<use>` reference for as long
+  as that code existed. The real RMX icon for both Action and Success states
+  is `check_circle_filled`, and Failure is `error_filled` — neither is
+  harvested into this app's sprite either. Used the closest real harvested
+  glyphs that do exist (`check`, `error`) as an interim, explicitly flagged
+  substitution — not invented, but not the real glyph either. Verified live:
+  Success renders a solid green toast with a white check icon, Failure a
+  pale-pink toast with a navy error icon, both readable — see screenshots
+  from this session.
+
+**Open / unverified — flagged rather than guessed:**
+
+- `.btn--sm`'s 32px stands in for RMX Button's `Size=Compact`, whose real
+  height was never harvested. Re-verify against Figma and adjust in one
+  place (`.btn--sm` in `css/app.css`) once access is available — every
+  call site already routes through it.
+- `.btn--iconbox`'s 30×30 has no RMX source at all — Button has no
+  documented icon-only geometry (every real instance keeps a label). Left
+  as this app's own convention rather than invented fresh.
+- `.btn--dashed` ("Add a Step" in the AR sequence editor) — RMX Button has
+  no dashed Type; this is a deliberate one-off drop-zone treatment, single
+  call site, not a real Button variant.
+- This pass did not re-walk Tile/Container/Scoreboard/Action Bar/Callout
+  anatomy (`references/surfaces.md`) beyond Toast — `.card`/`.panel` in
+  this app are close analogs but haven't been cross-checked slot-by-slot
+  against the real Tile/Container padding and header rules.
+
+**Correction, same session:** the Toast fix above originally used `check` /
+`error` as flagged stand-ins, on the assumption `check_circle_filled` /
+`error_filled` hadn't been harvested. Wrong — both are already in
+`js/icons-sprite.js` and registered in `SA.ICON_CORE_IDS` (checked
+directly, not re-assumed). Swapped in; no icon is provisional here anymore.
+
+---
+
+## RMX design-system audit — 2026-09-16 (cont. 2) — every native `<select>` replaced
+
+The one item flagged and deliberately deferred above: all 23 native
+`<select>` elements, across `chrome.js`, `screen-quick.js`,
+`screen-rules.js`, `screen-agent.js`, `ui.js`. `references/controls.md` is
+explicit that a native select "is the single clearest tell that a screen
+isn't RMX."
+
+**Design, not just a style swap.** A native select's own state handlers
+(`state.js`) all read `ev.target.value` off a real DOM element — rewriting
+every one of them to fit a from-scratch component would have touched ~15
+functions across 4 files for no visible benefit. Instead, one new
+`SA.selectField()` (`js/ui.js`) renders the RMX pattern — a `.field`-styled
+`<button>` trigger with a chevron, opening the existing `.dd` panel
+component (already built and correct from the Quick Agent picker) — and
+routes a pick back through the *original* handler via a synthetic
+`{target:{value: v}}`, since every one of those handlers only ever reads
+`.value`. The handler name + its own args are packed into one opaque
+string (`"namearg1arg2"`) that doubles as the dropdown's
+open/closed identity in `state.dd` — see the comment on `SA.selectField`
+and `A.pickSel`/`A.toggleSel` in `state.js`. Every downstream state
+function is unchanged.
+
+**Visual, per controls.md:** trigger reuses `.field` (36px, `--border-
+primary`, `--radius-sm`, 14px navy) exactly, plus a `keyboard_arrow_down`
+chevron that rotates on open. Panel reuses `.dd`/`.dd__opt` (already
+correct — `--container-primary`, floating shadow, ~36px rows); added
+`.dd__opt--sel` for "selected adds `--text-link`" and confirmed the
+existing hover fill (`--rmx-brand-tint-bg`, `#ebf1f5`) already **is** the
+real `--border-disabled` value `data-display.md` gives (`#EBF1F5` — same
+hex, this app just had it under a different token name). The panel is
+anchored to the trigger's own width rather than the component's isolated
+264px default frame — a deliberate call: these fields vary from 74px
+number pickers to full-width form fields, and matching the trigger is the
+standard anchored-dropdown convention, not a literal reading of the
+authored component's default size.
+
+**Grouped and disabled options.** One real call site (`detectionSelect` in
+`screen-quick.js`) needed `<optgroup>` and a disabled informational row —
+`SA.selectField`'s list format grew two item shapes for this
+(`{group:'Name'}` rendered as the existing `.dd__group`, and
+`{value,label,disabled:true}`), rather than building a second, parallel
+dropdown just for this one case.
+
+**A real bug found along the way, not just converted around:** `.detbox`
+(the detection-picker's blue-bordered box) had `overflow:hidden`, there
+only to clip its own header's top corners to match the box radius. That
+also clipped the new dropdown panel — invisible with a native select
+(whose popup renders outside the DOM entirely) but a real, visible clip
+once the panel became a real descendant element. Fixed by rounding
+`.detbox__head`'s own two top corners instead of clipping the whole box.
+Verified live (screenshot) — the grouped detection panel now renders in
+full, unclipped, scrollable.
+
+**Verified in the browser, not just read:** the grouped detection dropdown
+(Quick Agent), a `setCond` row-scoped pair (two selects in one row, each
+independently addressable via its row index), `SA.pick`'s "Action type"
+dropdown, and the "Send to" role/person dropdown inside the 376px node
+inspector — all open, select, close, and reflect the new value correctly,
+with no console errors on reload.
+
+**Open / unverified — flagged rather than guessed:**
+
+- **No portal.** The panel is a normal absolutely-positioned descendant of
+  its trigger, not rendered to a top-level layer — this app's render loop
+  is a plain string-template `innerHTML` swap with no virtual DOM, so a
+  true portal (append to `document.body`, track the trigger's
+  `getBoundingClientRect()`, reposition on scroll/resize) would be a much
+  bigger undertaking than the rest of this conversion combined. Practical
+  effect: a dropdown opened very close to the bottom edge of a scrolling
+  container (`.screen`, `.inspector`) can still get visually cut instead of
+  floating free over the content below it — the same class of limitation
+  the `.detbox` bug above was one instance of. Worth a real fix if a
+  specific field turns out to sit in that situation; not chased further
+  speculatively here.
+- Every dropdown's item height/hover/selected-state and the trigger's own
+  Input Field geometry are measured and correct; the **panel-width-matches-
+  trigger** convention (vs. the component's authored 264px) is this pass's
+  own judgment call, not a harvested rule — flag if Emma's guidance differs.
+
+**Follow-up caught before calling this done:** `SA.pick()`'s 13 call sites
+passed legacy modifier strings (`'field--full'`, `'field--32'`) meant for a
+`<select class="field ...">` directly. Those classes now land on the new
+`.rsel` *wrapper* div, not the inner trigger button that actually carries
+`.field` — `field--32`'s `height:32px` was silently doing nothing (the
+wrapper has no height rule to override; the 36px trigger inside it was
+unaffected). Fixed by translating every call site to the new modifier
+scheme: `field--full` dropped (a block-level `.rsel` is already full width
+with no modifier needed), and `field--32` → a new `.rsel--32` that targets
+`.rsel__trigger` correctly. Verified live on the Findings tab's three
+filter dropdowns (Property / Finding type / Age) — 32px, not 36.

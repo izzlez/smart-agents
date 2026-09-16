@@ -6,7 +6,7 @@
   var esc = SA.esc, act = SA.act, chg = SA.chg, fk = SA.fk,
       when = SA.when, each = SA.each, cls = SA.cls,
       icon = SA.icon, orion = SA.orion, toggle = SA.toggle,
-      radio = SA.radio, options = SA.options;
+      radio = SA.radio;
 
   /* Rent Manager logo lockup — the official RMX artwork, exported from the
      RMX `Header` component as SVG (175 x 32, white-filled for the navy bar).
@@ -147,8 +147,8 @@
 
       var ctl;
       if (f.kind === 'select') {
-        ctl = '<select class="field field--full"' + (f.ro ? ' disabled' : '') +
-          chg('setFormField', fkey) + '>' + options(f.options || [f.value], val) + '</select>';
+        ctl = SA.selectField(f.options || [f.value], val, 'setFormField', fkey, undefined,
+          { disabled: f.ro });
       } else if (f.kind === 'textarea') {
         ctl = '<textarea class="field field--full rmfield__area" rows="2"' + fk(fkey) +
           chg('setFormField', fkey) + (f.ro ? ' readonly' : '') + '>' + esc(val) + '</textarea>';
@@ -207,7 +207,7 @@
               '<div class="f12 dim right">' + esc(p.meta) + '</div>' +
             '</div>';
           }) + '</div>' +
-          '<div class="dlg__foot"><button class="btn btn--neutral"' + act('closeDialog') + '>Cancel</button></div>' +
+          '<div class="dlg__foot"><button class="btn btn--secondary"' + act('closeDialog') + '>Cancel</button></div>' +
         '</div></div>';
     }
 
@@ -253,7 +253,7 @@
             }) +
           '</div>' +
           '<div class="dlg__foot">' +
-            '<button class="btn btn--neutral"' + act('closeDialog') + '>Cancel</button>' +
+            '<button class="btn btn--secondary"' + act('closeDialog') + '>Cancel</button>' +
             '<span class="spacer"></span>' +
             '<button class="btn btn--secondary"' + act('openImpacted') + '>Open ' + esc(r.rec) + '</button>' +
             '<button class="btn btn--primary"' + act('completeAction') + '>' +
@@ -271,7 +271,7 @@
             '<div style="font-size:14px;line-height:20px" class="ink2">Nothing about the agent changes &mdash; same trigger, same action, same engine. You get branching, multiple steps, and per-node guardrails.</div>' +
           '</div>' +
           '<div class="dlg__foot">' +
-            '<button class="btn btn--neutral"' + act('closeDialog') + '>Cancel</button>' +
+            '<button class="btn btn--secondary"' + act('closeDialog') + '>Cancel</button>' +
             '<button class="btn btn--primary"' + act('confirmPromote') + '>Promote to Builder</button>' +
           '</div>' +
         '</div></div>';
@@ -296,7 +296,7 @@
             '<div class="f12 dim">Dismissals are remembered. This agent will not raise this finding again.</div>' +
           '</div>' +
           '<div class="dlg__foot">' +
-            '<button class="btn btn--neutral"' + act('closeDialog') + '>Cancel</button>' +
+            '<button class="btn btn--secondary"' + act('closeDialog') + '>Cancel</button>' +
             '<button class="' + cls('btn', ready ? 'btn--primary' : 'btn--disabled') + '"' +
               (ready ? act('confirmDismiss') : '') + '>Dismiss Finding</button>' +
           '</div>' +
@@ -378,14 +378,25 @@
   };
 
   /* ---------------- toast ---------------- */
-  var TOAST_ICON = { ok: 'check_circle', warn: 'warning', info: 'info' };
-  var TOAST_COLOR = { ok: 'var(--rmx-success)', warn: 'var(--rmx-warning)', info: 'var(--rmx-brand)' };
+  /* RMX Toast has exactly three states — Action (default), Success, Failure
+     — no "warning"/amber state. This app's toast(msg, kind) call sites pass
+     'ok' / 'warn' / 'info'; mapped onto the real states below. Icon glyph
+     is inherited-color (`currentColor`), so the modifier class alone
+     decides both surface and icon tint — see .toast--* in app.css.
+     check_circle_filled / error_filled are the real RMX glyphs the
+     component uses (surfaces.md) and are already in this app's sprite
+     (js/icons-sprite.js has both, confirmed via ICON_CORE_IDS) — an
+     earlier pass here mistakenly assumed they weren't harvested and used
+     the plain check/error glyphs instead. Corrected. */
+  var TOAST_STATE = { ok: 'success', warn: 'failure', info: 'action' };
+  var TOAST_ICON = { success: 'check_circle_filled', failure: 'error_filled', action: 'check_circle_filled' };
 
   SA.viewToast = function () {
     var s = SA.state;
     if (!s.toast) return '';
-    return '<div class="toast">' +
-      icon(TOAST_ICON[s.toastKind] || 'info', null, 'color:' + (TOAST_COLOR[s.toastKind] || TOAST_COLOR.info)) +
-      '<span class="f14 ink2">' + esc(s.toast) + '</span></div>';
+    var state = TOAST_STATE[s.toastKind] || 'action';
+    return '<div class="toast toast--' + state + '">' +
+      icon(TOAST_ICON[state], 32) +
+      '<span>' + esc(s.toast) + '</span></div>';
   };
 })(window.SA = window.SA || {});

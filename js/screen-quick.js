@@ -5,7 +5,7 @@
   'use strict';
   var esc = SA.esc, act = SA.act, chg = SA.chg, fk = SA.fk,
       when = SA.when, each = SA.each, cls = SA.cls,
-      icon = SA.icon, orion = SA.orion, options = SA.options,
+      icon = SA.icon, orion = SA.orion,
       checkline = SA.checkline, spinner = SA.spinner, okPill = SA.okPill;
 
   /* ---------- detection sentence with editable value slots ---------- */
@@ -21,7 +21,7 @@
     '</div>';
   };
 
-  /* ---------- grouped <optgroup> list of every prebuilt detection ---------- */
+  /* ---------- grouped dropdown of every prebuilt detection ---------- */
   function detectionSelect(current, big) {
     var groups = [];
     SA.detLibrary.forEach(function (d) {
@@ -29,16 +29,14 @@
       if (!g) { g = { group: d.group, items: [] }; groups.push(g); }
       g.items.push(d);
     });
-    return '<select class="' + cls('field', 'field--full', { 'field--lg': big }) + '"' + chg('setDet') + '>' +
-      '<option value="">Choose a detection</option>' +
-      each(groups, function (g) {
-        return '<optgroup label="' + esc(g.group) + '">' + each(g.items, function (it) {
-          return '<option value="' + esc(it.id) + '"' + (it.id === current ? ' selected' : '') + '>' +
-            esc(it.name) + '</option>';
-        }) + '</optgroup>';
-      }) +
-      '<option value="" disabled>Describe it in your own words — not available in v1</option>' +
-    '</select>';
+    var list = [{ value: '', label: 'Choose a detection' }];
+    groups.forEach(function (g) {
+      list.push({ group: g.group });
+      g.items.forEach(function (it) { list.push({ id: it.id, label: it.name }); });
+    });
+    list.push({ value: '', label: 'Describe it in your own words — not available in v1', disabled: true });
+    return SA.selectField(list, current, 'setDet', undefined, undefined,
+      { cls: big ? 'rsel--lg' : null, placeholder: 'Choose a detection' });
   }
   SA.detectionSelect = detectionSelect;
 
@@ -78,12 +76,11 @@
           if (f.kind === 'principal') {
             body = '<div class="row" style="gap:8px">' +
               SA.seg(['Role', 'Person'], s.actionMode, 'setActionMode') +
-              '<select class="field grow min0"' + chg('setActionPrincipal') + '>' +
-                options(s.actionMode === 'Role' ? SA.principalOptions : SA.peopleOptions, s.actionPrincipal) +
-              '</select></div>';
+              SA.selectField(s.actionMode === 'Role' ? SA.principalOptions : SA.peopleOptions,
+                s.actionPrincipal, 'setActionPrincipal', undefined, undefined, { cls: 'rsel--grow' }) +
+            '</div>';
           } else if (f.kind === 'select') {
-            body = '<select class="field field--full"' + chg('setCfg', f.id) + '>' +
-              options(f.options, val || f.options[0]) + '</select>';
+            body = SA.selectField(f.options, val || f.options[0], 'setCfg', f.id);
           } else if (f.kind === 'textarea') {
             body = '<textarea class="field field--full"' + fk('cfg-' + f.id) + chg('setCfg', f.id) +
               ' placeholder="' + esc(f.placeholder || '') + '">' + esc(val) + '</textarea>';
@@ -194,15 +191,14 @@
         when(s.optionsOpen, function () {
           return '<div class="optgrid fade">' +
             '<div><div class="f14" style="margin-bottom:4px">Run schedule</div>' +
-              '<select class="field field--full fauxfield--36" style="height:36px;font-size:14px"' + chg('setSchedSelect') + '>' +
-                options(SA.schedOptions, s.sched) + '</select></div>' +
+              SA.selectField(SA.schedOptions, s.sched, 'setSchedSelect') + '</div>' +
             '<div><div class="f14" style="margin-bottom:4px">Scope</div>' +
-              SA.pick('quick-scope', SA.scopeOptions, SA.scopeOptions[0], 'field--full fauxfield--36') + '</div>' +
+              SA.pick('quick-scope', SA.scopeOptions, SA.scopeOptions[0]) + '</div>' +
             '<div><div class="f14" style="margin-bottom:6px">Sensitivity</div>' +
               SA.seg(SA.sensOptions, s.sens, 'setSens', { line: true }) +
               '<div class="fhelp">' + esc(sensHelp) + '</div></div>' +
             '<div><div class="f14" style="margin-bottom:4px">Hand-off destination</div>' +
-              SA.pick('quick-handoff', SA.handoffOptions, SA.handoffOptions[0], 'field--full fauxfield--36') +
+              SA.pick('quick-handoff', SA.handoffOptions, SA.handoffOptions[0]) +
               '<div class="fhelp">Where work goes when the agent cannot or will not act.</div></div>' +
           '</div>';
         }) +
@@ -224,8 +220,8 @@
               when(s.conds.length, function () {
                 return '<div class="col" style="gap:8px;margin-bottom:10px">' + each(s.conds, function (c, i) {
                   return '<div class="condrow">' +
-                    '<select class="field"' + chg('setCond', i, 'field') + '>' + options(SA.condFieldOptions, c.field) + '</select>' +
-                    '<select class="field"' + chg('setCond', i, 'op') + '>' + options(SA.condOpOptions, c.op) + '</select>' +
+                    SA.selectField(SA.condFieldOptions, c.field, 'setCond', i, 'field') +
+                    SA.selectField(SA.condOpOptions, c.op, 'setCond', i, 'op') +
                     '<input class="field"' + fk('cond-' + i) + chg('setCond', i, 'val') +
                       ' placeholder="Value" value="' + esc(c.val) + '">' +
                     '<button class="btn btn--iconbox"' + act('removeCond', i) + ' title="Remove condition">' +

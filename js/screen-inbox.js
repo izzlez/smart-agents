@@ -96,8 +96,8 @@
                 '<span class="mono f13 ink2">' + esc(r.impact) + '</span>' +
                 (x.done ? '<span class="badge badge--ok">Done</span>'
                   : '<div class="row" style="gap:4px">' +
-                    '<button class="btn btn--secondary btn--compact"' + act('inboxAction', x.key) + '>' + esc(r.act) + '</button>' +
-                    '<button class="btn btn--iconbox btn--icon"' + act('inboxSnooze', x.key) + ' title="Snooze">' +
+                    '<button class="btn btn--secondary btn--sm"' + act('inboxAction', x.key) + '>' + esc(r.act) + '</button>' +
+                    '<button class="btn btn--iconbox"' + act('inboxSnooze', x.key) + ' title="Snooze">' +
                       icon('schedule', 16) + '</button>' +
                   '</div>') +
               '</div>' +
@@ -123,8 +123,8 @@
             '<div class="f13 dim">' + esc(r.detected) + '</div>' +
             '<div class="acts">' +
               (x.done ? '<span class="badge badge--ok">Done</span>'
-                : '<button class="btn btn--secondary btn--compact"' + act('inboxAction', x.key) + '>' + esc(r.act) + '</button>' +
-                  '<button class="btn btn--iconbox btn--icon"' + act('inboxSnooze', x.key) + ' title="Dismiss">' +
+                : '<button class="btn btn--secondary btn--sm"' + act('inboxAction', x.key) + '>' + esc(r.act) + '</button>' +
+                  '<button class="btn btn--iconbox"' + act('inboxSnooze', x.key) + ' title="Dismiss">' +
                     icon('close', 16) + '</button>') +
             '</div>' +
           '</div>';
