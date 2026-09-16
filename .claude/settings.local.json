@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(node --version; \\(Get-Item \"C:\\\\Users\\\\ahinkle\\\\.claude\\\\projects\\\\C--Users-ahinkle-Documents-Smart-Agents\\\\efa6aea5-989d-43ba-8644-ee48c16e673d\\\\tool-results\\\\toolu_01JKcNBAAgy3RvW1dgZik2tu.txt\"\\).Length)",
+      "PowerShell(node \"C:\\\\Users\\\\ahinkle\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-ahinkle-Documents-Smart-Agents\\\\efa6aea5-989d-43ba-8644-ee48c16e673d\\\\scratchpad\\\\smoke.js\" 2>&1 | Select-Object -First 60)",
+      "PowerShell(node \"C:\\\\Users\\\\ahinkle\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-ahinkle-Documents-Smart-Agents\\\\efa6aea5-989d-43ba-8644-ee48c16e673d\\\\scratchpad\\\\smoke.js\" 2>&1 | Select-Object -First 40)"
+    ]
+  }
+}

@@ -1,0 +1,219 @@
+/* ============================================================
+   RMX Design System — Colors & Type
+   Vendored verbatim from the Claude Design project:
+   _ds/rmx-design-system-019dd9a2-6db7-79d2-bf37-c82345a95d1d/colors_and_type.css
+   Do not edit by hand — re-pull from the design project instead.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---------- BRAND ---------- */
+  --rmx-brand: #008dd5;            /* Primary brand blue — buttons, links, accents */
+  --rmx-brand-hover: #0071aa;      /* Hover state on primary */
+  --rmx-brand-pressed: #195ca4;    /* Pressed / deep brand */
+  --rmx-brand-dark: #13314c;       /* Header navy / display text */
+  --rmx-brand-darker: #424e5b;     /* Slate ink — secondary navy */
+  --rmx-brand-tint-bg: #ebf1f5;    /* Selected card / pale brand wash */
+  --rmx-brand-tint-soft: #f5f8fa;  /* Page background tint */
+
+  /* ---------- NEUTRALS ---------- */
+  --rmx-ink: #000000;
+  --rmx-ink-2: #424e5b;            /* Slate 700 */
+  --rmx-text: #666666;             /* Body text */
+  --rmx-text-muted: #b3b3b3;       /* Disabled / placeholder */
+  --rmx-line: #cedbe7;             /* Component border (key) */
+  --rmx-line-soft: #ebf1f5;        /* Faint divider */
+  --rmx-line-strong: #ccc;
+  --rmx-bg: #ffffff;
+  --rmx-bg-subtle: #f5f8fa;        /* Field fill / panel */
+  --rmx-bg-muted: #f2f2f2;
+  --rmx-overlay-search: #425a70;   /* Header search bar fill */
+
+  /* ---------- SEMANTIC ---------- */
+  --rmx-error: #eb343c;            /* Required / error red */
+  --rmx-success: #6eb744;          /* Confirm / success green */
+  --rmx-success-bg: #e2f1da;       /* Success surface */
+  --rmx-warning: #f58220;          /* Warning orange — icon-attention / border-attention */
+  --rmx-warning-soft: #f79b4d;     /* border-notice / background-tertiary-button */
+  --rmx-notice: #faa61c;           /* icon-notice — a distinct amber, not the same as warning */
+  --rmx-admin-blue: #3776bc;       /* icon/icon-rm12 — Administration section/group title blue,
+                                       distinct from --rmx-brand-hover (#0071aa) */
+  --rmx-border-success: #a8d48f;   /* border-success — lighter than --rmx-success, tile overlines only */
+  --rmx-magenta: #e54c7a;          /* Magenta accent / category */
+  --rmx-magenta-strong: #e8178a;
+  --rmx-purple: #9747ff;           /* Component-spec purple (figma annotation only) */
+
+  /* ---------- SHADOWS ---------- */
+  --rmx-shadow-card: 0 4px 12px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.10);
+  --rmx-shadow-popup: 0 3px 6px rgba(0,0,0,0.10);
+  --rmx-shadow-sm: 0 1px 2px rgba(76,76,76,0.08);
+  --rmx-shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --rmx-focus-ring: 0 0 0 4px rgba(0,141,213,0.20);
+
+  /* ---------- RADII ---------- */
+  --rmx-radius-xs: 2px;            /* Dividers, chips */
+  --rmx-radius-sm: 4px;            /* Buttons, inputs, cards */
+  --rmx-radius-md: 5px;            /* Container blocks */
+  --rmx-radius-pill: 999px;
+
+  /* ---------- SPACING (8 + 4 grid) ---------- */
+  --rmx-s-1: 4px;
+  --rmx-s-2: 8px;
+  --rmx-s-3: 12px;
+  --rmx-s-4: 16px;
+  --rmx-s-5: 20px;
+  --rmx-s-6: 24px;
+  --rmx-s-8: 32px;
+  --rmx-s-10: 40px;
+  --rmx-s-16: 64px;                /* Page gutter */
+
+  /* ---------- TYPE FAMILIES ---------- */
+  --rmx-font-sans: "Roboto", "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --rmx-font-mono: "Roboto Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --rmx-font-display: "Roboto", system-ui, sans-serif;
+
+  /* ---------- TYPE SCALE (semantic) ---------- */
+  --rmx-display-xl-size: 96px;
+  --rmx-display-xl-line: 100%;
+  --rmx-display-xl-weight: 400;
+
+  --rmx-display-lg-size: 56px;
+  --rmx-display-lg-line: 64px;
+  --rmx-display-lg-weight: 700;
+
+  --rmx-display-md-size: 40px;
+  --rmx-display-md-line: 48px;
+  --rmx-display-md-weight: 700;
+
+  --rmx-h1-size: 32px;
+  --rmx-h1-line: 40px;
+  --rmx-h1-weight: 500;
+
+  --rmx-h2-size: 24px;
+  --rmx-h2-line: 32px;
+  --rmx-h2-weight: 500;
+
+  /* 500 is not a real RMX Foundations weight at this size — Web/Heading/S only
+     ships SemiBold (600) and Regular (400). Using SemiBold here. */
+  --rmx-h3-size: 18px;
+  --rmx-h3-line: 24px;
+  --rmx-h3-weight: 600;
+
+  --rmx-h4-size: 16px;
+  --rmx-h4-line: 24px;
+  --rmx-h4-weight: 500;
+
+  /* Body — Roboto Regular 14 / 20 is the workhorse */
+  --rmx-body-size: 14px;
+  --rmx-body-line: 20px;
+  --rmx-body-weight: 400;
+
+  --rmx-body-sm-size: 12px;
+  --rmx-body-sm-line: 16px;
+
+  --rmx-body-lg-size: 16px;
+  --rmx-body-lg-line: 24px;
+
+  --rmx-action-size: 14px;
+  --rmx-action-weight: 400;
+
+  --rmx-label-size: 14px;
+  --rmx-label-line: 100%;
+  --rmx-label-color: var(--rmx-text);
+
+  --rmx-mono-size: 14px;
+  --rmx-mono-line: 20px;
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT DEFAULTS — opt-in by adding `.rmx` to any root
+   ============================================================ */
+
+.rmx,
+.rmx * { box-sizing: border-box; }
+
+.rmx {
+  font-family: var(--rmx-font-sans);
+  font-size: var(--rmx-body-size);
+  line-height: var(--rmx-body-line);
+  color: var(--rmx-text);
+  background: var(--rmx-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.rmx h1, .rmx .rmx-h1 {
+  font-family: var(--rmx-font-display);
+  font-size: var(--rmx-h1-size);
+  line-height: var(--rmx-h1-line);
+  font-weight: var(--rmx-h1-weight);
+  color: var(--rmx-brand-dark);
+  margin: 0;
+}
+.rmx h2, .rmx .rmx-h2 {
+  font-family: var(--rmx-font-display);
+  font-size: var(--rmx-h2-size);
+  line-height: var(--rmx-h2-line);
+  font-weight: var(--rmx-h2-weight);
+  color: var(--rmx-brand-dark);
+  margin: 0;
+}
+.rmx h3, .rmx .rmx-h3 {
+  font-size: var(--rmx-h3-size);
+  line-height: var(--rmx-h3-line);
+  font-weight: var(--rmx-h3-weight);
+  color: var(--rmx-brand-dark);
+  margin: 0;
+}
+.rmx h4, .rmx .rmx-h4 {
+  font-size: var(--rmx-h4-size);
+  line-height: var(--rmx-h4-line);
+  font-weight: var(--rmx-h4-weight);
+  color: var(--rmx-ink);
+  margin: 0;
+}
+
+.rmx p { margin: 0; }
+.rmx a { color: var(--rmx-brand); text-decoration: none; }
+.rmx a:hover { color: var(--rmx-brand-hover); text-decoration: underline; }
+
+.rmx code, .rmx .rmx-code {
+  font-family: var(--rmx-font-mono);
+  font-size: var(--rmx-mono-size);
+  line-height: var(--rmx-mono-line);
+  color: var(--rmx-ink-2);
+}
+
+.rmx .rmx-display-lg {
+  font-family: var(--rmx-font-display);
+  font-size: var(--rmx-display-lg-size);
+  line-height: var(--rmx-display-lg-line);
+  font-weight: var(--rmx-display-lg-weight);
+  color: var(--rmx-brand-dark);
+}
+.rmx .rmx-display-md {
+  font-size: var(--rmx-display-md-size);
+  line-height: var(--rmx-display-md-line);
+  font-weight: var(--rmx-display-md-weight);
+  color: var(--rmx-brand-dark);
+}
+
+.rmx .rmx-eyebrow {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--rmx-text-muted);
+  font-weight: 500;
+}
+
+.rmx .rmx-italic-disabled {
+  font-style: italic;
+  color: var(--rmx-text-muted);
+}
+
+.rmx .rmx-required::after {
+  content: " *";
+  color: var(--rmx-error);
+}

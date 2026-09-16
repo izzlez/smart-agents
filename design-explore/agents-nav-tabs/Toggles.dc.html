@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --brand:#008dd5; --brand-hover:#0071aa; --brand-pressed:#195ca4; --brand-dark:#13314c;
+    --tint-bg:#ebf1f5; --overlay-search:#425a70;
+    --ink2:#424e5b; --text:#666666; --muted:#b3b3b3;
+    --line:#cedbe7; --line-soft:#ebf1f5;
+    --bg:#ffffff; --bg-subtle:#f5f8fa;
+    --success:#6eb744;
+    --radius:4px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--bg); }
+  a { color: var(--brand); text-decoration: none; }
+  a:hover { color: var(--brand-hover); text-decoration: underline; }
+</style>
+</helmet>
+
+<div style="width:1400px; background:var(--bg);">
+
+  <!-- header chrome, for context only -->
+  <div style="height:48px; background:var(--brand-dark); display:flex; align-items:center; gap:16px; padding:0 16px; color:#fff;">
+    <div style="display:flex; align-items:center; gap:8px; font-size:17px; font-weight:500;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M4 21V9l8-5 8 5v12" stroke-linejoin="round"/><path d="M9 21v-7h6v7" /></svg>
+      Rent Manager
+    </div>
+    <div style="flex:1; display:flex; justify-content:center; align-items:center; gap:6px;">
+      <span style="height:32px; width:39px; border-radius:var(--radius); background:var(--overlay-search); display:inline-flex; align-items:center; justify-content:center;"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.6"><path d="M3 5h14M3 10h14M3 15h14" stroke-linecap="round"/></svg></span>
+      <span style="height:32px; width:39px; border-radius:var(--radius); background:var(--overlay-search); display:inline-flex; align-items:center; justify-content:center;"><svg width="16" height="16" viewBox="0 0 20 20" fill="#fff"><path d="M6.66665 15H13.3333V13.3333H6.66665V15ZM6.66665 11.6667H13.3333V9.99999H6.66665V11.6667ZM4.99998 18.3333C4.54165 18.3333 4.14929 18.1701 3.8229 17.8437C3.49651 17.5174 3.33331 17.125 3.33331 16.6667V3.33332C3.33331 2.87499 3.49651 2.48263 3.8229 2.15624C4.14929 1.82985 4.54165 1.66666 4.999 1.66666H11.6667L16.6667 6.66666V16.6667C16.6667 17.125 16.5035 17.5174 16.1771 17.8437C15.8507 18.1701 15.4583 18.3333 15 18.3333H4.99998Z"/></svg></span>
+      <span style="height:32px; width:39px; border-radius:var(--radius); background:var(--overlay-search); display:inline-flex; align-items:center; justify-content:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><path d="M12 3l2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6-4.4-4.2 6-.9L12 3z" stroke-linejoin="round"/></svg></span>
+      <div style="width:450px; height:32px; background:var(--overlay-search); border-radius:var(--radius); display:flex; align-items:center; gap:8px; padding:0 12px; margin-left:6px;">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="rgba(255,255,255,0.85)"><path d="M12.9167 11.6667H12.2583L12.025 11.4417C13.025 10.275 13.5417 8.68334 13.2583 6.99167C12.8667 4.675 10.9333 2.825 8.59999 2.54167C5.07499 2.10834 2.10832 5.075 2.54165 8.6C2.82499 10.9333 4.67499 12.8667 6.99165 13.2583C8.68332 13.5417 10.275 13.025 11.4417 12.025L11.6667 12.2583V12.9167L15.2083 16.4583C15.55 16.8 16.1083 16.8 16.45 16.4583C16.7917 16.1167 16.7917 15.5583 16.45 15.2167L12.9167 11.6667ZM7.91665 11.6667C5.84165 11.6667 4.16665 9.99167 4.16665 7.91667C4.16665 5.84167 5.84165 4.16667 7.91665 4.16667C9.99165 4.16667 11.6667 5.84167 11.6667 7.91667C11.6667 9.99167 9.99165 11.6667 7.91665 11.6667Z"/></svg>
+        <span style="font-size:12px; font-style:italic; color:rgba(255,255,255,0.7);">Command Launch</span>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:16px; flex-shrink:0;">
+      <span style="font-size:12px; line-height:14px; text-align:right;"><div>Company Code</div><div>lcs-bateam</div></span>
+      <span style="width:30px; height:30px; border-radius:999px; background:var(--brand); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:500;">AF</span>
+    </div>
+  </div>
+  <div style="height:30px; background:var(--brand); display:flex; align-items:center; gap:8px; padding:0 16px; color:#fff; font-size:15px;">
+    <svg width="14" height="14" viewBox="0 0 20 20" fill="#fff"><path d="M13.0875 6.175L11.9125 5L6.91248 10L11.9125 15L13.0875 13.825L9.27081 10L13.0875 6.175Z"/></svg>
+    Smart Agents
+  </div>
+
+  <!-- ===================== NAV AS TOP TOGGLES ===================== -->
+  <div style="height:64px; background:var(--bg); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:16px; padding:0 24px;">
+    <div style="display:inline-flex; border:1px solid var(--brand); border-radius:var(--radius); overflow:hidden;">
+      <button style="height:34px; padding:0 16px; border:none; background:var(--brand); color:#fff; font-size:13px; font-weight:500; display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-family:inherit;">
+        Agents
+        <span style="min-width:20px; height:18px; padding:0 6px; border-radius:999px; background:rgba(255,255,255,0.25); font-size:11px; display:inline-flex; align-items:center; justify-content:center;">6</span>
+      </button>
+      <button style="height:34px; padding:0 16px; border:none; background:var(--bg); color:var(--brand); font-size:13px; display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-family:inherit;">
+        Agent Findings
+        <span style="min-width:22px; height:18px; padding:0 6px; border-radius:999px; background:var(--brand); color:#fff; font-size:11px; font-weight:500; display:inline-flex; align-items:center; justify-content:center;">24</span>
+      </button>
+    </div>
+    <div style="flex:1;"></div>
+    <span style="width:8px; height:8px; border-radius:999px; background:var(--success); display:inline-block;"></span>
+    <span style="font-size:12px; color:var(--muted);">Agents are running.</span>
+  </div>
+
+  <!-- page content, for context -->
+  <div style="padding:24px 24px 0;">
+    <div style="display:flex; align-items:flex-end; gap:16px; margin-bottom:14px;">
+      <div style="flex:1;">
+        <div style="font-size:28px; line-height:36px; font-weight:500; color:var(--brand-dark);">Smart Agents</div>
+        <div style="font-size:13px; margin-top:6px; display:flex; align-items:baseline; gap:6px;">
+          <span style="color:var(--brand-dark); font-weight:500;">Agents</span><span>&mdash;</span>
+          <span>Orion detects, decides, and acts &mdash; every run leaves its reasoning behind.</span>
+        </div>
+      </div>
+      <button style="height:36px; padding:0 16px; border:none; border-radius:var(--radius); background:var(--brand); color:#fff; font-size:14px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M15.8334 10.8333H10.8334V15.8333H9.16669V10.8333H4.16669V9.16666H9.16669V4.16666H10.8334V9.16666H15.8334V10.8333Z"/></svg>
+        New Agent
+      </button>
+    </div>
+
+    <div style="border:1px solid var(--line); border-radius:var(--radius); margin-bottom:24px;">
+      <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--line); font-size:12px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; color:var(--text); background:var(--bg);">
+        <div>Agent</div><div>Type</div><div>Trigger / Schedule</div><div>Last Run</div><div>Current State</div><div style="text-align:right;">Enabled</div>
+      </div>
+      <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line-soft);">
+        <div style="font-size:14px; color:var(--brand);">Move-In Charge Integrity</div>
+        <div><span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius);">Data health</span></div>
+        <div style="font-size:13px; color:var(--ink2);">Nightly</div>
+        <div style="font-size:13px; color:var(--ink2);">Today 2:04am</div>
+        <div style="font-size:13px; color:var(--brand);">9 open findings</div>
+        <div style="display:flex; justify-content:flex-end;"><span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span></div>
+      </div>
+      <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:16px 20px;">
+        <div style="font-size:14px; color:var(--brand);">Vendor W-9 Compliance</div>
+        <div><span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius);">Data health</span></div>
+        <div style="font-size:13px; color:var(--ink2);">Weekly</div>
+        <div style="font-size:13px; color:var(--ink2);">Mon 5:01am</div>
+        <div style="font-size:13px; color:var(--brand);">3 open findings</div>
+        <div style="display:flex; justify-content:flex-end;"><span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

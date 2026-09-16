@@ -1,0 +1,11 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 720, "title": "Tabs" },
+    { "file": "Toggles.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 720, "title": "Toggles" }
+  ],
+  "annotations": [
+    { "id": "note-tabs", "x": 0, "y": -100, "w": 520, "text": "TABS — underline tab strip (same pattern as the Build/Findings/Runs tabs already in the agent detail screen). Agents keeps a neutral count pill; Agent Findings keeps its filled blue unread-style badge." },
+    { "id": "note-toggles", "x": 1560, "y": -100, "w": 520, "text": "TOGGLES — a segmented control (same component as the Inbox's To-do/Table switch). One button reads as pressed/active; reads more like a mode switch than a navigation tab." }
+  ],
+  "launch": { "view": "canvas" }
+}

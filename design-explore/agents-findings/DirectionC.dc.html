@@ -1,0 +1,199 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --brand:#008dd5; --brand-hover:#0071aa; --brand-pressed:#195ca4; --brand-dark:#13314c;
+    --tint-bg:#ebf1f5;
+    --ink2:#424e5b; --text:#666666; --muted:#b3b3b3;
+    --line:#cedbe7; --line-soft:#ebf1f5; --line-strong:#ccc;
+    --bg:#ffffff; --bg-subtle:#f5f8fa;
+    --green:#3f7e1f; --warning:#f58220;
+    --workflow-ink:#6b28cc;
+    --mono: 'Roboto Mono', ui-monospace, Menlo, Consolas, monospace;
+    --radius:4px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--bg); }
+  a { color: var(--brand); text-decoration: none; }
+  a:hover { color: var(--brand-hover); text-decoration: underline; }
+</style>
+</helmet>
+
+<div style="width:1160px; padding:32px; background:var(--bg);">
+
+  <!-- ===================== AGENT LIBRARY (console) ===================== -->
+  <div style="display:flex; align-items:baseline; gap:16px; margin-bottom:12px;">
+    <div style="font-size:20px; line-height:26px; font-weight:500; color:var(--brand-dark);">Smart Agents</div>
+    <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">5 agents &middot; 24 open findings</span>
+    <div style="flex:1;"></div>
+    <button style="height:30px; padding:0 12px; border:none; border-radius:var(--radius); background:var(--brand); color:#fff; font-size:12px; display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
+      <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path d="M15.8334 10.8333H10.8334V15.8333H9.16669V10.8333H4.16669V9.16666H9.16669V4.16666H10.8334V9.16666H15.8334V10.8333Z"/></svg>
+      NEW AGENT
+    </button>
+  </div>
+
+  <div style="border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;">
+    <div style="display:grid; grid-template-columns: 26px minmax(220px,2fr) 100px 100px 130px minmax(180px,1.4fr) 130px 70px; align-items:center; padding:8px 14px; background:var(--brand-dark); font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:#fff;">
+      <div></div><div>Agent</div><div>Type</div><div>Sched</div><div>Last run</div><div>Trigger</div><div>State</div><div style="text-align:right;">On</div>
+    </div>
+
+    <!-- rows -->
+    <div style="display:grid; grid-template-columns: 26px minmax(220px,2fr) 100px 100px 130px minmax(180px,1.4fr) 130px 70px; align-items:center; padding:7px 14px; border-bottom:1px solid var(--line-soft); font-size:12.5px;">
+      <span style="width:6px; height:6px; border-radius:999px; background:var(--brand); display:inline-block;"></span>
+      <span style="color:var(--brand); font-weight:500;">Move-In Charge Integrity</span>
+      <span style="color:var(--ink2);">Health</span>
+      <span style="color:var(--ink2);">Nightly</span>
+      <span style="font-family:var(--mono); color:var(--ink2);">02:04</span>
+      <span style="color:var(--ink2);">nightly scan</span>
+      <span style="font-family:var(--mono); color:var(--brand); font-weight:500;">9 open</span>
+      <span style="text-align:right;"><span style="width:28px; height:16px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:14px; width:12px; height:12px; border-radius:999px; background:#fff;"></span></span></span>
+    </div>
+    <div style="display:grid; grid-template-columns: 26px minmax(220px,2fr) 100px 100px 130px minmax(180px,1.4fr) 130px 70px; align-items:center; padding:7px 14px; border-bottom:1px solid var(--line-soft); font-size:12.5px;">
+      <span style="width:6px; height:6px; border-radius:999px; background:var(--brand); display:inline-block;"></span>
+      <span style="color:var(--brand); font-weight:500;">Vendor W-9 Compliance</span>
+      <span style="color:var(--ink2);">Health</span>
+      <span style="color:var(--ink2);">Weekly</span>
+      <span style="font-family:var(--mono); color:var(--ink2);">Mon 05:01</span>
+      <span style="color:var(--ink2);">weekly scan</span>
+      <span style="font-family:var(--mono); color:var(--brand); font-weight:500;">3 open</span>
+      <span style="text-align:right;"><span style="width:28px; height:16px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:14px; width:12px; height:12px; border-radius:999px; background:#fff;"></span></span></span>
+    </div>
+    <div style="display:grid; grid-template-columns: 26px minmax(220px,2fr) 100px 100px 130px minmax(180px,1.4fr) 130px 70px; align-items:center; padding:7px 14px; border-bottom:1px solid var(--line-soft); font-size:12.5px;">
+      <span style="width:6px; height:6px; border-radius:999px; background:var(--warning); display:inline-block;"></span>
+      <span style="color:var(--brand); font-weight:500;">Missing Resident Data</span>
+      <span style="color:var(--ink2);">Health</span>
+      <span style="color:var(--ink2);">Weekly</span>
+      <span style="font-family:var(--mono); color:var(--ink2);">Mon 04:31</span>
+      <span style="color:var(--ink2);">weekly scan</span>
+      <span style="font-family:var(--mono); color:var(--brand); font-weight:500;">12 open</span>
+      <span style="text-align:right;"><span style="width:28px; height:16px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:14px; width:12px; height:12px; border-radius:999px; background:#fff;"></span></span></span>
+    </div>
+    <div style="display:grid; grid-template-columns: 26px minmax(220px,2fr) 100px 100px 130px minmax(180px,1.4fr) 130px 70px; align-items:center; padding:7px 14px; border-bottom:1px solid var(--line-soft); font-size:12.5px;">
+      <span style="width:6px; height:6px; border-radius:999px; background:var(--workflow-ink); display:inline-block;"></span>
+      <span style="color:var(--brand); font-weight:500;">Credit Approval</span>
+      <span style="color:var(--ink2);">Workflow</span>
+      <span style="color:var(--ink2);">Event</span>
+      <span style="font-family:var(--mono); color:var(--ink2);">10:04</span>
+      <span style="color:var(--ink2);">credit added</span>
+      <span style="font-family:var(--mono); color:var(--text);">7 today</span>
+      <span style="text-align:right;"><span style="width:28px; height:16px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:14px; width:12px; height:12px; border-radius:999px; background:#fff;"></span></span></span>
+    </div>
+    <div style="display:grid; grid-template-columns: 26px minmax(220px,2fr) 100px 100px 130px minmax(180px,1.4fr) 130px 70px; align-items:center; padding:7px 14px; border-bottom:1px solid var(--line-soft); font-size:12.5px;">
+      <span style="width:6px; height:6px; border-radius:999px; background:var(--workflow-ink); display:inline-block;"></span>
+      <span style="color:var(--brand); font-weight:500;">Bill Approval</span>
+      <span style="color:var(--ink2);">Workflow</span>
+      <span style="color:var(--ink2);">Event</span>
+      <span style="font-family:var(--mono); color:var(--ink2);">11:26</span>
+      <span style="color:var(--ink2);">invoice received</span>
+      <span style="font-family:var(--mono); color:var(--text);">19 today</span>
+      <span style="text-align:right;"><span style="width:28px; height:16px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:14px; width:12px; height:12px; border-radius:999px; background:#fff;"></span></span></span>
+    </div>
+    <div style="display:grid; grid-template-columns: 26px minmax(220px,2fr) 100px 100px 130px minmax(180px,1.4fr) 130px 70px; align-items:center; padding:7px 14px; font-size:12.5px;">
+      <span style="width:6px; height:6px; border-radius:999px; background:var(--workflow-ink); display:inline-block;"></span>
+      <span style="color:var(--brand); font-weight:500;">Bill Approval</span>
+      <span style="color:var(--ink2);">Workflow</span>
+      <span style="color:var(--ink2);">Event</span>
+      <span style="font-family:var(--mono); color:var(--ink2);">11:26</span>
+      <span style="color:var(--ink2);">invoice received</span>
+      <span style="font-family:var(--mono); color:var(--text);">19 today</span>
+      <span style="text-align:right;"><span style="width:28px; height:16px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:14px; width:12px; height:12px; border-radius:999px; background:#fff;"></span></span></span>
+    </div>
+  </div>
+
+  <!-- ===================== AGENT FINDINGS (console) ===================== -->
+  <div style="margin-top:28px;">
+    <div style="display:flex; align-items:baseline; gap:16px; margin-bottom:10px;">
+      <span style="font-size:16px; font-weight:500; color:var(--brand-dark);">move-in-charge-integrity</span>
+      <span style="font-family:var(--mono); font-size:11px; color:var(--muted);">last scan 02:04 &middot; nightly</span>
+      <div style="flex:1;"></div>
+      <span style="font-family:var(--mono); font-size:11px; color:var(--ink2);">OPEN <strong style="color:var(--brand-dark);">9</strong></span>
+      <span style="font-family:var(--mono); font-size:11px; color:var(--ink2);">FIXED <strong style="color:var(--green);">0</strong></span>
+      <span style="font-family:var(--mono); font-size:11px; color:var(--ink2);">AT RISK <strong style="color:var(--brand-dark);">$6,710.00</strong></span>
+    </div>
+
+    <div style="border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;">
+      <div style="display:grid; grid-template-columns: 22px 110px 130px 1.6fr 90px 100px 100px; align-items:center; padding:6px 14px; background:var(--bg-subtle); font-family:var(--mono); font-size:10.5px; font-weight:500; letter-spacing:0.05em; text-transform:uppercase; color:var(--text); border-bottom:1px solid var(--line);">
+        <div></div><div>Record</div><div>Tenant</div><div>Issue</div><div>Age</div><div style="text-align:right;">Impact</div><div style="text-align:right;">Action</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 22px 110px 130px 1.6fr 90px 100px 100px; align-items:center; padding:6px 14px; border-bottom:1px solid var(--line-soft); font-size:12px;">
+        <div style="width:14px; height:14px; border:1.5px solid var(--line-strong); border-radius:2px;"></div>
+        <span style="font-family:var(--mono); color:var(--brand);">LSE-10473</span>
+        <span style="color:var(--ink2);">E. Whitfield</span>
+        <span style="color:var(--ink2);">No recurring charge 21 days after move-in</span>
+        <span style="font-family:var(--mono); color:var(--muted);">21d</span>
+        <span style="font-family:var(--mono); color:var(--brand-pressed); text-align:right;">$1,290</span>
+        <span style="text-align:right;"><a href="#" style="font-size:12px;">Add Charge</a></span>
+      </div>
+      <div style="display:grid; grid-template-columns: 22px 110px 130px 1.6fr 90px 100px 100px; align-items:center; padding:6px 14px; border-bottom:1px solid var(--line-soft); font-size:12px;">
+        <div style="width:14px; height:14px; border:1.5px solid var(--line-strong); border-radius:2px;"></div>
+        <span style="font-family:var(--mono); color:var(--brand);">LSE-10457</span>
+        <span style="color:var(--ink2);">P. Raman</span>
+        <span style="color:var(--ink2);">Recurring rent $75.00 below signed lease rent</span>
+        <span style="font-family:var(--mono); color:var(--muted);">9d</span>
+        <span style="font-family:var(--mono); color:var(--brand-pressed); text-align:right;">$75</span>
+        <span style="text-align:right;"><a href="#" style="font-size:12px;">Correct</a></span>
+      </div>
+
+      <!-- expanded row -->
+      <div style="border-bottom:1px solid var(--line-soft); background:var(--tint-bg);">
+        <div style="display:grid; grid-template-columns: 22px 110px 130px 1.6fr 90px 100px 100px; align-items:center; padding:6px 14px; font-size:12px;">
+          <div style="width:14px; height:14px; border:1.5px solid var(--brand); background:var(--brand); border-radius:2px;"></div>
+          <span style="font-family:var(--mono); color:var(--brand); font-weight:500;">LSE-10442</span>
+          <span style="color:var(--ink2);">M. Alvarez</span>
+          <span style="color:var(--ink2);">No recurring charge 12 days after move-in</span>
+          <span style="font-family:var(--mono); color:var(--muted);">12d</span>
+          <span style="font-family:var(--mono); color:var(--brand-pressed); text-align:right; font-weight:500;">$1,485</span>
+          <span style="text-align:right;"><a href="#" style="font-size:12px;">Add Charge</a></span>
+        </div>
+        <div style="padding:2px 14px 12px 40px; font-family:var(--mono); font-size:11px; color:var(--ink2); line-height:17px;">
+          <div style="color:var(--muted);">// lease signed 2026-08-19 &middot; move-in 2026-08-19 &middot; rent $1,485.00/mo &middot; no active recurring charge</div>
+          <div style="margin-top:4px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span style="color:var(--brand-pressed);">records:</span>
+            <span>LSE-10442:lease</span><span>&middot;</span><span>UNIT-12-B:maple-grove</span><span>&middot;</span><span>marcus.alvarez:tenant</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 22px 110px 130px 1.6fr 90px 100px 100px; align-items:center; padding:6px 14px; border-bottom:1px solid var(--line-soft); font-size:12px;">
+        <div style="width:14px; height:14px; border:1.5px solid var(--line-strong); border-radius:2px;"></div>
+        <span style="font-family:var(--mono); color:var(--brand);">LSE-10461</span>
+        <span style="color:var(--ink2);">D. Chen</span>
+        <span style="color:var(--ink2);">No recurring charge 8 days after move-in</span>
+        <span style="font-family:var(--mono); color:var(--muted);">8d</span>
+        <span style="font-family:var(--mono); color:var(--brand-pressed); text-align:right;">$1,720</span>
+        <span style="text-align:right;"><a href="#" style="font-size:12px;">Add Charge</a></span>
+      </div>
+      <div style="display:grid; grid-template-columns: 22px 110px 130px 1.6fr 90px 100px 100px; align-items:center; padding:6px 14px; border-bottom:1px solid var(--line-soft); font-size:12px;">
+        <div style="width:14px; height:14px; border:1.5px solid var(--line-strong); border-radius:2px;"></div>
+        <span style="font-family:var(--mono); color:var(--brand);">LSE-10468</span>
+        <span style="color:var(--ink2);">S. Okafor</span>
+        <span style="color:var(--ink2);">Rent $145.00 under unit market rent at renewal</span>
+        <span style="font-family:var(--mono); color:var(--muted);">6d</span>
+        <span style="font-family:var(--mono); color:var(--brand-pressed); text-align:right;">$145</span>
+        <span style="text-align:right;"><a href="#" style="font-size:12px;">Review</a></span>
+      </div>
+      <div style="display:grid; grid-template-columns: 22px 110px 130px 1.6fr 90px 100px 100px; align-items:center; padding:6px 14px; font-size:12px;">
+        <div style="width:14px; height:14px; border:1.5px solid var(--line-strong); border-radius:2px;"></div>
+        <span style="font-family:var(--mono); color:var(--brand);">LSE-10486</span>
+        <span style="color:var(--ink2);">J. Petrov</span>
+        <span style="color:var(--ink2);">No parking charge on a lease with an assigned space</span>
+        <span style="font-family:var(--mono); color:var(--muted);">4d</span>
+        <span style="font-family:var(--mono); color:var(--brand-pressed); text-align:right;">$65</span>
+        <span style="text-align:right;"><a href="#" style="font-size:12px;">Add Charge</a></span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

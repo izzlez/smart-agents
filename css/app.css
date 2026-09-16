@@ -1,0 +1,1366 @@
+/* ============================================================
+   Smart Agents v2 — component layer
+   Translated from the inline styles authored in
+   `Smart Agents v2.dc.html` (Claude Design project 419cda21).
+   Every colour, radius, size and duration resolves to an
+   --rmx-* token from rmx-tokens.css.
+   ============================================================ */
+
+html, body { margin: 0; padding: 0; background: #dde5ec; overflow: hidden; }
+
+/* Local tokens layered on top of the design-system ones. */
+:root {
+  /* RMX Checkbox State=Default is orange (--rmx-warning / --icon-attention #F58220), per
+     the rmx-prototyping skill: "A checked checkbox is orange... The blue check is only
+     State=Blue / State=Register, the select-all above a register." None of this app's
+     checkboxes are a register select-all, so they all use the default. */
+  --rmx-checkbox-fill: var(--rmx-warning);
+}
+
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: currentColor;
+  color: inherit;
+}
+/* Real multi-tone Express icons (Administration) -- native colors, never
+   tinted via currentColor/fill, unlike .icon above. */
+.adminicon { display: inline-block; flex-shrink: 0 }
+.i-14 { width: 14px; height: 14px }
+.i-15 { width: 15px; height: 15px }
+.i-16 { width: 16px; height: 16px }
+.i-18 { width: 18px; height: 18px }
+.i-20 { width: 20px; height: 20px }
+.i-22 { width: 22px; height: 22px }
+.i-28 { width: 28px; height: 28px }
+.i-30 { width: 30px; height: 30px }
+.i-32 { width: 32px; height: 32px }
+
+@keyframes rmxDash { to { stroke-dashoffset: -24; } }
+@keyframes rmxRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes rmxFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rmxSpin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.fade { animation: rmxFade 180ms ease-out }
+.fade-slow { animation: rmxFade 220ms ease-out }
+.rise { animation: rmxRise 220ms ease-out }
+
+/* ---------- utility ---------- */
+.row { display: flex; align-items: center }
+.col { display: flex; flex-direction: column }
+.grow { flex: 1 }
+.spacer { flex: 1 }
+.shrink0 { flex-shrink: 0 }
+.min0 { min-width: 0 }
+.mono { font-family: var(--rmx-font-mono) }
+.muted { color: var(--rmx-text-muted) }
+.dim { color: var(--rmx-text) }
+.ink { color: var(--rmx-ink) }
+.ink2 { color: var(--rmx-ink-2) }
+.navy { color: var(--rmx-brand-dark) }
+.brand { color: var(--rmx-brand) }
+.w500 { font-weight: 500 }
+.f11 { font-size: 11px } .f12 { font-size: 12px } .f13 { font-size: 13px }
+.f14 { font-size: 14px } .f15 { font-size: 15px } .f16 { font-size: 16px }
+.f18 { font-size: 18px } .f20 { font-size: 20px }
+.divider-v { width: 1px; background: var(--rmx-line) }
+.hr { height: 1px; background: var(--rmx-line-soft) }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+/* 1:1 with the Figma frames — a fixed 1920 x 1080 canvas. The page scrolls
+   if the browser window is smaller, rather than reflowing away from the design. */
+/* Every screen is built on 1920x1080 Figma frames, but every screen's own
+   layout (the nav, the register grids' minmax() columns, the agent
+   builder's palette/canvas/inspector split, .tplgrid's auto-fill, .app's
+   own flex chrome) was already written fluid rather than pixel-pinned —
+   Workspace and Administration just proved it out first. So .app fills
+   whatever real window it's given, in both dimensions, and everything
+   inside reflows for real: a content area that still can't fit at its
+   floor gets its own internal scrollbar (.screen, .canvas, .inspector are
+   all overflow:auto) rather than the whole window scrolling sideways. */
+.app {
+  display: flex; flex-direction: column;
+  width: 100%; height: 100vh; min-width: 960px; min-height: 500px;
+  background: var(--rmx-bg-subtle);
+  overflow: hidden;
+}
+/* bright blue context bar — sits between the header and the page body */
+.ctxbar {
+  height: 30px; flex-shrink: 0;
+  background: var(--rmx-brand);
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+  padding: 0 16px; color: #fff; font-size: 15px; cursor: pointer;
+}
+.ctxbar__back { font-size: 15px; font-weight: 500 }
+.app__body { flex: 1; display: flex; min-height: 0 }
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden }
+/* Only a register's own row content should ever scroll sideways (see .tbl
+   below) — the screen around it (page head, filters) stays put. */
+.screen { flex: 1; overflow-y: auto; overflow-x: hidden }
+.screen--tint { background: var(--rmx-bg-subtle) }
+.screen--flush { display: flex; flex-direction: column; min-height: 0 }
+
+/* ---------- header ---------- */
+.hdr {
+  height: 46px; flex-shrink: 0;
+  background: var(--rmx-brand-dark);
+  display: flex; align-items: center; gap: var(--rmx-s-4);
+  padding: 0 var(--rmx-s-4);
+  color: #fff;
+}
+/* Logo lockup — the official RMX artwork, 175 x 32. */
+.hdr__brand { display: flex; align-items: center; flex-shrink: 0; height: 32px; cursor: pointer }
+.hdr__logo { display: block; height: 32px; width: auto }
+.hdr__center { flex: 1; display: flex; justify-content: center }
+/* Context buttons are individually rounded with a gap — they are NOT a joined
+   bar. Matches the RMX `Header` component (RMX Components). */
+.hdr__ctxbar { display: flex; align-items: center; height: 32px; gap: 6px }
+.hdr__ctxbtn {
+  height: 32px; width: 39px; border: none;
+  border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-overlay-search);
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  color: #fff;
+  transition: background 150ms ease-out;
+}
+.hdr__ctxbtn:hover { background: #4d6a83 }
+.hdr__search {
+  width: 450px; height: 32px;
+  background: var(--rmx-overlay-search);
+  border-radius: var(--rmx-radius-sm);
+  display: flex; align-items: center; gap: var(--rmx-s-2); padding: 0 var(--rmx-s-3);
+  margin-left: 6px;
+}
+.hdr__search .icon { color: rgba(255,255,255,0.85) }
+.hdr__search-ph { font-size: 12px; font-style: italic; color: rgba(255,255,255,0.7) }
+.hdr__right { display: flex; align-items: center; gap: var(--rmx-s-5); flex-shrink: 0 }
+/* right-hand cluster: company code, bell, avatar */
+.hdr__manage { display: flex; align-items: center; gap: var(--rmx-s-4); flex-shrink: 0 }
+.hdr__bell { color: var(--rmx-brand); cursor: pointer }
+.hdr__code { font-size: 12px; line-height: 14px; text-align: right }
+.hdr__code > div + div { margin-top: 2px }
+.hdr__avatar {
+  width: 30px; height: 30px; border-radius: var(--rmx-radius-pill);
+  background: var(--rmx-brand);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 500;
+}
+
+/* global kill switch */
+.kill {
+  height: 28px; padding: 0 4px 0 10px;
+  display: inline-flex; align-items: center; gap: var(--rmx-s-2);
+  border-radius: var(--rmx-radius-pill);
+  cursor: pointer; font-family: inherit; font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.10);
+  color: #fff;
+  transition: background 150ms ease-out;
+}
+.kill:hover { background: rgba(255,255,255,0.18) }
+.kill__state { font-weight: 500 }
+.kill--on .kill__state { color: var(--rmx-success) }
+.kill--off .kill__state { color: var(--rmx-warning-soft) }
+
+/* ---------- Agents / Agent Findings switcher, as a top tab bar ----------
+   Was a 236px left rail; now a full-width strip using the real Tabs
+   component (see .tab below) instead of the old bespoke rail-item look. */
+.navtabs {
+  display: flex; align-items: center;
+  padding: 0 var(--rmx-s-6);
+  border-bottom: 1px solid var(--rmx-line);
+  background: var(--rmx-bg);
+  flex-shrink: 0;
+}
+.navtabs .tabs { margin-top: 0 }
+.navtabs__status { display: inline-flex; align-items: center; gap: var(--rmx-s-2); font-size: 12px; color: var(--rmx-text-muted) }
+.statusdot { width: 8px; height: 8px; border-radius: var(--rmx-radius-pill); background: var(--rmx-success); display: inline-block; flex-shrink: 0 }
+.statusdot--off { background: var(--rmx-warning-soft) }
+
+/* ============================================================
+   PRIMITIVES
+   ============================================================ */
+
+/* buttons — mirrors window.RMX.Button (primary/secondary/ghost, default 36 / compact 28) */
+.btn {
+  height: 36px; padding: 0 var(--rmx-s-4);
+  border-radius: var(--rmx-radius-sm);
+  font-family: inherit; font-size: 14px; line-height: 20px;
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--rmx-s-2);
+  cursor: pointer;
+  transition: background 150ms ease-out, border-color 150ms ease-out, color 150ms ease-out;
+  white-space: nowrap;
+}
+.btn--primary { background: var(--rmx-brand); color: #fff; border: none }
+.btn--primary:hover { background: var(--rmx-brand-hover) }
+.btn--primary:active { background: var(--rmx-brand-pressed) }
+.btn--secondary { background: var(--rmx-bg); color: var(--rmx-brand); border: 1px solid var(--rmx-brand) }
+.btn--secondary:hover { background: var(--rmx-brand-tint-bg) }
+.btn--neutral { background: var(--rmx-bg); color: var(--rmx-ink-2); border: 1px solid var(--rmx-line) }
+.btn--neutral:hover { background: var(--rmx-bg-subtle) }
+.btn--ghost { background: transparent; color: var(--rmx-brand); border: none; padding: 0; height: auto }
+.btn--ghost:hover { text-decoration: underline }
+.btn--sm { height: 32px; padding: 0 var(--rmx-s-3); font-size: 13px }
+.btn--xs { height: 30px; padding: 0 var(--rmx-s-3); font-size: 13px }
+.btn--compact { height: 28px; padding: 0 10px; font-size: 13px }
+.btn--icon { width: 28px; height: 28px; padding: 0 }
+.btn--icon-sm { width: 26px; height: 26px; padding: 0 }
+.btn--icon-xs { width: 24px; height: 24px; padding: 0 }
+.btn--iconbox {
+  width: 30px; height: 30px; padding: 0;
+  border: 1px solid var(--rmx-line); background: var(--rmx-bg); color: var(--rmx-text);
+}
+.btn--iconbox:hover { background: var(--rmx-bg-subtle) }
+.btn--full { width: 100% }
+.btn--dashed {
+  border: 1px dashed var(--rmx-line); background: var(--rmx-bg); color: var(--rmx-brand);
+  height: 44px;
+}
+.btn--dashed:hover { border-color: var(--rmx-brand); background: var(--rmx-brand-tint-bg) }
+.btn--disabled { background: var(--rmx-line); color: #fff; cursor: not-allowed }
+.btn--disabled:hover { background: var(--rmx-line) }
+
+.linkbtn {
+  border: none; background: transparent; padding: 0; cursor: pointer;
+  font-family: inherit; font-size: 14px; color: var(--rmx-brand);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.linkbtn:hover { color: var(--rmx-brand-hover); text-decoration: underline }
+
+/* fields */
+.field {
+  height: 34px; box-sizing: border-box;
+  border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle);
+  font-family: inherit; font-size: 13px; color: var(--rmx-ink);
+  padding: 0 var(--rmx-s-2); outline: none;
+}
+.field:focus { border-color: var(--rmx-brand); box-shadow: var(--rmx-focus-ring) }
+.field--full { width: 100% }
+.field--lg { height: 38px; font-size: 15px }
+.field--num {
+  border-color: var(--rmx-brand); text-align: center;
+  font-size: 16px; font-weight: 500; color: var(--rmx-brand-pressed);
+  padding: 0 6px;
+}
+.field--right { text-align: right }
+.field--sm { height: 30px }
+.field[disabled] { color: var(--rmx-text-muted); cursor: not-allowed }
+textarea.field { height: auto; min-height: 104px; padding: 10px; line-height: 20px; resize: vertical }
+select.field { padding: 0 6px }
+
+/* a read-only field that stands in for an unwired picker */
+.fauxfield {
+  height: 34px;
+  border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle);
+  display: flex; align-items: center; padding: 0 10px;
+  font-size: 13px; color: var(--rmx-ink);
+}
+.fauxfield--36 { height: 36px; font-size: 14px }
+.fauxfield--32 { height: 32px; background: var(--rmx-bg); color: var(--rmx-ink-2) }
+
+.flabel { font-size: 14px; font-weight: 500; color: var(--rmx-ink); margin-bottom: 6px }
+.flabel--plain { font-weight: 400; color: var(--rmx-text) }
+.fhelp { font-size: 12px; color: var(--rmx-text); margin-top: 6px }
+.fhelp--muted { color: var(--rmx-text-muted) }
+
+/* segmented control */
+.seg { display: flex; border: 1px solid var(--rmx-brand); border-radius: var(--rmx-radius-sm); overflow: hidden; width: fit-content }
+.seg--line { border-color: var(--rmx-line) }
+.seg--fill { width: auto }
+.seg--fill .seg__btn { flex: 1 }
+.seg__btn {
+  height: 34px; padding: 0 var(--rmx-s-3);
+  border: none; cursor: pointer; font-family: inherit; font-size: 13px;
+  background: var(--rmx-bg); color: var(--rmx-brand);
+  transition: background 150ms ease-out;
+  white-space: nowrap;
+}
+.seg--line .seg__btn { border-right: 1px solid var(--rmx-line) }
+.seg--line .seg__btn:last-child { border-right: none }
+.seg__btn:hover { background: var(--rmx-brand-tint-bg) }
+.seg__btn--on { background: var(--rmx-brand); color: #fff; font-weight: 500 }
+.seg__btn--on:hover { background: var(--rmx-brand-hover) }
+.seg__btn--sm { height: 32px }
+.seg__btn--xs { height: 30px; font-size: 12px }
+.seg__btn--xxs { height: 28px; font-size: 12px; padding: 0 10px }
+.seg__btn--26 { height: 26px; font-size: 12px }
+
+/* filter chips */
+.chip {
+  height: 30px; padding: 0 14px;
+  border-radius: var(--rmx-radius-pill);
+  cursor: pointer; font-family: inherit; font-size: 13px;
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line); color: var(--rmx-ink-2);
+  transition: background 150ms ease-out, border-color 150ms ease-out;
+}
+.chip:hover { background: var(--rmx-bg-subtle) }
+.chip--on { background: var(--rmx-brand); border-color: var(--rmx-brand); color: #fff; font-weight: 500 }
+.chip--on:hover { background: var(--rmx-brand-hover) }
+
+/* badges / pills / tags */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 2px var(--rmx-s-2);
+  border-radius: var(--rmx-radius-sm);
+  font-size: 12px; font-weight: 500;
+}
+.badge--health { background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed) }
+.badge--workflow { background: #ede2ff; color: #6b28cc }
+.badge--notification { background: #fdebd9; color: #a85e0e }
+.badge--schedule { background: var(--rmx-success-bg); color: #3f7e1f }
+.badge--neutral { background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line); color: var(--rmx-text) }
+.badge--ok { background: var(--rmx-success-bg); color: #3f7e1f }
+.badge--warn { background: #fdebd9; color: #a85e0e }
+.badge--stop { background: var(--rmx-bg-muted); color: var(--rmx-text) }
+.badge--err { background: #fde3e4; color: #b32026 }
+
+.tag { display: inline-flex; padding: 2px var(--rmx-s-2); border-radius: var(--rmx-radius-sm); font-size: 12px }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--rmx-radius-pill);
+  font-size: 12px; font-weight: 500;
+}
+.pill--orion { background: var(--rmx-bg); border: 1px solid var(--rmx-line); color: var(--rmx-brand-pressed) }
+.pill--orion-soft { background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed) }
+.pill--ok { background: var(--rmx-success-bg); color: #3f7e1f }
+.pill--tier { background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed); padding: 4px 8px 4px 10px; font-weight: 400 }
+.pill--decide { padding: 3px 10px; border-radius: var(--rmx-radius-pill); font-size: 13px; font-weight: 500 }
+
+.lockchip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px; border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
+  font-size: 13px; color: var(--rmx-ink-2);
+  width: fit-content;
+}
+.lockchip .icon { width: 16px; height: 16px; color: var(--rmx-text-muted) }
+.lockchip--card { background: var(--rmx-bg) }
+
+.token {
+  height: 24px; padding: 0 var(--rmx-s-2);
+  border-radius: var(--rmx-radius-sm);
+  border: 1px solid var(--rmx-line); background: var(--rmx-bg);
+  color: var(--rmx-brand-pressed);
+  font-family: var(--rmx-font-mono); font-size: 12px; cursor: pointer;
+}
+.token:hover { background: var(--rmx-brand-tint-bg); border-color: var(--rmx-brand) }
+
+/* toggle */
+.toggle {
+  width: 36px; height: 20px; border-radius: var(--rmx-radius-pill);
+  position: relative; flex-shrink: 0; cursor: pointer;
+  background: var(--rmx-line-strong);
+  transition: background 150ms ease-out;
+  display: inline-block;
+}
+.toggle__knob {
+  position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; border-radius: var(--rmx-radius-pill);
+  background: #fff; box-shadow: var(--rmx-shadow-xs);
+  transition: left 150ms ease-out;
+}
+.toggle--on { background: var(--rmx-brand) }
+.toggle--on .toggle__knob { left: 18px }
+.toggle--locked { cursor: not-allowed; opacity: 0.65 }
+.toggle--sm { width: 32px; height: 18px }
+.toggle--sm .toggle__knob { width: 14px; height: 14px }
+.toggle--sm.toggle--on .toggle__knob { left: 16px }
+
+/* checkbox / radio */
+.check {
+  width: 16px; height: 16px; border-radius: var(--rmx-radius-xs);
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 12px; color: #fff;
+  border: 2px solid var(--rmx-line-strong); background: transparent;
+  flex-shrink: 0;
+  transition: background 150ms ease-out, border-color 150ms ease-out;
+}
+.check--on { border-color: var(--rmx-checkbox-fill); background: var(--rmx-checkbox-fill) }
+/* The findings register's select-all + row checkboxes are RMX Checkbox
+   State=Register, which stays blue even though every other checkbox in
+   this app is State=Default (orange). */
+.tbl .check--on { border-color: var(--rmx-brand); background: var(--rmx-brand) }
+.check--lg { width: 18px; height: 18px; font-size: 13px }
+.radio {
+  width: 16px; height: 16px; border-radius: var(--rmx-radius-pill);
+  border: 2px solid var(--rmx-line-strong);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.radio__dot { width: 8px; height: 8px; border-radius: var(--rmx-radius-pill); background: transparent }
+.radio--on { border-color: var(--rmx-brand) }
+.radio--on .radio__dot { background: var(--rmx-brand) }
+.optrow { display: flex; align-items: center; gap: 9px; font-size: 13px; cursor: pointer; color: var(--rmx-ink-2) }
+.optrow--top { align-items: flex-start; gap: 10px }
+
+/* spinner */
+.spinner {
+  width: 14px; height: 14px; border-radius: var(--rmx-radius-pill);
+  border: 2px solid var(--rmx-line); border-top-color: var(--rmx-brand);
+  animation: rmxSpin 700ms linear infinite;
+  display: inline-block; flex-shrink: 0;
+}
+.spinner--lg { width: 22px; height: 22px; border-width: 3px }
+
+/* cards */
+.card {
+  background: var(--rmx-bg);
+  border: 1px solid var(--rmx-line);
+  border-radius: var(--rmx-radius-sm);
+}
+.card--focus { border-color: var(--rmx-brand) }
+.card--pad { padding: var(--rmx-s-4) 18px }
+.card__head {
+  font-size: 14px; font-weight: 500; color: var(--rmx-brand-dark);
+  padding: var(--rmx-s-3) var(--rmx-s-4);
+  border-bottom: 1px solid var(--rmx-line);
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+}
+.card__head--tint { background: var(--rmx-brand-tint-soft); padding: 14px 18px }
+.card__body { padding: var(--rmx-s-4) 18px }
+.card__foot { padding: var(--rmx-s-3) var(--rmx-s-4); border-top: 1px solid var(--rmx-line) }
+
+.panel {
+  border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-brand-tint-soft);
+}
+.panel__head {
+  padding: var(--rmx-s-3) var(--rmx-s-4);
+  border-bottom: 1px solid var(--rmx-line);
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+}
+.panel__body { padding: var(--rmx-s-3) var(--rmx-s-4); display: flex; flex-direction: column; gap: var(--rmx-s-2) }
+.panel__foot {
+  padding: var(--rmx-s-3) var(--rmx-s-4); border-top: 1px solid var(--rmx-line);
+  display: flex; align-items: center; gap: var(--rmx-s-3);
+}
+
+.restate {
+  padding: 10px var(--rmx-s-3); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-brand-tint-soft); border: 1px solid var(--rmx-line);
+  font-size: 13px; line-height: 19px; color: var(--rmx-ink-2);
+}
+.note {
+  padding: 10px var(--rmx-s-3); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
+  font-size: 12px; line-height: 18px; color: var(--rmx-text);
+}
+.checkline { display: flex; align-items: flex-start; gap: var(--rmx-s-2); font-size: 14px; line-height: 20px; color: var(--rmx-ink-2) }
+.checkline .icon { width: 18px; height: 18px; color: var(--rmx-brand); margin-top: 1px }
+.checkline--sm { font-size: 13px; line-height: 18px; gap: 7px }
+.checkline--sm .icon { width: 16px; height: 16px }
+
+/* banners */
+.banner {
+  padding: var(--rmx-s-3) var(--rmx-s-4);
+  border-radius: var(--rmx-radius-sm);
+  display: flex; align-items: center; gap: var(--rmx-s-3);
+}
+.banner--warn { background: #fdebd9; border: 1px solid rgba(245,130,32,0.35); color: #a85e0e }
+.banner--warn .icon { color: var(--rmx-warning) }
+.banner--info {
+  background: var(--rmx-brand-tint-bg); border: 1px solid var(--rmx-line);
+  color: var(--rmx-brand-pressed);
+}
+.banner--info .icon { color: var(--rmx-brand-pressed) }
+
+/* page header */
+.pagehead { background: var(--rmx-bg); border-bottom: 1px solid var(--rmx-line); padding: var(--rmx-s-5) var(--rmx-s-6) 0 }
+.pagehead--pad { padding: var(--rmx-s-5) var(--rmx-s-6) var(--rmx-s-4) }
+.pagehead--tight { padding: var(--rmx-s-4) var(--rmx-s-6) }
+.pagehead--tabs { padding: var(--rmx-s-4) var(--rmx-s-6) 0; flex-shrink: 0 }
+.pagehead__title { font-size: 28px; line-height: 36px }
+.pagehead__title--sm { font-size: 24px; line-height: 32px }
+.crumbs { display: flex; align-items: center; gap: 6px; font-size: 12px; margin-bottom: 6px }
+.crumbs .icon { width: 14px; height: 14px; color: var(--rmx-text-muted) }
+.crumbs__now { color: var(--rmx-brand-dark) }
+
+/* tabs — RMX Components "Tabs" (Actions & Controls), verified against Figma
+   node 244:2547: a fixed-height-48 frame, py/px Spacing/md(16)/xs(8), 2px
+   bottom border on Selected=True only, Web/Label/M/SemiBold throughout —
+   weight stays 600 in BOTH states, only the border and text color change. */
+.tabs { display: flex; align-items: flex-start; margin-top: 14px }
+.tab {
+  padding: var(--rmx-s-4) var(--rmx-s-2); border: none; background: transparent; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1;
+  border-bottom: 2px solid transparent;
+  color: var(--rmx-text);
+  display: inline-flex; align-items: center; gap: var(--rmx-s-2);
+  transition: color 150ms ease-out, border-color 150ms ease-out;
+}
+.tab:hover { color: var(--rmx-brand) }
+.tab--on { border-bottom-color: var(--rmx-brand); color: var(--rmx-brand-dark) }
+.tab__count {
+  min-width: 20px; height: 18px; padding: 0 6px;
+  border-radius: var(--rmx-radius-pill);
+  background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
+  font-size: 11px; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--rmx-text);
+}
+/* A count that needs attention (unread, open) rather than just stating a
+   total gets the filled treatment instead of .tab__count's neutral outline. */
+.tab__badge {
+  min-width: 22px; height: 18px; padding: 0 6px;
+  border-radius: var(--rmx-radius-pill);
+  background: var(--rmx-brand); color: #fff;
+  font-size: 11px; font-weight: 500;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.msgtabs { display: flex; padding: 0 18px; border-bottom: 1px solid var(--rmx-line) }
+.msgtab {
+  padding: 10px var(--rmx-s-4); border: none; background: transparent; cursor: pointer;
+  font-family: inherit; font-size: 14px;
+  border-bottom: 3px solid transparent; color: var(--rmx-text);
+}
+.msgtab--on { border-bottom-color: var(--rmx-brand); color: var(--rmx-brand-dark); font-weight: 500 }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+/* overflow-x here, not on .screen, is what keeps a too-narrow window's
+   horizontal scroll scoped to the register's own rows. */
+.tbl { background: var(--rmx-bg); border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm); overflow-x: auto }
+.tbl__head {
+  display: grid; align-items: center;
+  padding: 10px var(--rmx-s-4);
+  background: var(--rmx-bg-subtle);
+  border-bottom: 1px solid var(--rmx-line);
+  font-size: 12px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--rmx-text);
+}
+.tbl__row {
+  display: grid; align-items: center;
+  padding: var(--rmx-s-3) var(--rmx-s-4);
+  border-bottom: 1px solid var(--rmx-line-soft);
+  transition: background 150ms ease-out;
+}
+.tbl__row--click { cursor: pointer }
+.tbl__row--click:hover { background: var(--rmx-bg-subtle) }
+.tbl__row:last-child { border-bottom: none }
+.tbl__group { border-bottom: 1px solid var(--rmx-line-soft) }
+.tbl__group:last-child { border-bottom: none }
+.right { text-align: right }
+.acts { display: flex; justify-content: flex-end; gap: 4px }
+
+/* compact density (props.density = Compact) */
+.dense .tbl__row { padding-top: var(--rmx-s-2); padding-bottom: var(--rmx-s-2) }
+
+/* grid templates, one per table in the design */
+.g-agents { grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px }
+.g-findings { grid-template-columns: 40px minmax(190px,1.2fr) 130px minmax(240px,2fr) 108px minmax(210px,1.5fr) 150px }
+.g-inbox { grid-template-columns: minmax(190px,1.1fr) minmax(180px,1fr) 120px minmax(240px,1.9fr) 100px 140px }
+.g-runs { grid-template-columns: 190px minmax(200px,1.4fr) 140px 150px 160px }
+.g-schedprev { grid-template-columns: minmax(200px,1.2fr) 150px 120px 120px 90px 150px }
+.g-quickprev { grid-template-columns: 200px 1fr 130px; gap: var(--rmx-s-3) }
+.g-picker { grid-template-columns: minmax(0,1.5fr) minmax(0,1fr) 120px; gap: var(--rmx-s-3) }
+.g-replay { grid-template-columns: minmax(230px,1.1fr) minmax(300px,1.4fr) 210px 34px; gap: var(--rmx-s-3) }
+.g-recipients { grid-template-columns: minmax(0,1.1fr) minmax(0,1.2fr) 110px 34px }
+
+.recname { font-size: 14px; color: var(--rmx-brand) }
+.recsub { font-size: 12px; color: var(--rmx-text-muted) }
+
+/* ============================================================
+   SCREEN: agent library
+   ============================================================ */
+.filterbar { display: flex; align-items: center; gap: var(--rmx-s-2); margin-top: var(--rmx-s-4); padding-bottom: var(--rmx-s-4) }
+.libtable { margin: var(--rmx-s-4) var(--rmx-s-6) var(--rmx-s-6) }
+/* RMX registers ship two header styles: Style=Register (gray, full-page)
+   and Style=Table (white, in-Tile). The Agent Library list reads as
+   content sitting directly on the white page rather than a boxed table,
+   so its header uses Style=Table's white instead of .tbl__head's default
+   gray Style=Register. */
+.libtable .tbl__head { background: var(--rmx-bg) }
+.libbanner { margin: var(--rmx-s-4) var(--rmx-s-6) 0 }
+.agentcell { display: flex; align-items: center; gap: 10px; min-width: 0 }
+.agentcell__name { color: var(--rmx-brand); font-size: 14px }
+.agentcell__mode { font-size: 12px; color: var(--rmx-text-muted); display: flex; align-items: center; gap: 6px }
+.orionmark { display: inline-flex; align-items: center; gap: 5px; color: var(--rmx-brand-pressed); font-size: 12px }
+.orionmark svg { display: block }
+
+/* ============================================================
+   SCREEN: templates
+   ============================================================ */
+.tplgrid {
+  padding: var(--rmx-s-5) var(--rmx-s-6) var(--rmx-s-8);
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: var(--rmx-s-5);
+}
+.tplcard {
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+  padding: 18px; display: flex; flex-direction: column; gap: var(--rmx-s-3);
+  cursor: pointer;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+}
+.tplcard:hover { border-color: var(--rmx-brand); box-shadow: var(--rmx-shadow-card) }
+.tplcard__name { font-size: 16px; font-weight: 500; color: var(--rmx-brand-dark) }
+.tplcard__desc { font-size: 13px; line-height: 19px; color: var(--rmx-text); margin-top: 4px }
+.tplcard__specs { border-top: 1px solid var(--rmx-line-soft); padding-top: var(--rmx-s-3); display: flex; flex-direction: column; gap: 6px }
+.tplspec { display: flex; gap: var(--rmx-s-2); font-size: 12px }
+.tplspec__k { color: var(--rmx-text-muted); width: 64px; flex-shrink: 0 }
+.tplspec__v { color: var(--rmx-ink-2) }
+
+/* ============================================================
+   SCREEN: quick agent
+   ============================================================ */
+.quickwrap { max-width: 940px; margin: 0 auto; padding: 28px var(--rmx-s-6) 48px }
+.quickcard {
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line);
+  border-radius: var(--rmx-radius-md); padding: var(--rmx-s-8);
+}
+.sentence { display: grid; grid-template-columns: 64px 1fr; row-gap: var(--rmx-s-5); column-gap: var(--rmx-s-3); align-items: start }
+.sentence__lead { font-size: 20px; font-weight: 500; color: var(--rmx-brand-dark); padding-top: var(--rmx-s-2) }
+.sentence__lead--sm { font-size: 15px; font-weight: 500; color: var(--rmx-text); padding-top: 14px }
+.picker {
+  width: 100%; min-height: 48px; padding: 10px 14px;
+  border-radius: var(--rmx-radius-sm); border: 1px solid var(--rmx-line);
+  background: var(--rmx-bg-subtle);
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; font-family: inherit; text-align: left;
+  transition: border-color 150ms ease-out;
+}
+.picker:hover { border-color: var(--rmx-brand) }
+.picker__text { flex: 1; font-size: 18px; line-height: 26px; color: var(--rmx-ink) }
+.picker__text--ph { color: var(--rmx-text-muted); font-style: italic }
+.dd {
+  position: absolute; z-index: 40; left: 0; right: 0; margin-top: 4px;
+  max-height: 380px; overflow: auto;
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line);
+  border-radius: var(--rmx-radius-sm); box-shadow: var(--rmx-shadow-popup);
+  padding: 6px 0; animation: rmxFade 150ms ease-out;
+}
+.dd__opt { padding: var(--rmx-s-2) 14px; font-size: 14px; color: var(--rmx-ink-2); cursor: pointer; display: flex; align-items: center; gap: var(--rmx-s-2) }
+.dd__opt:hover { background: var(--rmx-brand-tint-bg) }
+.dd__group {
+  padding: 10px 14px 4px; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--rmx-text-muted); font-weight: 500; cursor: default;
+}
+.dd__group:hover { background: transparent }
+.dd__opt--dis { color: var(--rmx-text-muted); font-style: italic; cursor: not-allowed }
+.dd__opt--dis:hover { background: transparent }
+
+.detbox {
+  border: 1px solid var(--rmx-brand); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg); box-shadow: var(--rmx-focus-ring); overflow: hidden;
+}
+.detbox__head {
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+  padding: var(--rmx-s-2) var(--rmx-s-3);
+  background: var(--rmx-brand-tint-bg); border-bottom: 1px solid var(--rmx-line);
+}
+.detbox__body { padding: 14px }
+.segments {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--rmx-s-2);
+  margin-top: 14px; font-size: 18px; line-height: 32px; color: var(--rmx-ink);
+}
+.segments--inspector {
+  gap: 6px; margin-top: 10px; padding: 10px;
+  border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-brand-tint-soft); border: 1px solid var(--rmx-line);
+  font-size: 14px; line-height: 28px;
+}
+.slot {
+  height: 34px; box-sizing: border-box;
+  border: 1px solid var(--rmx-brand); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle); text-align: center;
+  font-family: inherit; font-size: 16px; font-weight: 500; color: var(--rmx-brand-pressed);
+  outline: none; padding: 0 4px;
+}
+.slot:focus { box-shadow: var(--rmx-focus-ring) }
+.segments--inspector .slot { height: 28px; font-size: 13px; background: var(--rmx-bg) }
+
+.condrow { display: grid; grid-template-columns: 1fr 120px 1fr 30px; gap: var(--rmx-s-2); align-items: center }
+.optgrid { margin-top: var(--rmx-s-4); display: grid; grid-template-columns: 1fr 1fr; gap: var(--rmx-s-5) }
+.cfggrid { padding: var(--rmx-s-4); display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+.span2 { grid-column: 1 / -1 }
+
+/* ============================================================
+   SCREEN: agent detail — settings drawers
+   ============================================================ */
+.settings {
+  background: var(--rmx-brand-tint-soft); border-bottom: 1px solid var(--rmx-line);
+  padding: var(--rmx-s-4) var(--rmx-s-6);
+  display: grid; grid-template-columns: 1.6fr 1.4fr 1fr; gap: var(--rmx-s-6);
+  animation: rmxFade 180ms ease-out; flex-shrink: 0;
+}
+.settings--rule {
+  background: var(--rmx-bg-subtle);
+  grid-template-columns: repeat(3, 1fr); gap: var(--rmx-s-5) var(--rmx-s-6);
+}
+.settings__line { font-size: 14px; color: var(--rmx-ink-2) }
+
+/* ---------- build canvas ---------- */
+.canvaswrap { flex: 1; display: flex; min-height: 0 }
+.palette {
+  width: 76px; flex-shrink: 0; background: var(--rmx-bg);
+  border-right: 1px solid var(--rmx-line);
+  padding: var(--rmx-s-3) 0;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.palette__label { font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--rmx-text-muted); margin-bottom: 2px }
+.palette__btn {
+  width: 60px; padding: var(--rmx-s-2) 0;
+  border-radius: var(--rmx-radius-sm); border: 1px dashed var(--rmx-line);
+  background: var(--rmx-bg); cursor: grab;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-family: inherit; font-size: 10px;
+  transition: border-color 150ms ease-out, background 150ms ease-out;
+}
+.palette__btn:hover { border-color: var(--rmx-brand); background: var(--rmx-brand-tint-bg) }
+
+.canvas {
+  flex: 1; min-width: 0; position: relative; overflow: auto;
+  background-color: var(--rmx-bg-subtle);
+  background-image: radial-gradient(var(--rmx-line) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.canvas__inner { position: relative; margin: 0 auto; transition: filter 150ms ease-out }
+.canvas__svg { position: absolute; inset: 0; pointer-events: none }
+.canvas__veil {
+  position: absolute; inset: 0; z-index: 20;
+  background: rgba(245,248,250,0.72);
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 120px;
+}
+.canvas__veilcard {
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line);
+  border-radius: var(--rmx-radius-md); box-shadow: var(--rmx-shadow-popup);
+  padding: var(--rmx-s-5) var(--rmx-s-6); max-width: 360px; text-align: center;
+}
+.node {
+  position: absolute; box-sizing: border-box;
+  border-radius: var(--rmx-radius-sm); cursor: pointer;
+  transition: box-shadow 150ms ease-out, border-color 150ms ease-out;
+  background: var(--rmx-bg); padding: 10px var(--rmx-s-3);
+  display: flex; flex-direction: column; gap: 6px;
+  border: 1px solid var(--rmx-line);
+}
+.node:hover { border-color: var(--rmx-brand) }
+.node--on { border: 2px solid var(--rmx-brand); box-shadow: var(--rmx-shadow-card) }
+.node__top { display: flex; align-items: center; gap: 6px }
+.node__kind { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500 }
+.node__title { font-size: 13px; line-height: 18px; color: var(--rmx-brand-dark); font-weight: 500 }
+.node__sub { font-size: 12px; line-height: 16px; color: var(--rmx-text) }
+.node__meta { font-size: 11px; color: var(--rmx-text-muted); font-family: var(--rmx-font-mono) }
+
+.inspector {
+  width: 376px; flex-shrink: 0; background: var(--rmx-bg);
+  border-left: 1px solid var(--rmx-line); overflow: auto;
+}
+.inspector__head {
+  padding: 14px var(--rmx-s-4); border-bottom: 1px solid var(--rmx-line);
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+  position: sticky; top: 0; background: var(--rmx-bg); z-index: 5;
+}
+.inspector__kind { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
+.inspector__title { font-size: 14px; font-weight: 500; color: var(--rmx-brand-dark) }
+.inspector__body { padding: var(--rmx-s-4); display: flex; flex-direction: column; gap: 18px }
+.inspector__body--tight { gap: 14px }
+
+/* ---------- rule editors ---------- */
+.rulewrap { flex: 1; overflow: auto; background: var(--rmx-bg-subtle); padding: var(--rmx-s-5) var(--rmx-s-6) var(--rmx-s-8) }
+.rulegrid { display: grid; grid-template-columns: minmax(0,1fr) 372px; gap: var(--rmx-s-5); align-items: start }
+.rulecol { display: flex; flex-direction: column; gap: var(--rmx-s-5) }
+.phrase {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--rmx-s-2);
+  font-size: 16px; line-height: 34px; color: var(--rmx-ink);
+}
+.phrase__fixed {
+  padding: 0 10px; height: 34px; display: inline-flex; align-items: center;
+  border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed); font-weight: 500;
+}
+.togglerow {
+  display: flex; align-items: flex-start; gap: var(--rmx-s-3);
+  padding: var(--rmx-s-3) 0; border-bottom: 1px solid var(--rmx-line-soft); cursor: pointer;
+}
+.togglerow:last-child { border-bottom: none }
+.togglerow__label { display: block; font-size: 14px; color: var(--rmx-ink) }
+.togglerow__help { display: block; font-size: 12px; color: var(--rmx-text); margin-top: 2px }
+.reciprow {
+  display: flex; align-items: center; gap: 10px;
+  padding: var(--rmx-s-2) var(--rmx-s-3);
+  border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle);
+}
+.runrow {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px var(--rmx-s-4); border-bottom: 1px solid var(--rmx-line-soft); font-size: 13px;
+}
+.runrow:last-child { border-bottom: none }
+.scopechip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px var(--rmx-s-3); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed); font-size: 14px;
+}
+.audbtn {
+  min-width: 150px; text-align: left; padding: 10px 14px;
+  border-radius: var(--rmx-radius-sm); cursor: pointer; font-family: inherit;
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line); color: var(--rmx-ink-2);
+  transition: border-color 150ms ease-out;
+}
+.audbtn:hover { border-color: var(--rmx-brand) }
+.audbtn--on { background: var(--rmx-brand-tint-bg); border: 1px solid var(--rmx-brand); color: var(--rmx-brand-pressed) }
+.audbtn__title { display: flex; align-items: center; gap: var(--rmx-s-2); font-size: 14px; font-weight: 500 }
+.audbtn__dot { width: 8px; height: 8px; border-radius: var(--rmx-radius-pill) }
+.audbtn__meta { display: block; font-size: 12px; color: var(--rmx-text); margin-top: 4px }
+.audbtn--add {
+  min-width: 110px; border: 1px dashed var(--rmx-line); color: var(--rmx-brand);
+  font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  text-align: center;
+}
+
+/* AR sequence */
+.arstep { display: flex; gap: 14px }
+.arstep__rail { width: 96px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding-top: 18px }
+.arstep__day { font-family: var(--rmx-font-mono); font-size: 13px; font-weight: 500; color: var(--rmx-brand-pressed) }
+.arstep__dot { width: 10px; height: 10px; border-radius: var(--rmx-radius-pill); margin-top: var(--rmx-s-2) }
+.arstep__line { flex: 1; width: 2px; background: var(--rmx-line); min-height: 24px }
+.arstep__main { flex: 1; min-width: 0; padding-bottom: var(--rmx-s-4) }
+.arstep__card { border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm); background: var(--rmx-bg) }
+.arstep__card--off { background: var(--rmx-bg-subtle) }
+.arstep__head { padding: 14px var(--rmx-s-4); display: flex; align-items: center; gap: var(--rmx-s-3); cursor: pointer; flex-wrap: wrap }
+.arstep__no { font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
+.arstep__title { font-size: 15px; font-weight: 500 }
+.arstep__restate { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2); margin-top: 4px }
+.arstep__facts { display: flex; gap: 6px; flex-shrink: 0 }
+.fact {
+  padding: 3px 9px; border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
+  font-size: 12px; color: var(--rmx-ink-2);
+}
+.arstep__open { padding: 0 var(--rmx-s-4) var(--rmx-s-4); animation: rmxFade 180ms ease-out }
+.arstep__cols { border-top: 1px solid var(--rmx-line); padding-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px }
+.tier { border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm); padding: var(--rmx-s-3) }
+
+/* ---------- findings tab ---------- */
+.statbar {
+  display: flex; align-items: center; gap: 28px;
+  padding: 14px 18px; background: var(--rmx-bg);
+  border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+}
+.stat__value { font-size: 20px; font-weight: 500; margin-top: 2px; color: var(--rmx-brand-dark) }
+.toolbar { display: flex; align-items: center; gap: var(--rmx-s-2); margin: var(--rmx-s-4) 0 var(--rmx-s-3) }
+.bulkbar {
+  display: flex; align-items: center; gap: var(--rmx-s-3);
+  padding: 10px var(--rmx-s-4);
+  background: var(--rmx-brand-tint-bg); border: 1px solid var(--rmx-brand);
+  border-radius: var(--rmx-radius-sm); margin-bottom: -1px;
+  animation: rmxFade 150ms ease-out;
+}
+.finding--sel { background: var(--rmx-brand-tint-bg) }
+.finding--dismissed { background: var(--rmx-bg-subtle) }
+.expand { padding: 0 14px 18px 60px; animation: rmxFade 180ms ease-out }
+.expand__card {
+  border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-brand-tint-soft); padding: var(--rmx-s-4);
+  display: grid; grid-template-columns: 1.3fr 1fr; gap: 18px;
+}
+.expand__card--replay { grid-template-columns: 1.2fr 1fr; gap: var(--rmx-s-5) }
+.expand__text { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2) }
+.reclink { font-size: 13px; display: flex; align-items: center; gap: 6px }
+.datachip {
+  padding: 2px var(--rmx-s-2); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line);
+  font-size: 12px; color: var(--rmx-text);
+}
+
+/* ---------- runs tab ---------- */
+.empty { padding: 40px var(--rmx-s-6); text-align: center }
+.empty--lock { padding: 56px var(--rmx-s-6) }
+.empty__title { font-size: 16px; font-weight: 500; color: var(--rmx-brand-dark); margin-top: var(--rmx-s-2) }
+.empty__title--lg { font-size: 18px }
+.empty__text { font-size: 14px; margin-top: 6px; max-width: 520px; margin-left: auto; margin-right: auto }
+.replayhead {
+  padding: var(--rmx-s-3) var(--rmx-s-4); background: var(--rmx-brand-tint-soft);
+  border-bottom: 1px solid var(--rmx-line);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+}
+.strike { text-decoration: line-through; color: var(--rmx-text) }
+
+/* ============================================================
+   SCREEN: findings inbox
+   ============================================================ */
+.inboxstats { display: flex; align-items: center; gap: 26px; margin-top: 14px }
+.inboxstat__v { font-size: 20px; font-weight: 500; color: var(--rmx-brand-dark); margin-top: 2px }
+.todowrap { padding: var(--rmx-s-5) var(--rmx-s-6) var(--rmx-s-10); display: flex; flex-direction: column; gap: var(--rmx-s-6); max-width: 1200px }
+.todogroup__head { display: flex; align-items: baseline; gap: var(--rmx-s-3); padding-bottom: 10px }
+.todogroup__accent { width: 4px; height: 16px; border-radius: var(--rmx-radius-xs) }
+.todogroup__label { font-size: 16px; font-weight: 500; color: var(--rmx-brand-dark) }
+.todo { display: flex; align-items: flex-start; gap: var(--rmx-s-3); padding: 14px var(--rmx-s-4); border-bottom: 1px solid var(--rmx-line-soft) }
+.todo:last-child { border-bottom: none }
+.todo__head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.todo__rec { font-size: 14px; font-weight: 500; color: var(--rmx-brand-dark) }
+.todo__why { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2); margin-top: 4px }
+.todo__meta { display: flex; align-items: center; gap: var(--rmx-s-3); margin-top: 6px; flex-wrap: wrap }
+.todo__right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: var(--rmx-s-2) }
+.todo--done .todo__rec, .todo--done .todo__issue { text-decoration: line-through; color: var(--rmx-text-muted) }
+.agentlink { display: inline-flex; align-items: center; gap: 5px; font-size: 12px }
+
+/* ============================================================
+   DIALOGS / TOAST
+   ============================================================ */
+.overlay {
+  position: fixed; inset: 0; background: rgba(19,49,76,0.45);
+  display: flex; align-items: center; justify-content: center; z-index: 200;
+  animation: rmxFade 150ms ease-out;
+}
+.dlg {
+  width: 520px; background: var(--rmx-bg);
+  border-radius: var(--rmx-radius-md); box-shadow: var(--rmx-shadow-popup); overflow: hidden;
+}
+.dlg--action { width: 660px }
+.formgrid { display: flex; flex-wrap: wrap; gap: 12px 14px; margin-top: 6px }
+.formfield { width: 200px }
+.formfield--full { width: 100% }
+.forminput {
+  height: 34px; display: flex; align-items: center; padding: 0 10px;
+  border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg); font-size: 14px; color: var(--rmx-ink);
+}
+.forminput--ro { background: var(--rmx-bg-subtle); color: var(--rmx-text) }
+.forminput--focus { border-color: var(--rmx-brand); font-weight: 500 }
+.guardnote {
+  display: flex; gap: 8px; align-items: flex-start;
+  background: #fdebd9; border-radius: var(--rmx-radius-sm);
+  padding: 10px 12px; font-size: 12px; line-height: 17px; color: #a85e0e;
+}
+.actionblock {
+  background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
+  border-radius: var(--rmx-radius-sm); padding: 14px 16px;
+}
+.dlg--wide { width: 640px; max-height: 78vh; display: flex; flex-direction: column }
+.dlg__head { padding: var(--rmx-s-4) var(--rmx-s-6); border-bottom: 1px solid var(--rmx-line) }
+.dlg__body { padding: var(--rmx-s-6); display: flex; flex-direction: column; gap: 14px }
+.dlg__scroll { overflow: auto; flex: 1 }
+.dlg__foot {
+  padding: var(--rmx-s-3) var(--rmx-s-6); border-top: 1px solid var(--rmx-line);
+  background: var(--rmx-bg-subtle);
+  display: flex; justify-content: flex-end; gap: var(--rmx-s-3);
+}
+.dlg__warn { display: flex; gap: var(--rmx-s-3); padding: var(--rmx-s-3); border-radius: var(--rmx-radius-sm); background: #fdebd9; color: #a85e0e }
+.dlg__warn .icon { width: 20px; height: 20px }
+.reason {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; cursor: pointer; padding: var(--rmx-s-2) 10px;
+  border-radius: var(--rmx-radius-sm);
+  border: 1px solid var(--rmx-line); background: var(--rmx-bg); color: var(--rmx-ink-2);
+  transition: border-color 150ms ease-out, background 150ms ease-out;
+}
+.reason:hover { border-color: var(--rmx-brand) }
+.reason--on { border-color: var(--rmx-brand); background: var(--rmx-brand-tint-bg) }
+.pickrow {
+  display: grid; align-items: center;
+  padding: var(--rmx-s-3) var(--rmx-s-6);
+  border-bottom: 1px solid var(--rmx-line-soft); cursor: pointer;
+  transition: background 150ms ease-out;
+}
+.pickrow:hover { background: var(--rmx-bg-subtle) }
+
+.toast {
+  position: fixed; right: var(--rmx-s-6); bottom: var(--rmx-s-6); z-index: 300;
+  display: flex; align-items: center; gap: var(--rmx-s-3);
+  padding: var(--rmx-s-3) var(--rmx-s-4); border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg); border: 1px solid var(--rmx-line);
+  box-shadow: var(--rmx-shadow-popup);
+  animation: rmxRise 220ms ease-out; max-width: 420px;
+}
+
+/* text-message preview */
+.smsphone { background: var(--rmx-brand-dark); border-radius: 18px; padding: 14px var(--rmx-s-3) }
+.smsphone__time { font-size: 11px; color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 10px }
+.smsphone__bubble {
+  background: var(--rmx-bg); border-radius: 14px 14px 14px 4px; padding: 10px var(--rmx-s-3);
+  font-size: 13px; line-height: 19px; color: var(--rmx-ink); white-space: pre-wrap;
+}
+.smsphone__foot { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: var(--rmx-s-2); padding-left: 4px }
+.mailpreview { border: 1px solid var(--rmx-line); border-radius: var(--rmx-radius-sm); overflow: hidden }
+.mailpreview__head { padding: 10px var(--rmx-s-3); background: var(--rmx-bg-subtle); border-bottom: 1px solid var(--rmx-line) }
+.mailpreview__body { padding: var(--rmx-s-3); font-size: 13px; line-height: 20px; color: var(--rmx-ink-2); white-space: pre-wrap; min-height: 190px }
+
+/* ============================================================
+   RENT MANAGER SHELL — Workspace, Administration, main menu
+   ============================================================ */
+
+/* ---------- My Workspace ----------
+   Background is the real RMX_Background artwork (RMX-Iconography,
+   doVDYRtepBULKGZntmmS5B, node 6:4644) — the hatch, blobs, wave and dot
+   grid are baked into that asset, not approximated with gradients.
+   Tile widths are fluid (fav/rep : ann/training ~= 1.78 : 1, matching the
+   canonical 558/558/314/314 ratio) so the row fits any width down to the
+   shell's 1320px floor without a horizontal scrollbar; side padding scales
+   with the same clamp. */
+.wsscreen {
+  position: relative;
+  padding: 28px clamp(24px, 7vw, 135px) 32px;
+  background-color: #eef6fc;
+  background-image: url('../assets/ws-background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+}
+
+.wsgreet { position: relative; z-index: 1; text-align: center; margin-bottom: 33px }
+.wsgreet__hi { font-size: 24px; line-height: 32px; font-weight: 400; color: #575353 }
+.wsgreet__sub { font-size: 20px; line-height: 28px; font-weight: 400; color: #575353; margin-top: 8px }
+
+.wstiles { position: relative; z-index: 1; display: flex; gap: 16px; align-items: flex-start; width: 100% }
+.wstile {
+  display: flex; flex-direction: column; height: 580px; min-width: 0;
+  background: var(--rmx-bg);
+  border-top: 4px solid var(--rmx-brand);
+  border-radius: var(--rmx-radius-sm);
+  box-shadow: 0 4px 10px -10px rgba(76,76,76,0.1), 1px 2px 12px 1px rgba(76,76,76,0.1);
+  overflow: hidden;
+}
+/* flex-basis carries the real design ratio (558:558:314:314) and shrinks together */
+.wstile--fav, .wstile--rep { flex: 558 1 0 }
+.wstile--ann, .wstile--training { flex: 314 1 0 }
+.wstile__head {
+  height: 44px; flex-shrink: 0; display: flex; align-items: center;
+  gap: var(--rmx-s-2); padding: 0 var(--rmx-s-4);
+}
+.wstile__title { font-size: 20px; line-height: 28px; font-weight: 400; color: var(--rmx-text) }
+.wstile__headicon { display: flex; cursor: pointer }
+.wstile__body { flex: 1; min-height: 0; overflow: auto; padding: 16px }
+
+/* group cards inside a tile */
+.wscols { display: flex; gap: 16px; align-items: flex-start }
+.wscol { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px }
+.wsgroup {
+  border-radius: var(--rmx-radius-sm);
+  padding: 8px 16px; background: var(--rmx-bg);
+  box-shadow: 0 4px 5px rgba(76,76,76,0.1), 1px 2px 6px rgba(76,76,76,0.1);
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.wsgroup__icon {
+  width: 42px; height: 42px; flex-shrink: 0; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+.wsgroup__col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px }
+.wsgroup__name { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--rmx-text) }
+.wslink { display: block; font-size: 14px; line-height: normal; color: var(--rmx-brand); text-decoration: none }
+.wslink:hover { text-decoration: underline }
+
+/* announcements */
+.wsann__bar {
+  display: flex; align-items: center; gap: var(--rmx-s-3);
+  padding-bottom: 8px; font-size: 12px;
+}
+.wsann__bar a { color: var(--rmx-brand); text-decoration: none }
+.wsann__bar a:hover { text-decoration: underline }
+.wsann {
+  border-radius: var(--rmx-radius-sm);
+  padding: 8px 12px; margin-bottom: 8px;
+  box-shadow: 0 4px 7.5px rgba(76,76,76,0.08), 2px 2px 6px rgba(76,76,76,0.08);
+}
+.wsann__top { display: flex; align-items: flex-start; gap: var(--rmx-s-2) }
+.wsann__title { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--rmx-brand-dark) }
+.wsann__badge {
+  flex-shrink: 0; font-size: 14px; font-weight: 600;
+  padding: 4px 8px; border-radius: var(--rmx-radius-sm); color: #fff;
+  background: var(--rmx-brand-pressed);
+}
+.wsann__date { font-size: 12px; font-style: italic; color: var(--rmx-text-muted); margin-top: 4px }
+.wsann__thumb {
+  margin: 8px 0; border-radius: 2px; overflow: hidden; background: var(--rmx-bg-subtle);
+}
+.wsann__thumb img { display: block; width: 100%; height: 102px; object-fit: cover }
+.wsann__text { font-size: 14px; line-height: 20px; color: var(--rmx-text); margin-top: 8px }
+.wsann__links { display: flex; align-items: center; justify-content: space-between; margin-top: 8px }
+.wsann__link { font-size: 14px; color: var(--rmx-brand); text-decoration: none }
+.wsann__link:hover { text-decoration: underline }
+
+/* My Training — RMU sign-in card */
+.wstrain {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding: 24px 12px 32px; border-radius: 5px; background: var(--rmx-bg);
+  box-shadow: 0 10px 10px -5px rgba(76,76,76,0.15), 1px 2px 12px 1px rgba(76,76,76,0.14);
+}
+.wstrain__logo { width: 144px; height: auto; display: block }
+.wstrain__copy { font-size: 14px; line-height: 20px; color: var(--rmx-text); text-align: center }
+.wstrain__field {
+  width: 100%; height: 36px; display: flex; align-items: center; gap: 4px;
+  border: 1px solid var(--rmx-line); padding: 0 8px; background: var(--rmx-bg);
+}
+.wstrain__placeholder { font-size: 14px; color: var(--rmx-text-muted) }
+.wstrain__signin {
+  height: 36px; padding: 0 16px; border: none; border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-warning); color: #fff; font-size: 14px; cursor: pointer;
+  font-family: inherit;
+}
+.wstrain__signin:hover { filter: brightness(0.95) }
+
+/* restore chips for tiles hidden via the eye-slash */
+.wshidden {
+  position: relative; z-index: 1; display: flex; justify-content: flex-end;
+  gap: 16px; margin-top: 16px;
+}
+.wschip {
+  display: flex; align-items: center; gap: 4px;
+  background: transparent; border: none; cursor: pointer; padding: 0;
+  font-family: inherit; font-size: 14px; color: var(--rmx-brand-dark);
+}
+.wschip:hover { text-decoration: underline }
+
+/* ---------- Administration ----------
+   1:1 with RMX-Pages node 4620:157756 "Administration Menu": a white
+   title bar (real admin-menu logo, "Administration", a blue-bordered
+   search field), the Mega Menu rail (see .adminrail above) as a jump-nav,
+   and every category's real content in one continuous scroll. */
+.admintitle {
+  display: flex; align-items: center; gap: var(--rmx-s-5);
+  padding: 0 var(--rmx-s-5); min-height: 74px; background: var(--rmx-bg);
+  border-bottom: 1px solid var(--rmx-line); flex-shrink: 0;
+}
+.admintitle .adminicon { flex-shrink: 0 }
+.admintitle__h { font-size: 24px; line-height: 32px; font-weight: 400; color: var(--rmx-brand-dark); margin: 0 }
+.admintitle__find {
+  height: 36px; width: 188px; flex-shrink: 0; display: flex; align-items: center; gap: var(--rmx-s-1);
+  padding: 0 var(--rmx-s-2); border: 1px solid var(--rmx-brand);
+  border-radius: var(--rmx-radius-sm); background: var(--rmx-bg);
+}
+.admintitle__findtext { font-size: 14px; font-style: italic; color: var(--rmx-text-muted) }
+.adminbody { flex: 1; display: flex; min-height: 0 }
+.admincontent { flex: 1; min-width: 0; overflow: auto; background: var(--rmx-bg); padding: var(--rmx-s-4) var(--rmx-s-8) }
+
+.adminsection { margin-bottom: var(--rmx-s-8) }
+.adminsection__head {
+  font-size: 16px; font-weight: 600; color: var(--rmx-admin-blue);
+  width: 200px; padding-bottom: var(--rmx-s-1); margin-bottom: var(--rmx-s-4);
+  border-bottom: 2px solid var(--rmx-admin-blue);
+}
+.admingroup { margin-bottom: var(--rmx-s-6) }
+.admingroup__sub { font-size: 14px; font-weight: 600; color: var(--rmx-admin-blue); margin-bottom: var(--rmx-s-4) }
+/* 4 columns at the design's own 1920 width (content area ~1624px / 4 ~=
+   the real 394px card), reflowing to fewer as the fluid app narrows
+   rather than squeezing 4 illegibly thin ones. */
+.admingrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: var(--rmx-s-6) var(--rmx-s-4) }
+.adminitem { display: flex; gap: var(--rmx-s-2); align-items: center; min-width: 0 }
+.adminitem--click { cursor: pointer; border-radius: var(--rmx-radius-sm) }
+.adminitem--click:hover .adminitem__title { color: var(--rmx-brand-hover); text-decoration: underline }
+.adminitem__icon { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center }
+.adminitem__text { display: flex; flex-direction: column; gap: var(--rmx-s-1); min-width: 0 }
+.adminitem__title { font-size: 14px; font-weight: 400; color: var(--rmx-brand-dark) }
+.adminitem__desc { font-size: 12px; line-height: normal; font-style: italic; color: var(--rmx-text) }
+.admingrid--links { display: flex; flex-wrap: wrap; gap: 0 }
+.admingrid--links .adminlink {
+  width: 394px; height: 32px; display: flex; align-items: center;
+  font-size: 14px; color: var(--rmx-brand-dark);
+}
+.admingrid--links .adminlink:hover { color: var(--rmx-brand-hover); text-decoration: underline }
+.adminempty { padding: 40px 0; text-align: center }
+
+/* ---------- main menu ---------- */
+.menuscrim {
+  position: fixed; inset: 0; background: rgba(19,49,76,0.45);
+  z-index: 210; animation: rmxFade 120ms ease-out;
+}
+/* 1:1 with the Mega Menu Overlay frame (RMX-Pages 5XEzI94nmZsWE7rQQ7OIHP,
+   node 4077:83116): 1384 wide, 94px header + 445px body, radius-md (8px).
+   Those are the real design at its own native canvas width, but this shell
+   is often narrower than that, so the panel is genuinely responsive rather
+   than a scaled-down copy: width caps at min(1384px, 96vw), the header's
+   fixed 80px side padding becomes a clamp so it gives way first, and the
+   content grid (.menucols, already flex-wrap) and footer (below) wrap
+   organically instead of overflowing. Type sizes stay as designed. */
+.menupanel {
+  position: fixed; top: 52px; left: 50%; transform: translateX(-50%);
+  width: min(1384px, 96vw); max-height: calc(100vh - 72px); z-index: 211;
+  background: var(--rmx-bg); border-radius: 8px;
+  border: 1px solid var(--rmx-line);
+  box-shadow: 0 12px 40px rgba(19,49,76,0.28);
+  display: flex; flex-direction: column; overflow: hidden;
+  animation: rmxFade 140ms ease-out;
+}
+.menupanel__top {
+  min-height: 94px; flex-shrink: 0; display: flex; align-items: center; flex-wrap: wrap;
+  padding: var(--rmx-s-2) var(--rmx-s-5); border-bottom: 1px solid var(--rmx-line);
+}
+.menupanel__brand { flex-shrink: 0; display: flex; align-items: center; gap: var(--rmx-s-5) }
+.menupanel__logo { width: 40px; height: 40px; display: block }
+.menupanel__word { font-size: 24px; line-height: 32px; color: var(--rmx-brand-dark) }
+.menupanel__nav {
+  flex: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--rmx-s-3); padding: 0 clamp(16px, 4vw, 80px);
+}
+.menutop {
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+  background: none; border: 0; padding: 0; border-radius: var(--rmx-radius-sm);
+  font-family: inherit; font-size: 14px; line-height: 20px; color: var(--rmx-brand-dark); cursor: pointer;
+}
+.menutop:hover { text-decoration: underline }
+.menutop--on { font-weight: 500 }
+.menupanel__x {
+  position: absolute; top: 8px; right: 8px; width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: 0; cursor: pointer; color: var(--rmx-brand-hover); padding: 0;
+}
+
+.menupanel__body { display: flex; min-height: 445px; flex: 1; min-width: 0; overflow: auto; position: relative }
+/* Base look shared by both real instances of the Mega Menu rail component
+   -- the header's Main Menu overlay (items inset to 212px inside a 224px
+   rail, needing the ribbon/blue-extension bridge below) and the
+   Administration page's rail (items full-width at 232px, no bridge
+   needed) -- but the two use the component at different real widths, so
+   sizing is overridden per context rather than shared. */
+.menurail {
+  width: 224px; flex-shrink: 0; padding: 8px 12px 12px 0;
+  border-right: 1px solid var(--rmx-line);
+  display: flex; flex-direction: column; align-items: flex-end; gap: var(--rmx-s-3);
+}
+.menumod {
+  position: relative; width: 212px; min-height: 28px; overflow: visible;
+  display: flex; align-items: center;
+  background: none; border: 0; padding: 4px var(--rmx-s-4);
+  font-family: inherit; font-size: 18px; line-height: 24px; color: var(--rmx-brand-hover); cursor: pointer;
+}
+/* hover: a rounded chip hugging just the label, not the full row */
+.menumod:not(.menumod--on) .menumod__label { border-radius: var(--rmx-radius-sm); padding: 2px 6px; margin: -2px -6px }
+.menumod:not(.menumod--on):hover .menumod__label { background: var(--rmx-brand-hover); color: #fff }
+.menumod--on { color: #fff; font-weight: 500 }
+/* The selected row's fill (rectangle + ribbon tail) is one continuous
+   SVG path -- see SA.railRibbon() in ui.js -- specifically so there is
+   no seam between "the rectangle" and "the rectangle with the triangle":
+   two independently anti-aliased shapes meeting at an edge show a
+   hairline even at identical colors, because each edge's anti-aliasing
+   blends toward the (different) background behind it. One path has only
+   one outer edge, so there is nothing for a seam to form between. Sized
+   in the markup itself (width/height/viewBox depend on which rail this
+   is -- see the two call sites), absolutely positioned behind the label. */
+.menumod__shape { position: absolute; top: 0; left: 0; z-index: 0; fill: var(--rmx-brand-hover) }
+.menumod--on .menumod__label { position: relative; z-index: 1 }
+
+/* Administration page's rail: same component, real width 232 (not 224),
+   items rendered full-width (not inset to 212) -- see NOTES.md. The
+   divider sits 12px inset from the rail's own right edge, drawn as its
+   own layer (real spec: an absolutely-positioned "Background" sibling,
+   not a plain border on the rail box) so the selected item's full-width
+   fill and ribbon can cross over it exactly like the design does. */
+.adminrail {
+  position: relative; width: 232px; padding: 8px 0 12px; border-right: 0;
+}
+.adminrail::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 220px;
+  border-right: 1px solid var(--rmx-line); pointer-events: none;
+}
+/* White, not the app shell's gray -- this rail sits on its own, not
+   inside the .app background. */
+.adminrail { background: var(--rmx-bg) }
+.adminrail .menumod { width: 232px; z-index: 1 }
+/* Hover here is just a cursor affordance -- no chip, no color change
+   (that treatment is specific to the header's Main Menu overlay). */
+.adminrail .menumod:not(.menumod--on) .menumod__label { border-radius: 0; padding: 0; margin: 0 }
+.adminrail .menumod:not(.menumod--on):hover .menumod__label { background: none; color: inherit }
+
+.menucontent { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: var(--rmx-s-2) 0 0 }
+.menucols {
+  flex: 1; min-height: 0; display: flex; flex-wrap: wrap;
+  gap: var(--rmx-s-2); align-items: flex-start;
+  /* Left padding is bigger than the right on purpose: content starts
+     16px after the ribbon's own right edge (which sits 13px past the
+     rail divider), not just after the divider itself. */
+  padding: 0 var(--rmx-s-2) 0 21px;
+}
+.menucol { min-width: 0; flex: 0 1 auto; max-width: 220px; padding: var(--rmx-s-2) }
+.menucol__head {
+  font-size: 14px; font-weight: 600; color: var(--rmx-brand-hover);
+  padding-bottom: var(--rmx-s-1); margin-bottom: var(--rmx-s-3);
+  border-bottom: 1px solid var(--rmx-brand-hover);
+  white-space: nowrap;
+}
+/* .menucol .menulink, not just .menulink -- a bare single-class selector
+   here loses the cascade to the earlier ".rmx a" rule (which sets the
+   bright brand blue, for ordinary links) since ".rmx a" is more specific;
+   qualifying with the parent is what actually wins so this renders the
+   real text-secondary navy the design calls for. */
+.menucol .menulink {
+  display: block; font-size: 14px; line-height: normal;
+  color: var(--rmx-brand-dark); text-decoration: none; white-space: normal;
+  margin-bottom: var(--rmx-s-3);
+}
+.menucol .menulink:last-child { margin-bottom: 0 }
+.menucol .menulink:hover { color: var(--rmx-brand-hover); text-decoration: underline }
+
+.menufoot {
+  flex-shrink: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--rmx-s-4) var(--rmx-s-6);
+  padding: var(--rmx-s-2) var(--rmx-s-4);
+}
+.menufoot__btn {
+  display: flex; align-items: center; gap: var(--rmx-s-2);
+  background: none; border: 0; padding: 0; cursor: pointer;
+  font-family: inherit; font-size: 14px; color: var(--rmx-brand-dark);
+}
+.menufoot__btn:hover { color: var(--rmx-brand-hover) }
+.menufoot__ver { font-size: 14px; color: var(--rmx-text) }
+
+/* ---------- Rent Manager form dialog (finding resolution) ---------- */
+.dlg--form { width: 720px; max-width: calc(100vw - 80px) }
+.dlg__body--form { display: flex; flex-direction: column; gap: var(--rmx-s-4) }
+
+.rmnote {
+  display: flex; gap: 8px; align-items: flex-start;
+  padding: 8px 10px; border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-brand-tint-bg); color: var(--rmx-brand-pressed);
+  font-size: 12px; line-height: 16px;
+}
+.rmsec__head {
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500;
+  color: var(--rmx-brand); padding-bottom: 6px; margin-bottom: 12px;
+  border-bottom: 1px solid var(--rmx-line);
+}
+.rmform { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px }
+.rmfield { display: flex; flex-direction: column; min-width: 0 }
+.rmfield--full { grid-column: 1 / -1 }
+.rmfield--check { flex-direction: row; align-items: center; gap: 8px; cursor: pointer }
+.rmfield__label { font-size: 12px; color: var(--rmx-text); margin-bottom: 4px }
+.rmfield__req { color: var(--rmx-error) }
+.rmfield__help { font-size: 11px; line-height: 15px; color: var(--rmx-text-muted); margin-top: 4px }
+.rmfield--ro .field { background: #eef3f7; color: var(--rmx-text) }
+.rmfield__area { height: auto; padding: 6px 8px; line-height: 16px; resize: vertical }
+
+.whytoggle {
+  align-self: flex-start; display: flex; align-items: center; gap: 4px;
+  background: none; border: 0; padding: 0; font-family: inherit;
+  font-size: 12px; color: var(--rmx-brand); cursor: pointer;
+}
+.whybody {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 12px 14px; border-radius: var(--rmx-radius-sm);
+  background: var(--rmx-bg-subtle); border: 1px solid var(--rmx-line);
+}
+.whybody__k { font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rmx-text-muted) }
+.whybody__v { font-size: 13px; line-height: 19px; color: var(--rmx-ink-2) }
+.field--32 { height: 32px }
+
+/* bell with its unread count, and the menu button lit while the menu is open */
+.hdr__bellwrap { position: relative; display: inline-flex; cursor: pointer }
+.hdr__bellbadge {
+  position: absolute; top: -3px; right: -6px; min-width: 15px; height: 15px;
+  padding: 0 4px; box-sizing: border-box; border-radius: 8px;
+  background: var(--rmx-error); color: #fff;
+  font-size: 10px; line-height: 15px; font-weight: 500; text-align: center;
+}
+.hdr__ctxbtn--on { background: var(--rmx-brand); color: #fff }
+
+/* canvas editing: remove an added node, or reset the whole canvas */
+.inspector__rm {
+  background: none; border: 0; padding: 4px; cursor: pointer; border-radius: var(--rmx-radius-sm);
+  color: var(--rmx-text-muted); display: flex; align-items: center;
+}
+.inspector__rm:hover { background: #fdebd9; color: var(--rmx-error) }
+.palette__reset {
+  align-self: stretch; margin-top: auto; padding: 8px 8px 4px;
+  border-top: 1px solid var(--rmx-line-soft);
+}
+.palette__resetbtn {
+  width: 100%; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: none; border: 0; padding: 6px 0; cursor: pointer; border-radius: var(--rmx-radius-sm);
+  font-family: inherit; font-size: 11px; color: var(--rmx-text-muted);
+}
+.palette__resetbtn:hover { background: var(--rmx-bg-subtle); color: var(--rmx-brand) }

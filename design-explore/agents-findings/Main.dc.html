@@ -1,0 +1,277 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --brand:#008dd5; --brand-hover:#0071aa; --brand-pressed:#195ca4; --brand-dark:#13314c;
+    --tint-bg:#ebf1f5; --tint-soft:#f5f8fa;
+    --ink2:#424e5b; --text:#666666; --muted:#b3b3b3;
+    --line:#cedbe7; --line-soft:#ebf1f5; --line-strong:#ccc;
+    --bg:#ffffff; --bg-subtle:#f5f8fa;
+    --success:#6eb744; --success-bg:#e2f1da; --green:#3f7e1f;
+    --workflow-bg:#ede2ff; --workflow-ink:#6b28cc;
+    --radius:4px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--bg); }
+  a { color: var(--brand); text-decoration: none; }
+  a:hover { color: var(--brand-hover); text-decoration: underline; }
+</style>
+</helmet>
+
+<div style="width:1160px; padding:40px; background:var(--bg);">
+
+  <!-- ===================== AGENT LIBRARY ===================== -->
+  <div style="display:flex; align-items:flex-end; gap:16px; margin-bottom:14px;">
+    <div style="flex:1;">
+      <div style="font-size:28px; line-height:36px; font-weight:500; color:var(--brand-dark);">Smart Agents</div>
+      <div style="font-size:13px; margin-top:6px; display:flex; align-items:baseline; gap:6px;">
+        <span style="color:var(--brand-dark); font-weight:500;">Agents</span><span>&mdash;</span>
+        <span>Orion detects, decides, and acts &mdash; every run leaves its reasoning behind.</span>
+      </div>
+    </div>
+    <button style="height:36px; padding:0 16px; border:none; border-radius:var(--radius); background:var(--brand); color:#fff; font-size:14px; font-weight:400; display:inline-flex; align-items:center; gap:8px; cursor:pointer;">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M15.8334 10.8333H10.8334V15.8333H9.16669V10.8333H4.16669V9.16666H9.16669V4.16666H10.8334V9.16666H15.8334V10.8333Z"/></svg>
+      New Agent
+    </button>
+  </div>
+  <div style="text-align:right; font-size:12px; color:var(--muted); margin-bottom:8px;">5 items</div>
+
+  <div style="border:1px solid var(--line); border-radius:var(--radius); background:var(--bg);">
+    <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--line); font-size:12px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; color:var(--text); background:var(--bg);">
+      <div>Agent</div><div>Type</div><div>Trigger / Schedule</div><div>Last Run</div><div>Current State</div><div style="text-align:right;">Enabled</div>
+    </div>
+
+    <!-- row: Move-In Charge Integrity -->
+    <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line-soft); cursor:pointer;">
+      <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+        <svg width="20" height="20" viewBox="0 -960 960 960" style="color:var(--brand-pressed); flex-shrink:0;" fill="currentColor"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg>
+        <div style="min-width:0;">
+          <div style="font-size:14px; color:var(--brand);">Move-In Charge Integrity</div>
+          <div style="font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; margin-top:2px;">
+            Agent workflow
+            <span style="display:inline-flex; align-items:center; gap:4px; color:var(--brand-pressed);">
+              <svg width="16" height="16" viewBox="0 0 20 20"><path d="M 0.13 3.67 C -0.04 3.74 -0.04 3.98 0.13 4.06 C 1.72 4.69 2.98 5.97 3.61 7.59 C 3.68 7.77 3.93 7.77 3.99 7.59 C 4.62 5.97 5.88 4.69 7.48 4.06 C 7.65 3.98 7.65 3.74 7.48 3.67 C 5.88 3.03 4.62 1.75 3.99 0.13 C 3.93 -0.04 3.68 -0.04 3.61 0.13 C 2.98 1.75 1.72 3.03 0.13 3.67 Z" fill="#6eb744" transform="translate(4.61 7.76)"/><path d="M 0.17 4.8 C -0.06 4.89 -0.06 5.22 0.17 5.31 C 2.26 6.15 3.91 7.82 4.74 9.94 C 4.82 10.17 5.15 10.17 5.24 9.94 C 6.06 7.82 7.71 6.15 9.8 5.31 C 10.03 5.22 10.03 4.89 9.8 4.8 C 7.71 3.97 6.06 2.29 5.24 0.17 C 5.15 -0.06 4.82 -0.06 4.74 0.17 C 3.91 2.29 2.26 3.97 0.17 4.8 Z" fill="#008dd5" transform="translate(8.99 1)"/><path d="M 0.09 2.59 C -0.03 2.63 -0.03 2.81 0.09 2.86 C 1.22 3.31 2.1 4.21 2.55 5.35 C 2.6 5.48 2.77 5.48 2.82 5.35 C 3.26 4.21 4.15 3.31 5.27 2.86 C 5.39 2.81 5.39 2.63 5.27 2.59 C 4.15 2.14 3.26 1.23 2.82 0.09 C 2.77 -0.03 2.59 -0.03 2.55 0.09 C 2.1 1.23 1.22 2.13 0.09 2.59 Z" fill="#13314c" transform="translate(1.37 13.26)"/><path d="M 10.7 1.07 C 10.72 1.16 10.73 1.25 10.74 1.34 C 10.74 1.36 10.75 1.37 10.75 1.39 C 10.76 1.47 10.77 1.55 10.77 1.63 C 10.78 1.67 10.78 1.71 10.78 1.75 C 10.79 1.81 10.79 1.87 10.79 1.93 C 10.8 2.04 10.8 2.14 10.8 2.25 C 10.8 6.16 7.62 9.35 3.71 9.35 C 3.59 9.35 3.47 9.34 3.35 9.34 C 3.32 9.34 3.3 9.33 3.27 9.33 C 3.18 9.32 3.08 9.32 2.99 9.31 C 2.97 9.31 2.95 9.3 2.92 9.3 C 2.83 9.29 2.73 9.28 2.63 9.26 C 2.62 9.26 2.6 9.26 2.59 9.25 C 2.48 9.24 2.38 9.22 2.28 9.2 C 2.27 9.2 2.26 9.19 2.25 9.19 C 2.14 9.17 2.03 9.14 1.93 9.11 C 1.93 9.11 1.92 9.11 1.92 9.11 C 1.58 9.02 1.24 8.91 0.91 8.77 C 0.56 8.99 0.25 9.27 0 9.6 C 0.57 9.89 1.16 10.11 1.78 10.26 C 1.79 10.26 1.8 10.26 1.81 10.26 C 1.95 10.29 2.08 10.32 2.21 10.35 C 2.25 10.35 2.29 10.36 2.33 10.36 C 2.44 10.38 2.55 10.4 2.66 10.41 C 2.7 10.42 2.75 10.42 2.8 10.43 C 2.9 10.44 3.01 10.45 3.13 10.46 C 3.17 10.46 3.21 10.47 3.26 10.47 C 3.41 10.48 3.56 10.48 3.71 10.48 C 8.25 10.48 11.94 6.79 11.94 2.25 C 11.94 2.07 11.94 1.9 11.93 1.73 C 11.92 1.69 11.92 1.65 11.92 1.61 C 11.9 1.44 11.89 1.28 11.87 1.12 C 11.87 1.12 11.87 1.11 11.86 1.1 C 11.84 0.92 11.81 0.74 11.77 0.57 C 11.77 0.55 11.76 0.54 11.76 0.53 C 11.72 0.36 11.68 0.19 11.63 0.02 C 11.63 0.01 11.63 0 11.63 0 C 11.29 0.32 10.98 0.68 10.7 1.07 L 10.7 1.07 Z" fill="#13314c" transform="translate(5.56 8.52)"/><path d="M 10.48 0.31 C 10.48 0.31 10.47 0.31 10.47 0.31 C 10.3 0.26 10.13 0.22 9.95 0.18 C 9.94 0.18 9.93 0.18 9.91 0.18 C 9.74 0.14 9.56 0.11 9.39 0.08 C 9.38 0.08 9.37 0.08 9.36 0.08 C 9.2 0.06 9.04 0.04 8.88 0.03 C 8.84 0.03 8.8 0.02 8.76 0.02 C 8.58 0.01 8.41 0 8.24 0 C 3.7 0 0 3.69 0 8.23 C 0 8.39 0 8.54 0.01 8.69 C 0.01 8.74 0.02 8.78 0.02 8.82 C 0.03 8.93 0.04 9.04 0.05 9.15 C 0.06 9.2 0.06 9.24 0.07 9.29 C 0.09 9.4 0.1 9.51 0.12 9.62 C 0.13 9.66 0.13 9.69 0.14 9.73 C 0.16 9.86 0.19 10 0.22 10.13 C 0.22 10.14 0.23 10.15 0.23 10.16 C 0.38 10.78 0.6 11.38 0.89 11.95 C 1.22 11.69 1.5 11.38 1.71 11.02 C 1.71 11.02 1.71 11.02 1.71 11.02 C 1.67 10.91 1.62 10.81 1.58 10.7 C 1.58 10.7 1.58 10.7 1.58 10.69 C 1.54 10.58 1.5 10.47 1.47 10.36 C 1.44 10.25 1.4 10.14 1.37 10.03 C 1.37 10.02 1.37 10.02 1.37 10.02 C 1.34 9.91 1.32 9.8 1.3 9.69 C 1.3 9.69 1.29 9.68 1.29 9.67 C 1.27 9.57 1.25 9.46 1.24 9.36 C 1.23 9.34 1.23 9.33 1.23 9.31 C 1.21 9.22 1.2 9.12 1.19 9.02 C 1.19 9 1.18 8.98 1.18 8.96 C 1.17 8.86 1.17 8.77 1.16 8.67 C 1.16 8.65 1.16 8.62 1.15 8.6 C 1.15 8.48 1.15 8.36 1.15 8.24 C 1.15 4.33 4.33 1.14 8.24 1.14 C 8.35 1.14 8.45 1.15 8.56 1.15 C 8.62 1.15 8.69 1.16 8.75 1.16 C 8.79 1.17 8.83 1.17 8.86 1.17 C 8.95 1.18 9.03 1.19 9.12 1.2 C 9.13 1.2 9.14 1.2 9.15 1.21 C 9.25 1.22 9.34 1.23 9.43 1.25 C 9.81 0.97 10.17 0.66 10.49 0.32 L 10.48 0.31 Z" fill="#008dd5" transform="translate(1.03 2.53)"/></svg>
+              Orion
+            </span>
+          </div>
+        </div>
+      </div>
+      <div><span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius); display:inline-block;">Data health</span></div>
+      <div style="font-size:13px; color:var(--ink2);">Nightly</div>
+      <div style="font-size:13px; color:var(--ink2);">Today 2:04am</div>
+      <div style="font-size:13px; color:var(--brand);">9 open findings</div>
+      <div style="display:flex; justify-content:flex-end;">
+        <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+      </div>
+    </div>
+
+    <!-- row: Vendor W-9 Compliance -->
+    <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line-soft); cursor:pointer;">
+      <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+        <svg width="20" height="20" viewBox="0 -960 960 960" style="color:var(--brand-pressed); flex-shrink:0;" fill="currentColor"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg>
+        <div style="min-width:0;">
+          <div style="font-size:14px; color:var(--brand);">Vendor W-9 Compliance</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:2px;">Quick agent</div>
+        </div>
+      </div>
+      <div><span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius); display:inline-block;">Data health</span></div>
+      <div style="font-size:13px; color:var(--ink2);">Weekly</div>
+      <div style="font-size:13px; color:var(--ink2);">Mon 5:01am</div>
+      <div style="font-size:13px; color:var(--brand);">3 open findings</div>
+      <div style="display:flex; justify-content:flex-end;">
+        <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+      </div>
+    </div>
+
+    <!-- row: Missing Resident Data -->
+    <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line-soft); cursor:pointer;">
+      <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+        <svg width="20" height="20" viewBox="0 -960 960 960" style="color:var(--brand-pressed); flex-shrink:0;" fill="currentColor"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg>
+        <div style="min-width:0;">
+          <div style="font-size:14px; color:var(--brand);">Missing Resident Data</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:2px;">Quick agent</div>
+        </div>
+      </div>
+      <div><span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius); display:inline-block;">Data health</span></div>
+      <div style="font-size:13px; color:var(--ink2);">Weekly</div>
+      <div style="font-size:13px; color:var(--ink2);">Mon 4:31am</div>
+      <div style="font-size:13px; color:var(--brand);">12 open findings</div>
+      <div style="display:flex; justify-content:flex-end;">
+        <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+      </div>
+    </div>
+
+    <!-- row: Credit Approval -->
+    <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line-soft); cursor:pointer;">
+      <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+        <svg width="20" height="20" viewBox="0 -960 960 960" style="color:var(--workflow-ink); flex-shrink:0;" fill="currentColor"><path d="M600-120v-120H440v-400h-80v120H80v-320h280v120h240v-120h280v320H600v-120h-80v320h80v-120h280v320H600ZM160-760v160-160Zm520 400v160-160Zm0-400v160-160Zm0 160h120v-160H680v160Zm0 400h120v-160H680v160ZM160-600h120v-160H160v160Z"/></svg>
+        <div style="min-width:0;">
+          <div style="font-size:14px; color:var(--brand);">Credit Approval</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:2px;">Agent workflow</div>
+        </div>
+      </div>
+      <div><span style="background:var(--workflow-bg); color:var(--workflow-ink); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius); display:inline-block;">Workflow</span></div>
+      <div style="font-size:13px; color:var(--ink2);">A credit is added to a tenant ledger</div>
+      <div style="font-size:13px; color:var(--ink2);">Today 10:04am</div>
+      <div style="font-size:13px; color:var(--text);">7 decisions today</div>
+      <div style="display:flex; justify-content:flex-end;">
+        <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+      </div>
+    </div>
+
+    <!-- row: Bill Approval (last, no border) -->
+    <div style="display:grid; grid-template-columns: minmax(260px,2.2fr) 132px minmax(200px,1.5fr) 128px minmax(150px,1fr) 88px; align-items:center; padding:16px 20px; cursor:pointer;">
+      <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+        <svg width="20" height="20" viewBox="0 -960 960 960" style="color:var(--workflow-ink); flex-shrink:0;" fill="currentColor"><path d="M600-120v-120H440v-400h-80v120H80v-320h280v120h240v-120h280v320H600v-120h-80v320h80v-120h280v320H600ZM160-760v160-160Zm520 400v160-160Zm0-400v160-160Zm0 160h120v-160H680v160Zm0 400h120v-160H680v160ZM160-600h120v-160H160v160Z"/></svg>
+        <div style="min-width:0;">
+          <div style="font-size:14px; color:var(--brand);">Bill Approval</div>
+          <div style="font-size:12px; color:var(--muted); margin-top:2px;">Agent workflow</div>
+        </div>
+      </div>
+      <div><span style="background:var(--workflow-bg); color:var(--workflow-ink); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius); display:inline-block;">Workflow</span></div>
+      <div style="font-size:13px; color:var(--ink2);">An invoice is received</div>
+      <div style="font-size:13px; color:var(--ink2);">Today 11:26am</div>
+      <div style="font-size:13px; color:var(--text);">19 invoices today</div>
+      <div style="display:flex; justify-content:flex-end;">
+        <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== AGENT FINDINGS ===================== -->
+  <div style="margin-top:48px; padding-top:32px; border-top:1px solid var(--line-soft);">
+    <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:16px;">
+      <div style="font-size:24px; line-height:32px; font-weight:500; color:var(--brand-dark);">Move-In Charge Integrity</div>
+      <span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:12px; font-weight:500; padding:3px 9px; border-radius:var(--radius);">Data health</span>
+      <span style="font-size:13px; color:var(--text);">Nightly</span>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:26px; padding:16px 20px; border:1px solid var(--line); border-radius:var(--radius); margin-bottom:16px;">
+      <div>
+        <div style="font-size:12px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Last scan</div>
+        <div style="font-size:14px; color:var(--brand-dark); margin-top:2px;">Today 2:04am &middot; Nightly</div>
+      </div>
+      <div style="width:1px; height:36px; background:var(--line);"></div>
+      <div>
+        <div style="font-size:12px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Open</div>
+        <div style="font-size:20px; font-weight:500; color:var(--brand-dark); margin-top:2px;">9</div>
+      </div>
+      <div>
+        <div style="font-size:12px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Dismissed</div>
+        <div style="font-size:20px; font-weight:500; color:var(--text); margin-top:2px;">0</div>
+      </div>
+      <div>
+        <div style="font-size:12px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Fixed today</div>
+        <div style="font-size:20px; font-weight:500; color:var(--green); margin-top:2px;">0</div>
+      </div>
+      <div>
+        <div style="font-size:12px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Unbilled or at risk</div>
+        <div style="font-size:20px; font-weight:500; color:var(--brand-dark); margin-top:2px;">$6,710.00</div>
+      </div>
+      <div style="flex:1;"></div>
+      <div style="font-size:12px; color:var(--muted); max-width:220px; text-align:right;">A queue of what was found &mdash; not a log of what was done.</div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+      <span style="height:32px; padding:0 10px; border:1px solid var(--line); border-radius:var(--radius); font-size:13px; color:var(--ink2); display:inline-flex; align-items:center; gap:6px; background:#fff;">All properties (3) <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" style="color:var(--text);"><path d="M5.83334 7.91669L10 12.0834L14.1667 7.91669H5.83334Z"/></svg></span>
+      <span style="height:32px; padding:0 10px; border:1px solid var(--line); border-radius:var(--radius); font-size:13px; color:var(--ink2); display:inline-flex; align-items:center; gap:6px; background:#fff;">All finding types <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" style="color:var(--text);"><path d="M5.83334 7.91669L10 12.0834L14.1667 7.91669H5.83334Z"/></svg></span>
+      <span style="height:32px; padding:0 10px; border:1px solid var(--line); border-radius:var(--radius); font-size:13px; color:var(--ink2); display:inline-flex; align-items:center; gap:6px; background:#fff;">Any age <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" style="color:var(--text);"><path d="M5.83334 7.91669L10 12.0834L14.1667 7.91669H5.83334Z"/></svg></span>
+      <div style="flex:1;"></div>
+      <span style="font-size:13px; color:var(--text);">Sort</span>
+      <span style="height:30px; padding:0 12px; border-radius:999px; background:var(--brand); color:#fff; font-size:12px; font-weight:500; display:inline-flex; align-items:center;">Age</span>
+      <span style="height:30px; padding:0 12px; border-radius:999px; border:1px solid var(--line); color:var(--ink2); font-size:12px; display:inline-flex; align-items:center;">Impact</span>
+    </div>
+
+    <div style="border:1px solid var(--line); border-radius:var(--radius); background:var(--bg);">
+      <div style="display:grid; grid-template-columns: 40px minmax(190px,1.2fr) 130px minmax(240px,2fr) 108px minmax(210px,1.5fr) 150px; align-items:center; padding:10px 16px; background:var(--bg-subtle); border-bottom:1px solid var(--line); font-size:12px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; color:var(--text);">
+        <div></div><div>Record</div><div>Property</div><div>What's Wrong</div><div>Detected</div><div>Suggested Fix</div><div style="text-align:right;">Actions</div>
+      </div>
+
+      <!-- row: LSE-10473 collapsed -->
+      <div style="display:grid; grid-template-columns: 40px minmax(190px,1.2fr) 130px minmax(240px,2fr) 108px minmax(210px,1.5fr) 150px; align-items:center; padding:14px 16px; border-bottom:1px solid var(--line-soft);">
+        <div style="width:16px; height:16px; border:2px solid var(--line-strong); border-radius:2px;"></div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" style="color:var(--muted);"><path d="M8.08748 5L6.91248 6.175L10.7291 10L6.91248 13.825L8.08748 15L13.0875 10L8.08748 5Z"/></svg>
+          <div><div style="font-size:14px; color:var(--brand);">LSE-10473</div><div style="font-size:12px; color:var(--muted); margin-top:1px;">Ethan Whitfield</div></div>
+        </div>
+        <div style="font-size:13px; color:var(--ink2);">Oak Park Flats</div>
+        <div style="font-size:13px; color:var(--ink2);">No recurring charge 21 days after move-in</div>
+        <div style="font-size:13px; color:var(--text);">21 days ago</div>
+        <div style="font-size:13px; color:var(--ink2);">Add recurring rent $1,290.00/mo</div>
+        <div style="text-align:right;"><span style="height:28px; padding:0 12px; border:1px solid var(--brand); color:var(--brand); border-radius:var(--radius); font-size:13px; display:inline-flex; align-items:center;">Add Charge</span></div>
+      </div>
+
+      <!-- row: LSE-10442 expanded -->
+      <div style="border-bottom:1px solid var(--line-soft); background:var(--tint-bg);">
+        <div style="display:grid; grid-template-columns: 40px minmax(190px,1.2fr) 130px minmax(240px,2fr) 108px minmax(210px,1.5fr) 150px; align-items:center; padding:14px 16px;">
+          <div style="width:16px; height:16px; border:2px solid var(--brand); background:var(--brand); border-radius:2px; display:flex; align-items:center; justify-content:center;"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 6.2L4.7 9L10 3" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" style="color:var(--ink2);"><path d="M5.83334 7.91669L10 12.0834L14.1667 7.91669H5.83334Z"/></svg>
+            <div><div style="font-size:14px; color:var(--brand);">LSE-10442</div><div style="font-size:12px; color:var(--muted); margin-top:1px;">Marcus Alvarez</div></div>
+          </div>
+          <div style="font-size:13px; color:var(--ink2);">Maple Grove</div>
+          <div style="font-size:13px; color:var(--ink2);">No recurring charge 12 days after move-in</div>
+          <div style="font-size:13px; color:var(--text);">12 days ago</div>
+          <div style="font-size:13px; color:var(--ink2);">Add recurring rent $1,485.00/mo</div>
+          <div style="text-align:right;"><span style="height:28px; padding:0 12px; border:1px solid var(--brand); color:var(--brand); border-radius:var(--radius); font-size:13px; display:inline-flex; align-items:center;">Add Charge</span></div>
+        </div>
+        <div style="padding:0 16px 20px 60px; display:grid; grid-template-columns:1.3fr 1fr; gap:24px;">
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div>
+              <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); font-weight:500; margin-bottom:4px;">What was found</div>
+              <div style="font-size:13px; line-height:19px; color:var(--ink2);">The lease was signed on Aug 19 with a move-in date of Aug 19 and monthly rent of $1,485.00. No active recurring charge exists on the lease as of today.</div>
+            </div>
+            <div>
+              <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); font-weight:500; margin-bottom:4px;">Why it matters</div>
+              <div style="font-size:13px; line-height:19px; color:var(--ink2);">September rent will not post for this unit. The balance will read $0.00 and no late fee logic will ever engage.</div>
+            </div>
+            <div>
+              <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); font-weight:500; margin-bottom:4px;">Suggested fix</div>
+              <div style="font-size:13px; line-height:19px; color:var(--ink2);">Create the recurring rent charge for $1,485.00 effective Sep 1, then back-date the August proration of $717.10.</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div>
+              <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); font-weight:500; margin-bottom:6px;">Records involved</div>
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <span style="font-size:13px; color:var(--brand); display:flex; align-items:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M6.66665 15H13.3333V13.3333H6.66665V15ZM6.66665 11.6667H13.3333V9.99999H6.66665V11.6667ZM4.99998 18.3333C4.54165 18.3333 4.14929 18.1701 3.8229 17.8437C3.49651 17.5174 3.33331 17.125 3.33331 16.6667V3.33332C3.33331 2.87499 3.49651 2.48263 3.8229 2.15624C4.14929 1.82985 4.54165 1.66666 4.999 1.66666H11.6667L16.6667 6.66666V16.6667C16.6667 17.125 16.5035 17.5174 16.1771 17.8437C15.8507 18.1701 15.4583 18.3333 15 18.3333H4.99998Z"/></svg>LSE-10442 &mdash; Lease</span>
+                <span style="font-size:13px; color:var(--brand); display:flex; align-items:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M6.66665 15H13.3333V13.3333H6.66665V15ZM6.66665 11.6667H13.3333V9.99999H6.66665V11.6667ZM4.99998 18.3333C4.54165 18.3333 4.14929 18.1701 3.8229 17.8437C3.49651 17.5174 3.33331 17.125 3.33331 16.6667V3.33332C3.33331 2.87499 3.49651 2.48263 3.8229 2.15624C4.14929 1.82985 4.54165 1.66666 4.999 1.66666H11.6667L16.6667 6.66666V16.6667C16.6667 17.125 16.5035 17.5174 16.1771 17.8437C15.8507 18.1701 15.4583 18.3333 15 18.3333H4.99998Z"/></svg>UNIT 12-B &mdash; Maple Grove</span>
+                <span style="font-size:13px; color:var(--brand); display:flex; align-items:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M6.66665 15H13.3333V13.3333H6.66665V15ZM6.66665 11.6667H13.3333V9.99999H6.66665V11.6667ZM4.99998 18.3333C4.54165 18.3333 4.14929 18.1701 3.8229 17.8437C3.49651 17.5174 3.33331 17.125 3.33331 16.6667V3.33332C3.33331 2.87499 3.49651 2.48263 3.8229 2.15624C4.14929 1.82985 4.54165 1.66666 4.999 1.66666H11.6667L16.6667 6.66666V16.6667C16.6667 17.125 16.5035 17.5174 16.1771 17.8437C15.8507 18.1701 15.4583 18.3333 15 18.3333H4.99998Z"/></svg>Marcus Alvarez &mdash; Tenant</span>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); font-weight:500; margin-bottom:4px;">Detected by</div>
+              <div style="font-size:12px; color:var(--text); display:flex; align-items:center; gap:6px;">Move-In Charge Integrity &middot; Detection</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- row: LSE-10461 collapsed, last -->
+      <div style="display:grid; grid-template-columns: 40px minmax(190px,1.2fr) 130px minmax(240px,2fr) 108px minmax(210px,1.5fr) 150px; align-items:center; padding:14px 16px;">
+        <div style="width:16px; height:16px; border:2px solid var(--line-strong); border-radius:2px;"></div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor" style="color:var(--muted);"><path d="M8.08748 5L6.91248 6.175L10.7291 10L6.91248 13.825L8.08748 15L13.0875 10L8.08748 5Z"/></svg>
+          <div><div style="font-size:14px; color:var(--brand);">LSE-10461</div><div style="font-size:12px; color:var(--muted); margin-top:1px;">Dominic Chen</div></div>
+        </div>
+        <div style="font-size:13px; color:var(--ink2);">Riverside Commons</div>
+        <div style="font-size:13px; color:var(--ink2);">No recurring charge 8 days after move-in</div>
+        <div style="font-size:13px; color:var(--text);">8 days ago</div>
+        <div style="font-size:13px; color:var(--ink2);">Add recurring rent $1,720.00/mo</div>
+        <div style="text-align:right;"><span style="height:28px; padding:0 12px; border:1px solid var(--brand); color:var(--brand); border-radius:var(--radius); font-size:13px; display:inline-flex; align-items:center;">Add Charge</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

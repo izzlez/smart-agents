@@ -1,0 +1,233 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --brand:#008dd5; --brand-hover:#0071aa; --brand-pressed:#195ca4; --brand-dark:#13314c;
+    --tint-bg:#ebf1f5; --tint-soft:#f5f8fa;
+    --ink2:#424e5b; --text:#666666; --muted:#b3b3b3;
+    --line:#cedbe7; --line-soft:#ebf1f5;
+    --bg:#ffffff; --bg-subtle:#f5f8fa;
+    --success:#6eb744; --success-bg:#e2f1da; --green:#3f7e1f;
+    --workflow-bg:#ede2ff; --workflow-ink:#6b28cc;
+    --shadow: 0 1px 2px rgba(76,76,76,0.08);
+    --radius:4px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Roboto', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif; color: var(--text); background: var(--bg-subtle); }
+  a { color: var(--brand); text-decoration: none; }
+  a:hover { color: var(--brand-hover); text-decoration: underline; }
+</style>
+</helmet>
+
+<div style="width:1160px; padding:40px; background:var(--bg-subtle);">
+
+  <!-- ===================== AGENT LIBRARY (cards) ===================== -->
+  <div style="display:flex; align-items:flex-end; gap:16px; margin-bottom:20px;">
+    <div style="flex:1;">
+      <div style="font-size:28px; line-height:36px; font-weight:500; color:var(--brand-dark);">Smart Agents</div>
+      <div style="font-size:13px; margin-top:6px;">Orion detects, decides, and acts &mdash; every run leaves its reasoning behind.</div>
+    </div>
+    <button style="height:36px; padding:0 16px; border:none; border-radius:var(--radius); background:var(--brand); color:#fff; font-size:14px; display:inline-flex; align-items:center; gap:8px; cursor:pointer;">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M15.8334 10.8333H10.8334V15.8333H9.16669V10.8333H4.16669V9.16666H9.16669V4.16666H10.8334V9.16666H15.8334V10.8333Z"/></svg>
+      New Agent
+    </button>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:12px;">
+
+    <!-- card: Move-In Charge Integrity -->
+    <div style="background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:18px 22px; display:flex; align-items:center; gap:16px;">
+      <span style="width:44px; height:44px; border-radius:999px; background:var(--tint-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg width="22" height="22" viewBox="0 -960 960 960" fill="var(--brand-pressed)"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg>
+      </span>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:16px; font-weight:500; color:var(--brand-dark);">Move-In Charge Integrity</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:3px; display:flex; align-items:center; gap:8px;">
+          <span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:11px; font-weight:500; padding:2px 8px; border-radius:999px;">Data health</span>
+          Nightly &middot; last run today 2:04am
+        </div>
+      </div>
+      <div style="text-align:right; padding-right:20px;">
+        <div style="font-size:26px; font-weight:700; color:var(--brand); line-height:1;">9</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">open findings</div>
+      </div>
+      <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block; flex-shrink:0;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+    </div>
+
+    <!-- card: Vendor W-9 Compliance -->
+    <div style="background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:18px 22px; display:flex; align-items:center; gap:16px;">
+      <span style="width:44px; height:44px; border-radius:999px; background:var(--tint-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg width="22" height="22" viewBox="0 -960 960 960" fill="var(--brand-pressed)"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg>
+      </span>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:16px; font-weight:500; color:var(--brand-dark);">Vendor W-9 Compliance</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:3px; display:flex; align-items:center; gap:8px;">
+          <span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:11px; font-weight:500; padding:2px 8px; border-radius:999px;">Data health</span>
+          Weekly &middot; last run Mon 5:01am
+        </div>
+      </div>
+      <div style="text-align:right; padding-right:20px;">
+        <div style="font-size:26px; font-weight:700; color:var(--brand); line-height:1;">3</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">open findings</div>
+      </div>
+      <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block; flex-shrink:0;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+    </div>
+
+    <!-- card: Missing Resident Data -->
+    <div style="background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:18px 22px; display:flex; align-items:center; gap:16px;">
+      <span style="width:44px; height:44px; border-radius:999px; background:var(--tint-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg width="22" height="22" viewBox="0 -960 960 960" fill="var(--brand-pressed)"><path d="M160-120q-33 0-56.5-23.5T80-200v-560q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v560q0 33-23.5 56.5T800-120H160Zm0-80h640v-560H160v560Zm40-80h200v-80H200v80Zm382-80 198-198-57-57-141 142-57-57-56 57 113 113Zm-382-80h200v-80H200v80Zm0-160h200v-80H200v80Zm-40 400v-560 560Z"/></svg>
+      </span>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:16px; font-weight:500; color:var(--brand-dark);">Missing Resident Data</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:3px; display:flex; align-items:center; gap:8px;">
+          <span style="background:var(--tint-bg); color:var(--brand-pressed); font-size:11px; font-weight:500; padding:2px 8px; border-radius:999px;">Data health</span>
+          Weekly &middot; last run Mon 4:31am
+        </div>
+      </div>
+      <div style="text-align:right; padding-right:20px;">
+        <div style="font-size:26px; font-weight:700; color:var(--brand); line-height:1;">12</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">open findings</div>
+      </div>
+      <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block; flex-shrink:0;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+    </div>
+
+    <!-- card: Credit Approval (workflow, no findings count) -->
+    <div style="background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:18px 22px; display:flex; align-items:center; gap:16px;">
+      <span style="width:44px; height:44px; border-radius:999px; background:var(--workflow-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg width="22" height="22" viewBox="0 -960 960 960" fill="var(--workflow-ink)"><path d="M600-120v-120H440v-400h-80v120H80v-320h280v120h240v-120h280v320H600v-120h-80v320h80v-120h280v320H600ZM160-760v160-160Zm520 400v160-160Zm0-400v160-160Zm0 160h120v-160H680v160Zm0 400h120v-160H680v160ZM160-600h120v-160H160v160Z"/></svg>
+      </span>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:16px; font-weight:500; color:var(--brand-dark);">Credit Approval</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:3px; display:flex; align-items:center; gap:8px;">
+          <span style="background:var(--workflow-bg); color:var(--workflow-ink); font-size:11px; font-weight:500; padding:2px 8px; border-radius:999px;">Workflow</span>
+          A credit is added to a tenant ledger
+        </div>
+      </div>
+      <div style="text-align:right; padding-right:20px;">
+        <div style="font-size:26px; font-weight:700; color:var(--ink2); line-height:1;">7</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">decisions today</div>
+      </div>
+      <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block; flex-shrink:0;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+    </div>
+
+    <!-- card: Bill Approval (workflow, no findings count) -->
+    <div style="background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:18px 22px; display:flex; align-items:center; gap:16px;">
+      <span style="width:44px; height:44px; border-radius:999px; background:var(--workflow-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <svg width="22" height="22" viewBox="0 -960 960 960" fill="var(--workflow-ink)"><path d="M600-120v-120H440v-400h-80v120H80v-320h280v120h240v-120h280v320H600v-120h-80v320h80v-120h280v320H600ZM160-760v160-160Zm520 400v160-160Zm0-400v160-160Zm0 160h120v-160H680v160Zm0 400h120v-160H680v160ZM160-600h120v-160H160v160Z"/></svg>
+      </span>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:16px; font-weight:500; color:var(--brand-dark);">Bill Approval</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:3px; display:flex; align-items:center; gap:8px;">
+          <span style="background:var(--workflow-bg); color:var(--workflow-ink); font-size:11px; font-weight:500; padding:2px 8px; border-radius:999px;">Workflow</span>
+          An invoice is received
+        </div>
+      </div>
+      <div style="text-align:right; padding-right:20px;">
+        <div style="font-size:26px; font-weight:700; color:var(--ink2); line-height:1;">19</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">invoices today</div>
+      </div>
+      <span style="width:36px; height:20px; border-radius:999px; background:var(--brand); position:relative; display:inline-block; flex-shrink:0;"><span style="position:absolute; top:2px; left:18px; width:16px; height:16px; border-radius:999px; background:#fff;"></span></span>
+    </div>
+  </div>
+
+  <!-- ===================== AGENT FINDINGS (cards) ===================== -->
+  <div style="margin-top:36px;">
+    <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:16px;">
+      <div style="font-size:24px; line-height:32px; font-weight:500; color:var(--brand-dark);">Move-In Charge Integrity &mdash; Findings</div>
+    </div>
+
+    <div style="display:flex; gap:12px; margin-bottom:20px;">
+      <div style="flex:1; background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:16px 20px;">
+        <div style="font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Open</div>
+        <div style="font-size:24px; font-weight:700; color:var(--brand-dark); margin-top:4px;">9</div>
+      </div>
+      <div style="flex:1; background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:16px 20px;">
+        <div style="font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Fixed today</div>
+        <div style="font-size:24px; font-weight:700; color:var(--green); margin-top:4px;">0</div>
+      </div>
+      <div style="flex:1; background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:16px 20px;">
+        <div style="font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); font-weight:500;">Unbilled or at risk</div>
+        <div style="font-size:24px; font-weight:700; color:var(--brand-dark); margin-top:4px;">$6,710.00</div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+
+      <!-- finding card: LSE-10473 -->
+      <div style="background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:16px 20px;">
+        <div style="display:flex; align-items:baseline; gap:10px;">
+          <span style="font-family:'Roboto Mono',monospace; font-size:13px; color:var(--brand);">LSE-10473</span>
+          <span style="font-size:13px; color:var(--ink2);">Ethan Whitfield</span>
+          <span style="flex:1;"></span>
+          <span style="font-size:12px; color:var(--muted); background:var(--bg-subtle); padding:2px 8px; border-radius:999px;">Oak Park Flats</span>
+        </div>
+        <div style="font-size:14px; color:var(--ink2); margin-top:8px;">No recurring charge 21 days after move-in</div>
+        <div style="display:flex; align-items:center; gap:16px; margin-top:12px;">
+          <span style="font-size:12px; color:var(--muted);">Detected 21 days ago</span>
+          <span style="flex:1;"></span>
+          <span style="font-family:'Roboto Mono',monospace; font-size:14px; color:var(--brand-pressed); font-weight:500;">$1,290.00</span>
+          <button style="height:30px; padding:0 14px; border:1px solid var(--brand); color:var(--brand); background:var(--bg); border-radius:999px; font-size:13px; cursor:pointer;">Add Charge</button>
+        </div>
+      </div>
+
+      <!-- finding card: LSE-10442 expanded -->
+      <div style="background:var(--bg); border:1px solid var(--brand); border-radius:8px; box-shadow:var(--shadow); padding:16px 20px;">
+        <div style="display:flex; align-items:baseline; gap:10px;">
+          <span style="font-family:'Roboto Mono',monospace; font-size:13px; color:var(--brand);">LSE-10442</span>
+          <span style="font-size:13px; color:var(--ink2);">Marcus Alvarez</span>
+          <span style="flex:1;"></span>
+          <span style="font-size:12px; color:var(--muted); background:var(--bg-subtle); padding:2px 8px; border-radius:999px;">Maple Grove</span>
+        </div>
+        <div style="font-size:14px; color:var(--ink2); margin-top:8px;">No recurring charge 12 days after move-in</div>
+
+        <div style="margin-top:14px; padding-top:14px; border-top:1px solid var(--line-soft); display:flex; flex-direction:column; gap:10px;">
+          <div style="font-size:13px; line-height:19px; color:var(--ink2);"><strong style="color:var(--brand-dark); font-weight:500;">What was found &mdash; </strong>The lease was signed Aug 19 with monthly rent of $1,485.00. No active recurring charge exists on the lease as of today.</div>
+          <div style="font-size:13px; line-height:19px; color:var(--ink2);"><strong style="color:var(--brand-dark); font-weight:500;">Why it matters &mdash; </strong>September rent will not post for this unit; the balance will read $0.00.</div>
+          <div style="font-size:13px; line-height:19px; color:var(--ink2);"><strong style="color:var(--brand-dark); font-weight:500;">Suggested fix &mdash; </strong>Create the recurring rent charge for $1,485.00 effective Sep 1, then back-date the August proration of $717.10.</div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:4px;">
+            <span style="font-size:12px; color:var(--brand-pressed); background:var(--tint-bg); padding:4px 10px; border-radius:999px;">LSE-10442 &middot; Lease</span>
+            <span style="font-size:12px; color:var(--brand-pressed); background:var(--tint-bg); padding:4px 10px; border-radius:999px;">UNIT 12-B &middot; Maple Grove</span>
+            <span style="font-size:12px; color:var(--brand-pressed); background:var(--tint-bg); padding:4px 10px; border-radius:999px;">Marcus Alvarez &middot; Tenant</span>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:16px; margin-top:14px;">
+          <span style="font-size:12px; color:var(--muted);">Detected 12 days ago</span>
+          <span style="flex:1;"></span>
+          <span style="font-family:'Roboto Mono',monospace; font-size:14px; color:var(--brand-pressed); font-weight:500;">$1,485.00</span>
+          <button style="height:30px; padding:0 14px; border:none; color:#fff; background:var(--brand); border-radius:999px; font-size:13px; cursor:pointer;">Add Charge</button>
+        </div>
+      </div>
+
+      <!-- finding card: LSE-10461 -->
+      <div style="background:var(--bg); border:1px solid var(--line); border-radius:8px; box-shadow:var(--shadow); padding:16px 20px;">
+        <div style="display:flex; align-items:baseline; gap:10px;">
+          <span style="font-family:'Roboto Mono',monospace; font-size:13px; color:var(--brand);">LSE-10461</span>
+          <span style="font-size:13px; color:var(--ink2);">Dominic Chen</span>
+          <span style="flex:1;"></span>
+          <span style="font-size:12px; color:var(--muted); background:var(--bg-subtle); padding:2px 8px; border-radius:999px;">Riverside Commons</span>
+        </div>
+        <div style="font-size:14px; color:var(--ink2); margin-top:8px;">No recurring charge 8 days after move-in</div>
+        <div style="display:flex; align-items:center; gap:16px; margin-top:12px;">
+          <span style="font-size:12px; color:var(--muted);">Detected 8 days ago</span>
+          <span style="flex:1;"></span>
+          <span style="font-family:'Roboto Mono',monospace; font-size:14px; color:var(--brand-pressed); font-weight:500;">$1,720.00</span>
+          <button style="height:30px; padding:0 14px; border:1px solid var(--brand); color:var(--brand); background:var(--bg); border-radius:999px; font-size:13px; cursor:pointer;">Add Charge</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

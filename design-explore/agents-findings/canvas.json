@@ -1,0 +1,13 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1200, "h": 1550, "title": "Refined Register" },
+    { "file": "DirectionB.dc.html", "x": 1280, "y": 0, "w": 1200, "h": 1650, "title": "Card Feed" },
+    { "file": "DirectionC.dc.html", "x": 2560, "y": 0, "w": 1200, "h": 900, "title": "Dense Ops Console" }
+  ],
+  "annotations": [
+    { "id": "note-main", "x": 0, "y": -110, "w": 460, "text": "REFINED REGISTER (leading)\nCloser to what ships today — same register pattern, airier row rhythm, a white Style=Table header, and a light findings stat bar. Lowest-risk evolution." },
+    { "id": "note-b", "x": 1280, "y": -110, "w": 460, "text": "CARD FEED\nEach agent and finding is its own card. Trades density for scannability — the open-findings count reads as a big number, findings expand in place with pill-style record chips." },
+    { "id": "note-c", "x": 2560, "y": -110, "w": 460, "text": "DENSE OPS CONSOLE\nMaximum rows per screen for a power user working the queue all day. Dark mono header, status dots instead of colored text, monospace ids and dollar amounts." }
+  ],
+  "launch": { "view": "canvas" }
+}
